@@ -536,6 +536,7 @@ VELOCITY_CONFIG = "zero"        ! default = "zero"
                                 !     uniform - the flow is uniform (determined by
                                 !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
                                 !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     soliton - Equatorial Rossby soliton.
                                 !     USER - call a user modified routine.
 CONVERT_THICKNESS_UNITS = False !   [Boolean] default = False
                                 ! If true,  convert the thickness initial conditions from

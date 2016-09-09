@@ -257,13 +257,13 @@ MAXIMUM_DEPTH = 600.0           !   [m]
 ! Controls where open boundaries are located, what kind of boundary condition to impose, and what data to apply, if any.
 OBC_NUMBER_OF_SEGMENTS = 4      ! default = 0
                                 ! The number of open boundary segments.
-OBC_SEGMENT_001 = "J=N,I=N+1:-1,FLATHER" !
+OBC_SEGMENT_001 = "J=N,I=N+1:-1,RADIATION2D" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_002 = "J=0,I=-1:N+1,FLATHER" !
+OBC_SEGMENT_002 = "J=0,I=-1:N+1,RADIATION2D" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_003 = "I=N,J=0:N,FLATHER" !
+OBC_SEGMENT_003 = "I=N,J=0:N,RADIATION2D" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_004 = "I=0,J=N:0,FLATHER" !
+OBC_SEGMENT_004 = "I=0,J=N:0,RADIATION2D" !
                                 ! Documentation needs to be dynamic?????
 MASKING_DEPTH = -9999.0         !   [m] default = -9999.0
                                 ! The depth below which to mask points as land points, for which all
@@ -346,6 +346,7 @@ THICKNESS_CONFIG = "circle_obcs" !
                                 !     adjustment2d - TBD AJA.
                                 !     sloshing - TBD AJA.
                                 !     seamount - TBD AJA.
+                                !     soliton - Equatorial Rossby soliton.
                                 !     rossby_front - a mixed layer front in thermal wind balance.
                                 !     USER - call a user modified routine.
 
@@ -362,6 +363,7 @@ VELOCITY_CONFIG = "zero"        ! default = "zero"
                                 !     uniform - the flow is uniform (determined by
                                 !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
                                 !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     soliton - Equatorial Rossby soliton.
                                 !     USER - call a user modified routine.
 CONVERT_THICKNESS_UNITS = False !   [Boolean] default = False
                                 ! If true,  convert the thickness initial conditions from

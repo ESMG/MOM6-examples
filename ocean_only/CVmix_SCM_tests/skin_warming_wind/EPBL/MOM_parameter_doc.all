@@ -531,6 +531,7 @@ THICKNESS_CONFIG = "coord"      !
                                 !     adjustment2d - TBD AJA.
                                 !     sloshing - TBD AJA.
                                 !     seamount - TBD AJA.
+                                !     soliton - Equatorial Rossby soliton.
                                 !     rossby_front - a mixed layer front in thermal wind balance.
                                 !     USER - call a user modified routine.
 TS_CONFIG = "SCM_ideal_hurr"    !
@@ -569,6 +570,7 @@ VELOCITY_CONFIG = "zero"        ! default = "zero"
                                 !     uniform - the flow is uniform (determined by
                                 !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
                                 !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     soliton - Equatorial Rossby soliton.
                                 !     USER - call a user modified routine.
 CONVERT_THICKNESS_UNITS = False !   [Boolean] default = False
                                 ! If true,  convert the thickness initial conditions from
@@ -1235,6 +1237,9 @@ EKMAN_SCALE_COEF = 1.0          !   [units=nondim] default = 1.0
                                 ! A nondimensional scaling factor controlling the inhibition
                                 ! of the diffusive length scale by rotation. Making this larger
                                 ! decreases the PBL diffusivity.
+USE_MLD_ITERATION = False       !   [Boolean] default = False
+                                ! A logical that determines whether or not to use the
+                                ! MLD to set the EPBL length scale.
 
 ! === module MOM_regularize_layers ===
 REGULARIZE_SURFACE_LAYERS = False !   [Boolean] default = False
