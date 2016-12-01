@@ -1082,6 +1082,22 @@
     ! long_name: j-component of CFL of first baroclinic gravity wave = dt*cg1*/dy
     ! units: nondim
     ! cell_methods: xh:mean yh:mean
+"ocean_model", "cg_ebt"  [Unused]
+    ! long_name: Equivalent barotropic gravity wave speed
+    ! units: meter second-1
+    ! cell_methods: xh:mean yh:mean
+"ocean_model", "Rd_ebt"  [Unused]
+    ! long_name: Equivalent barotropic deformation radius
+    ! units: meter
+    ! cell_methods: xh:mean yh:mean
+"ocean_model", "p_ebt"  [Unused]
+    ! long_name: Equivalent barotropic modal strcuture
+    ! units: nondim
+    ! cell_methods: xh:mean yh:mean zl:mean
+"ocean_model_z_new", "p_ebt"  [Unused]
+    ! long_name: Equivalent barotropic modal strcuture
+    ! units: nondim
+    ! cell_methods: xh:mean yh:mean zl:mean
 "ocean_model", "mass_wt"  [Unused]
     ! long_name: The column mass for calculating mass-weighted average properties
     ! units: kg m-2
@@ -1594,8 +1610,16 @@
     ! cell_methods: xh:mean yh:mean zi:point
 "ocean_model", "Velocity_Scale"  [Unused]
     ! long_name: Velocity Scale that is used.
-    ! units: meter second
+    ! units: meter second-1
     ! cell_methods: xh:mean yh:mean zi:point
+"ocean_model", "LT_Enhancement"  [Unused]
+    ! long_name: LT enhancement that is used.
+    ! units: non-dim
+    ! cell_methods: xh:mean yh:mean
+"ocean_model", "ePBL_OSBL"  [Unused]
+    ! long_name: Boundary layer depth from the iteration.
+    ! units: meter
+    ! cell_methods: xh:mean yh:mean
 "ocean_model", "deficit_ratio"  [Unused]
     ! long_name: Max face thickness deficit ratio
     ! units: Nondim
@@ -1653,6 +1677,14 @@
     ! units: m2 sec-1
     ! standard_name: ocean_tracer_epineutral_laplacian_diffusivity
     ! cell_methods: xh:mean yh:mean
+"ocean_model", "KHDT_x"  [Unused]
+    ! long_name: Epipycnal tracer diffusivity operator at zonal faces of tracer cell
+    ! units: meter2
+    ! cell_methods: xq:point yh:mean
+"ocean_model", "KHDT_y"  [Unused]
+    ! long_name: Epipycnal tracer diffusivity operator at meridional faces of tracer cell
+    ! units: meter2
+    ! cell_methods: xh:mean yq:point
 "ocean_model", "T_vardec"  [Unused]
     ! long_name: ALE variance decay for temperature
     ! units: degC2 s-1
@@ -2038,6 +2070,22 @@
     ! long_name: Salinity
     ! units: PPT
     ! cell_methods: xh:mean yh:mean zl:mean
+"ocean_model", "uhtr"  [Unused]
+    ! long_name: Accumulated zonal thickness fluxes to advect tracers
+    ! units: kg
+    ! cell_methods: xq:point yh:mean zl:mean
+"ocean_model_z_new", "uhtr"  [Unused]
+    ! long_name: Accumulated zonal thickness fluxes to advect tracers
+    ! units: kg
+    ! cell_methods: xq:point yh:mean zl:mean
+"ocean_model", "vhtr"  [Unused]
+    ! long_name: Accumulated meridional thickness fluxes to advect tracers
+    ! units: kg
+    ! cell_methods: xh:mean yq:point zl:mean
+"ocean_model_z_new", "vhtr"  [Unused]
+    ! long_name: Accumulated meridional thickness fluxes to advect tracers
+    ! units: kg
+    ! cell_methods: xh:mean yq:point zl:mean
 "ocean_model", "T_advection_xy"  [Used]
     ! long_name: Horizontal convergence of residual mean heat advective fluxes
     ! units: W/m2
@@ -2132,6 +2180,10 @@
     ! units: kg m-2 s-1
     ! standard_name: tendency_of_sea_water_salinity_expressed_as_salt_content_vertical_sum
     ! cell_methods: xh:mean yh:mean
+"ocean_model", "dzRegrid"  [Unused]
+    ! long_name: Change in interface height due to ALE regridding
+    ! units: meter
+    ! cell_methods: xh:mean yh:mean zi:point
 "ocean_model", "T_tendency_vert_remap"  [Used]
     ! long_name: Tendency from vertical remapping for tracer concentration T
     ! units: degC/s
@@ -2414,26 +2466,6 @@
     ! long_name: Surface friction velocity = [(gustiness + tau_magnitude)/rho0]^(1/2)
     ! units: meter second-1
     ! cell_methods: xh:mean yh:mean
-"ocean_model", "ustar_berg"  [Unused]
-    ! long_name: Friction velocity below iceberg
-    ! units: meter second-1
-    ! cell_methods: xh:mean yh:mean
-"ocean_model", "area_berg"  [Unused]
-    ! long_name: Area of grid cell covered by iceberg
-    ! units: m2/m2
-    ! cell_methods: xh:mean yh:mean
-"ocean_model", "mass_berg"  [Unused]
-    ! long_name: Mass of icebergs
-    ! units: kg/m2
-    ! cell_methods: xh:mean yh:mean
-"ocean_model", "ustar_ice_cover"  [Unused]
-    ! long_name: Friction velocity below iceberg and ice shelf together
-    ! units: meter second-1
-    ! cell_methods: xh:mean yh:mean
-"ocean_model", "frac_ice_cover"  [Unused]
-    ! long_name: Area of grid cell below iceberg and ice shelf together
-    ! units: m2/m2
-    ! cell_methods: xh:mean yh:mean
 "ocean_model", "p_surf"  [Used] (CMOR equivalent is "pso")
     ! long_name: Pressure at ice-ocean or atmosphere-ocean interface
     ! units: Pascal
@@ -2522,6 +2554,14 @@
 "ocean_model", "net_massin"  [Used]
     ! long_name: Net mass entering ocean due to precip, runoff, ice melt
     ! units: kilogram meter-2 second-1
+    ! cell_methods: xh:mean yh:mean
+"ocean_model", "massout_flux"  [Unused]
+    ! long_name: Net mass flux of freshwater out of the ocean (used in the boundary flux calculation)
+    ! units: kilogram meter-2
+    ! cell_methods: xh:mean yh:mean
+"ocean_model", "massin_flux"  [Unused]
+    ! long_name: Net mass mass flux of freshwater into the ocean (used in boundary flux calculation)
+    ! units: kilogram meter-2
     ! cell_methods: xh:mean yh:mean
 "ocean_model", "total_PRCmE"  [Used]
     ! long_name: Area integrated net surface water flux (precip+melt+liq runoff+ice calving-evap)
