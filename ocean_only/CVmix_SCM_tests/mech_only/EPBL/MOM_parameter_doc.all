@@ -295,7 +295,6 @@ TOPO_CONFIG = "flat"            !
                                 !     DOME2D - use a shelf and slope configuration for the
                                 !       DOME2D gravity current/overflow test case.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
-                                !     supercritical - flat but with 8.95 degree land mask.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
                                 !     USER - call a user modified routine.
 MINIMUM_DEPTH = 0.5             !   [m] default = 0.0
@@ -382,34 +381,16 @@ REGRIDDING_COORDINATE_MODE = "Z*" ! default = "LAYER"
                                 !  SLIGHT - stretched coordinates above continuous isopycnal
 REGRIDDING_COORDINATE_UNITS = "m" ! default = "m"
                                 ! Units of the regridding coordinuate.
-INTERPOLATION_SCHEME = "P1M_H2" ! default = "P1M_H2"
-                                ! This sets the interpolation scheme to use to
-                                ! determine the new grid. These parameters are
-                                ! only relevant when REGRIDDING_COORDINATE_MODE is
-                                ! set to a function of state. Otherwise, it is not
-                                ! used. It can be one of the following schemes:
-                                !  P1M_H2     (2nd-order accurate)
-                                !  P1M_H4     (2nd-order accurate)
-                                !  P1M_IH4    (2nd-order accurate)
-                                !  PLM        (2nd-order accurate)
-                                !  PPM_H4     (3rd-order accurate)
-                                !  PPM_IH4    (3rd-order accurate)
-                                !  P3M_IH4IH3 (4th-order accurate)
-                                !  P3M_IH6IH5 (4th-order accurate)
-                                !  PQM_IH4IH3 (4th-order accurate)
-                                !  PQM_IH6IH5 (5th-order accurate)
-REGRID_COMPRESSIBILITY_FRACTION = 0.0 !   [not defined] default = 0.0
-                                ! When interpolating potential density profiles we can add
-                                ! some artificial compressibility solely to make homogenous
-                                ! regions appear stratified.
 ALE_COORDINATE_CONFIG = "UNIFORM" ! default = "UNIFORM"
                                 ! Determines how to specify the coordinate
                                 ! resolution. Valid options are:
                                 !  PARAM       - use the vector-parameter ALE_RESOLUTION
-                                !  UNIFORM     - uniformly distributed
+                                !  UNIFORM[:N] - uniformly distributed
                                 !  FILE:string - read from a file. The string specifies
                                 !                the filename and variable name, separated
-                                !                by a comma or space, e.g. FILE:lev.nc,Z
+                                !                by a comma or space, e.g. FILE:lev.nc,dz
+                                !                or FILE:lev.nc,interfaces=zw
+                                !  WOA09[:N]   - the WOA09 vertical grid (approximately)
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
@@ -424,30 +405,6 @@ ALE_COORDINATE_CONFIG = "UNIFORM" ! default = "UNIFORM"
 MIN_THICKNESS = 0.001           !   [m] default = 0.001
                                 ! When regridding, this is the minimum layer
                                 ! thickness allowed.
-BOUNDARY_EXTRAPOLATION = False  !   [Boolean] default = False
-                                ! When defined, a proper high-order reconstruction
-                                ! scheme is used within boundary cells rather
-                                ! than PCM. E.g., if PPM is used for remapping, a
-                                ! PPM reconstruction will also be used within
-                                ! boundary cells.
-MAXIMUM_INT_DEPTH_CONFIG = "NONE" ! default = "NONE"
-                                ! Determines how to specify the maximum interface depths.
-                                ! Valid options are:
-                                !  NONE        - there are no maximum interface depths
-                                !  PARAM       - use the vector-parameter MAXIMUM_INTERFACE_DEPTHS
-                                !  FILE:string - read from a file. The string specifies
-                                !                the filename and variable name, separated
-                                !                by a comma or space, e.g. FILE:lev.nc,Z
-                                !  FNC1:string - FNC1:dz_min,H_total,power,precision
-MAX_LAYER_THICKNESS_CONFIG = "NONE" ! default = "NONE"
-                                ! Determines how to specify the maximum layer thicknesses.
-                                ! Valid options are:
-                                !  NONE        - there are no maximum layer thicknesses
-                                !  PARAM       - use the vector-parameter MAX_LAYER_THICKNESS
-                                !  FILE:string - read from a file. The string specifies
-                                !                the filename and variable name, separated
-                                !                by a comma or space, e.g. FILE:lev.nc,Z
-                                !  FNC1:string - FNC1:dz_min,H_total,power,precision
 REMAPPING_SCHEME = "PLM"        ! default = "PLM"
                                 ! This sets the reconstruction scheme used
                                 ! for vertical remapping for all variables.
@@ -575,21 +532,33 @@ SPONGE = False                  !   [Boolean] default = False
                                 ! If true, sponges may be applied anywhere in the domain.
                                 ! The exact location and properties of those sponges are
                                 ! specified via SPONGE_CONFIG.
+
+! === module MOM_diag_mediator ===
+NUM_DIAG_COORDS = 1             ! default = 1
+                                ! The number of diagnostic vertical coordinates to use.
+                                ! For each coordinate, an entry in DIAG_COORDS must be provided.
+DIAG_COORDS = "z Z ZSTAR"       ! default = "z Z ZSTAR"
+                                ! A list of string tuples associating diag_table modules to
+                                ! a coordinate definition used for diagnostics. Each string
+                                ! is of the form "MODULE_SUFFIX PARAMETER_SUFFIX COORDINATE_NAME".
 AVAILABLE_DIAGS_FILE = "available_diags.000000" ! default = "available_diags.000000"
                                 ! A file into which to write a list of all available
                                 ! ocean diagnostics that can be included in a diag_table.
-
-! === module MOM_diag_mediator ===
-DIAG_REMAP_Z_GRID_DEF = ""      ! default = ""
-                                ! This sets the file and variable names that define the
-                                ! vertical grid used for diagnostic output remapping to
-                                ! Z space. It should look like:
-                                !  FILE:<file>,<variable> - where <file> is a file within
-                                !                           the INPUTDIR, <variable> is
-                                !                           the name of the variable that
-                                !                           contains interface positions.
-                                !  UNIFORM                - vertical grid is uniform
-                                !                           between surface and max depth.
+DIAG_COORD_DEF_Z = "UNIFORM"    ! default = "UNIFORM"
+                                ! Determines how to specify the coordinate
+                                ! resolution. Valid options are:
+                                !  PARAM       - use the vector-parameter DIAG_COORD_RES_Z
+                                !  UNIFORM[:N] - uniformly distributed
+                                !  FILE:string - read from a file. The string specifies
+                                !                the filename and variable name, separated
+                                !                by a comma or space, e.g. FILE:lev.nc,dz
+                                !                or FILE:lev.nc,interfaces=zw
+                                !  WOA09[:N]   - the WOA09 vertical grid (approximately)
+                                !  FNC1:string - FNC1:dz_min,H_total,power,precision
+                                !  HYBRID:string - read from a file. The string specifies
+                                !                the filename and two variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. e.g.
+                                !                HYBRID:vgrid.nc,sigma2,dz
 
 ! === module MOM_MEKE ===
 USE_MEKE = False                !   [Boolean] default = False

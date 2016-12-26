@@ -209,10 +209,12 @@ ALE_COORDINATE_CONFIG = "FILE:vgrid_75_2m.nc,dz" ! default = "UNIFORM"
                                 ! Determines how to specify the coordinate
                                 ! resolution. Valid options are:
                                 !  PARAM       - use the vector-parameter ALE_RESOLUTION
-                                !  UNIFORM     - uniformly distributed
+                                !  UNIFORM[:N] - uniformly distributed
                                 !  FILE:string - read from a file. The string specifies
                                 !                the filename and variable name, separated
-                                !                by a comma or space, e.g. FILE:lev.nc,Z
+                                !                by a comma or space, e.g. FILE:lev.nc,dz
+                                !                or FILE:lev.nc,interfaces=zw
+                                !  WOA09[:N]   - the WOA09 vertical grid (approximately)
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
@@ -585,9 +587,6 @@ ML_OMEGA_FRAC = 1.0             !   [nondim] default = 0.0
                                 ! When setting the decay scale for turbulence, use this
                                 ! fraction of the absolute rotation rate blended with the
                                 ! local value of f, as sqrt((1-of)*f^2 + of*4*omega^2).
-VSTAR_SCALE_FACTOR = 0.9410360288810284 !   [nondim] default = 1.0
-                                ! An overall nondimensional scaling factor for v*.
-                                ! Making this larger decreases the PBL diffusivity.
 EPBL_USTAR_MIN = 1.45842E-18    !   [meter second-1]
                                 ! The (tiny) minimum friction velocity used within the
                                 ! ePBL code, derived from OMEGA and ANGSTROM.

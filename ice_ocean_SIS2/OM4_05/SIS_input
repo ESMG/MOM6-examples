@@ -1,10 +1,4 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
-GRID_CONFIG = "mosaic"          !    Method for defining horizontal grid
-                                !  = file|cartesian|spherical|mercator
-                                !  file - read grid from file "GRID_FILE"
-                                !  cartesian - a Cartesian grid
-                                !  spherical - a spherical grid
-                                !  mercator  - a Mercator grid
 OMEGA = 7.292e-5                !   The rotation rate of the earth in s-1.
 CGRID_ICE_DYNAMICS = True       !   [Boolean] default = False
                                 ! If true, use a C-grid discretization of the sea-ice
@@ -69,6 +63,17 @@ ICE_DELTA_EDD_R_POND = 1.0      !   [perhaps nondimensional?] default = 0.0
                                 ! A dreadfully documented tuning parameter for the radiative
                                 ! propeties of meltwater ponds on sea ice with the delta-Eddington
                                 ! radiative transfer calculation.
+CP_ICE = 2100.0                 !   [J kg-1 K-1] default = 2100.0
+                                ! The heat capacity of fresh ice, approximated as a
+                                ! constant.
+CP_SEAWATER = 4200.0            !   [J kg-1 K-1] default = 4200.0
+                                ! The heat capacity of sea water, approximated as a
+                                ! constant.
+CP_BRINE = 2100.0               !   [J kg-1 K-1] default = 2100.0
+                                ! The heat capacity of water in brine pockets within the
+                                ! sea-ice, approximated as a constant.  CP_BRINE and
+                                ! CP_WATER should be equal, but for computational
+                                ! convenience CP_BRINE has often been set equal to CP_ICE.
 DT_RHEOLOGY = 50.0              !   [seconds] default = -1.0
                                 ! The sub-cycling time step for iterating the rheology
                                 ! and ice momentum equations. If DT_RHEOLOGY is negative,
@@ -85,6 +90,12 @@ SIS_CONTINUITY_SCHEME = "PCM"   ! default = "UPWIND_2D"
                                 !   PCM       - Directionally split peicewise constant
                                 !   PPM:C2PD  - Positive definite PPM with 2nd order edge values
                                 !   PPM:C2MO  - Monotonic PPM with 2nd order edge values
+EULERIAN_TSURF = True           ! If true, use previous calculations of the ice-top surface
+                                ! skin temperature for tsurf at the start of atmospheric
+                                ! time stepping, including interpolating between tsurf
+                                ! values from other categories in the same location.
+RECATEGORIZE_ICE = True         ! If true, readjust the distribution into ice thickness
+                                ! categories after advection.
 
 ! === module SIS_tracer_advect ===
 SIS_TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "UPWIND_2D"
@@ -101,3 +112,11 @@ DOCUMENT_FILE = "SIS_parameter_doc" ! default = "MOM_parameter_doc"
                                 ! The basename for files where run-time parameters, their
                                 ! settings, units and defaults are documented. Blank will
                                 ! disable all parameter documentation.
+
+!  These are used for debugging the SIS_input files.
+REPORT_UNUSED_PARAMS = True     !   [Boolean] default = False
+                                ! If true, report any parameter lines that are not used
+                                ! in the run.
+FATAL_UNUSED_PARAMS = True      !   [Boolean] default = False
+                                ! If true, kill the run if there are any unused
+                                ! parameters.

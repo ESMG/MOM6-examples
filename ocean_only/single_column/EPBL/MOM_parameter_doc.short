@@ -97,7 +97,6 @@ TOPO_CONFIG = "flat"            !
                                 !     DOME2D - use a shelf and slope configuration for the
                                 !       DOME2D gravity current/overflow test case.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
-                                !     supercritical - flat but with 8.95 degree land mask.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
                                 !     USER - call a user modified routine.
 MINIMUM_DEPTH = 0.5             !   [m] default = 0.0
@@ -148,10 +147,12 @@ ALE_COORDINATE_CONFIG = "FILE:./INPUT/vgrid_cm4.nc,dz" ! default = "UNIFORM"
                                 ! Determines how to specify the coordinate
                                 ! resolution. Valid options are:
                                 !  PARAM       - use the vector-parameter ALE_RESOLUTION
-                                !  UNIFORM     - uniformly distributed
+                                !  UNIFORM[:N] - uniformly distributed
                                 !  FILE:string - read from a file. The string specifies
                                 !                the filename and variable name, separated
-                                !                by a comma or space, e.g. FILE:lev.nc,Z
+                                !                by a comma or space, e.g. FILE:lev.nc,dz
+                                !                or FILE:lev.nc,interfaces=zw
+                                !  WOA09[:N]   - the WOA09 vertical grid (approximately)
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated

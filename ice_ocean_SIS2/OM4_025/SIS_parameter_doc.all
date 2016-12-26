@@ -13,6 +13,11 @@ SINGLE_ICE_STATE_TYPE = True    !   [Boolean] default = True
                                 ! single common ice_state_type.  Otherwise they point to
                                 ! different ice_state_types that need to be explicitly
                                 ! copied back and forth.
+EULERIAN_TSURF = True           !   [Boolean] default = True
+                                ! If true, use previous calculations of the ice-top surface
+                                ! skin temperature for tsurf at the start of atmospheric
+                                ! time stepping, including interpolating between tsurf
+                                ! values from other categories in the same location.
 ICE_OCEAN_STRESS_STAGGER = "C"  ! default = "C"
                                 ! A case-insensitive character string to indicate the
                                 ! staggering of the stress field on the ocean that is
@@ -65,11 +70,6 @@ FIRST_DIRECTION = 0             ! default = 0
                                 ! in parts of the code that use directionally split
                                 ! updates, with even numbers (or 0) used for x- first
                                 ! and odd numbers used for y-first.
-! VERONA_COUPLER = True         !   [Boolean] default = True
-                                ! If true, carry out all of the sea ice calls so that SIS2
-                                ! will work with the Verona and earlier releases of the
-                                ! FMS coupler code in configurations that use the exchange
-                                ! grid to communicate with the atmosphere or land.
 ICE_SEES_ATMOS_WINDS = True     !   [Boolean] default = True
                                 ! If true, the sea ice is being given wind stresses with
                                 ! the atmospheric sign convention, and need to have their
@@ -202,9 +202,9 @@ PARALLEL_RESTARTFILES = False   !   [Boolean] default = False
 
 ! === module MOM_hor_index ===
 ! Sets the horizontal array index types.
-AVAILABLE_DIAGS_FILE = "SIS.available_diags" ! default = "SIS.available_diags"
+SIS_AVAILABLE_DIAGS_FILE = "SIS.available_diags" ! default = "SIS.available_diags"
                                 ! A file into which to write a list of all available
-                                ! ocean diagnostics that can be included in a diag_table.
+                                ! sea ice diagnostics that can be included in a diag_table.
 
 ! === module SIS2_ice_thm (thermo) ===
 ! This sub-module calculates ice thermodynamic quantities.
@@ -218,16 +218,11 @@ CP_ICE = 2100.0                 !   [J kg-1 K-1] default = 2100.0
 CP_SEAWATER = 4200.0            !   [J kg-1 K-1] default = 4200.0
                                 ! The heat capacity of sea water, approximated as a
                                 ! constant.
-CP_WATER = 4200.0               !   [J kg-1 K-1] default = 4200.0
-                                ! The heat capacity of water in sea-ice, approximated as
-                                ! a constant.  CP_WATER and CP_SEAWATER should be equal,
-                                ! but for computational convenience CP_WATER has often
-                                ! been set equal to CP_ICE instead.
-CP_BRINE = 2100.0               !   [J kg-1 K-1] default = 2100.0
+CP_BRINE = 2100.0               !   [J kg-1 K-1] default = 4200.0
                                 ! The heat capacity of water in brine pockets within the
                                 ! sea-ice, approximated as a constant.  CP_BRINE and
-                                ! CP_WATER should be equal, but for computational
-                                ! convenience CP_BRINE has often been set equal to CP_ICE.
+                                ! CP_SEAWATER should be equal, but for computational
+                                ! convenience CP_BRINE can be set equal to CP_ICE.
 DTFREEZE_DS = -0.054            !   [deg C PSU-1] default = -0.054
                                 ! The derivative of the freezing temperature with salinity.
 ENTHALPY_LIQUID_0 = 0.0         !   [J kg-1] default = 0.0
@@ -246,6 +241,9 @@ ENTHALPY_UNITS = 1.0            !   [J kg-1] default = 1.0
 ! === module SIS_tracer_flow_control ===
 USE_ICE_AGE_TRACER = False      !   [Boolean] default = False
                                 ! If true, use the concentration based age tracer package.
+SIS_FAST_AVAILABLE_DIAGS_FILE = "SIS_fast.available_diags" ! default = "SIS_fast.available_diags"
+                                ! A file into which to write a list of all available
+                                ! sea ice diagnostics that can be included in a diag_table.
 
 ! === module SIS_slow_thermo ===
 ! This module calculates the slow evolution of the ice mass, heat, and salt budgets.
@@ -297,10 +295,6 @@ ICE_TEMP_RANGE_ESTIMATE = 40.0  !   [degC] default = 40.0
                                 ! layer heat budget is more likely to be more accurate.
                                 ! Setting this to 0 causes the explicit diffusive form.
                                 ! to always be used.
-OLD_ICE_HEAT_CAPACITY = False   !   [Boolean] default = False
-                                ! If true, use an older linearization of the sea ice heat
-                                ! capacity for temperatures above the freezing point in the
-                                ! calculation of the initial ice temperature estimate.
 
 ! === module SIS_dyn_trans ===
 ! This module updates the ice momentum and does ice transport.
@@ -385,6 +379,9 @@ MAX_TRUNC_FILE_SIZE_PER_PE = 50 ! default = 50
 NSTEPS_ADV = 1                  ! default = 1
                                 ! The number of advective iterations for each slow time
                                 ! step.
+RECATEGORIZE_ICE = True         !   [Boolean] default = True
+                                ! If true, readjust the distribution into ice thickness
+                                ! categories after advection.
 ICE_CHANNEL_VISCOSITY = 0.0     !   [m2 s-1] default = 0.0
                                 ! A viscosity used in one-cell wide channels to
                                 ! parameterize transport, especially with B-grid sea ice
@@ -473,10 +470,10 @@ ICE_DELTA_EDD_R_POND = 1.0      !   [nondimensional] default = 0.0
 ! === module MOM_file_parser ===
 SEND_LOG_TO_STDOUT = False      !   [Boolean] default = False
                                 ! If true, all log messages are also sent to stdout.
-REPORT_UNUSED_PARAMS = False    !   [Boolean] default = False
+REPORT_UNUSED_PARAMS = True     !   [Boolean] default = False
                                 ! If true, report any parameter lines that are not used
                                 ! in the run.
-FATAL_UNUSED_PARAMS = False     !   [Boolean] default = False
+FATAL_UNUSED_PARAMS = True      !   [Boolean] default = False
                                 ! If true, kill the run if there are any unused
                                 ! parameters.
 DOCUMENT_FILE = "SIS_parameter_doc" ! default = "MOM_parameter_doc"

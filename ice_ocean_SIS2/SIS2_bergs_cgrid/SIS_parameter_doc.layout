@@ -3,6 +3,11 @@ GLOBAL_INDEXING = False         !   [Boolean] default = False
                                 ! If true, use a global lateral indexing convention, so
                                 ! that corresponding points on different processors have
                                 ! the same index. This does not work with static memory.
+! VERONA_COUPLER = True         !   [Boolean]
+                                ! If true, carry out all of the sea ice calls so that SIS2
+                                ! will work with the Verona and earlier releases of the
+                                ! FMS coupler code in configurations that use the exchange
+                                ! grid to communicate with the atmosphere or land.
 !SYMMETRIC_MEMORY_ = False      !   [Boolean]
                                 ! If defined, the velocity point data domain includes
                                 ! every face of the thickness points. In other words,
@@ -52,7 +57,7 @@ NJPROC = 1                      !
                                 ! STATIC_MEMORY_ this is set in SIS2_memory.h at compile time.
 LAYOUT = 60, 1                  !
                                 ! The processor layout that was acutally used.
-IO_LAYOUT = 1, 1                ! default = 0
+IO_LAYOUT = 1, 1                ! default = 1
                                 ! The processor layout to be used, or 0,0 to automatically
                                 ! set the io_layout to be the same as the layout.
 NIBLOCK = 1                     ! default = 1

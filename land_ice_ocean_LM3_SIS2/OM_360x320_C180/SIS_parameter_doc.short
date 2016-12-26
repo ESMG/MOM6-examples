@@ -53,6 +53,11 @@ OMEGA = 7.292E-05               !   [s-1] default = 7.2921E-05
 
 ! === module SIS2_ice_thm (thermo) ===
 ! This sub-module calculates ice thermodynamic quantities.
+CP_BRINE = 2100.0               !   [J kg-1 K-1] default = 4200.0
+                                ! The heat capacity of water in brine pockets within the
+                                ! sea-ice, approximated as a constant.  CP_BRINE and
+                                ! CP_SEAWATER should be equal, but for computational
+                                ! convenience CP_BRINE can be set equal to CP_ICE.
 
 ! === module SIS_tracer_registry ===
 
@@ -99,6 +104,12 @@ ICE_TDAMP_ELASTIC = 1000.0      !   [s or nondim] default = -0.2
 ! This module calculates the albedo and absorption profiles for shortwave radiation.
 
 ! === module MOM_file_parser ===
+REPORT_UNUSED_PARAMS = True     !   [Boolean] default = False
+                                ! If true, report any parameter lines that are not used
+                                ! in the run.
+FATAL_UNUSED_PARAMS = True      !   [Boolean] default = False
+                                ! If true, kill the run if there are any unused
+                                ! parameters.
 DOCUMENT_FILE = "SIS_parameter_doc" ! default = "MOM_parameter_doc"
                                 ! The basename for files where run-time parameters, their
                                 ! settings, units and defaults are documented. Blank will
