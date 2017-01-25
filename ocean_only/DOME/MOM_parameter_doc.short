@@ -125,7 +125,7 @@ OBC_NUMBER_OF_SEGMENTS = 1      ! default = 0
                                 ! The number of open boundary segments.
 OBC_SEGMENT_001 = "J=N,I=110:100,SIMPLE" !
                                 ! Documentation needs to be dynamic?????
-OBC_CONFIG = "DOME"             ! default = "None"
+OBC_CONFIG = "DOME"             ! default = "none"
                                 ! A string that sets how the open boundary conditions are
                                 !  configured:
 ROTATION = "beta"               ! default = "2omegasinlat"

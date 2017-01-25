@@ -10,6 +10,10 @@ SPLIT = False                   !   [Boolean] default = True
                                 ! Use the split time stepping if true.
 USE_RK2 = False                 !   [Boolean] default = False
                                 ! If true, use RK2 instead of RK3 in the unsplit time stepping.
+CALC_RHO_FOR_SEA_LEVEL = False  !   [Boolean] default = False
+                                ! If true, the in-situ density is used to calculate the
+                                ! effective sea level that is returned to the coupler. If false,
+                                ! the Boussinesq parameter RHO_0 is used.
 ENABLE_THERMODYNAMICS = True    !   [Boolean] default = True
                                 ! If true, Temperature and salinity are used as state
                                 ! variables.
@@ -21,6 +25,11 @@ DIABATIC_FIRST = False          !   [Boolean] default = False
                                 ! If true, apply diabatic and thermodynamic processes,
                                 ! including buoyancy forcing and mass gain or loss,
                                 ! before stepping the dynamics forward.
+USE_CONTEMP_ABSSAL = False      !   [Boolean] default = False
+                                ! If true, , the prognostics T&S are the conservative temperature
+                                ! and absolute salinity. Care should be taken to convert them
+                                ! to potential temperature and practical salinity before
+                                ! exchanging them with the coupler and/or reporting T&S diagnostics.
 ADIABATIC = False               !   [Boolean] default = False
                                 ! There are no diapycnal mass fluxes if ADIABATIC is
                                 ! true. This assumes that KD = KDML = 0.0 and that
@@ -176,7 +185,7 @@ NK = 400                        !   [nondim]
 EQN_OF_STATE = "LINEAR"         ! default = "WRIGHT"
                                 ! EQN_OF_STATE determines which ocean equation of state
                                 ! should be used.  Currently, the valid choices are
-                                ! "LINEAR", "UNESCO", and "WRIGHT".
+                                ! "LINEAR", "UNESCO", "WRIGHT", "NEMO" and "TEOS10".
                                 ! This is only used if USE_EOS is true.
 RHO_T0_S0 = 1000.0              !   [kg m-3] default = 1000.0
                                 ! When EQN_OF_STATE=LINEAR,
@@ -374,7 +383,8 @@ REGRIDDING_COORDINATE_MODE = "Z*" ! default = "LAYER"
                                 ! Coordinate mode for vertical regridding.
                                 ! Choose among the following possibilities:
                                 !  LAYER - Isopycnal or stacked shallow water layers
-                                !  Z*    - stetched geopotential z*
+                                !  ZSTAR, Z* - stetched geopotential z*
+                                !  SIGMA_SHELF_ZSTAR - stetched geopotential z* ignoring shelf
                                 !  SIGMA - terrain following coordinates
                                 !  RHO   - continuous isopycnal
                                 !  HYCOM1 - HyCOM-like hybrid coordinate
@@ -1180,6 +1190,21 @@ USE_CALVING_HEAT_CONTENT = False !   [Boolean] default = False
 MSTAR = 1.2                     !   [units=nondim] default = 1.2
                                 ! The ratio of the friction velocity cubed to the TKE
                                 ! input to the mixed layer.
+MIX_LEN_EXPONENT = 2.0          !   [units=nondim] default = 2.0
+                                ! The exponent applied to the ratio of the distance to the MLD
+                                ! and the MLD depth which determines the shape of the mixing length.
+MSTAR_SLOPE = 1.0               !   [units=nondim] default = 1.0
+                                ! The slope of the linear relationship between mstar
+                                ! and the length scale ratio (used if MSTAR_FIXED=false).
+MSTAR_XINT = -0.25              !   [units=nondim] default = -0.25
+                                ! The value of the length scale ratio where the mstar
+                                ! is linear above (used if MSTAR_FIXED=false).
+MSTAR_AT_XINT = 0.13            !   [units=nondim] default = 0.13
+                                ! The value of mstar at MSTAR_XINT
+                                ! (used if MSTAR_FIXED=false).
+MSTAR_FIXED = True              !   [units=nondim] default = True
+                                ! True to use a fixed value of mstar, if false mstar depends
+                                ! on the composite Obhukov length and Ekman length.
 NSTAR = 0.2                     !   [nondim] default = 0.2
                                 ! The portion of the buoyant potential energy imparted by
                                 ! surface fluxes that is available to drive entrainment
@@ -1212,6 +1237,10 @@ USE_MLD_ITERATION = False       !   [Boolean] default = False
                                 ! A logical that specifies whether or not to use the
                                 ! distance to the bottom of the actively turblent boundary
                                 ! layer to help set the EPBL length scale.
+ORIG_MLD_ITERATION = True       !   [Boolean] default = True
+                                ! A logical that specifies whether or not to use the
+                                ! old method for determining MLD depth in iteration, which
+                                ! is limited to resolution.
 MLD_ITERATION_GUESS = False     !   [Boolean] default = False
                                 ! A logical that specifies whether or not to use the
                                 ! previous timestep MLD as a first guess in the MLD iteration.

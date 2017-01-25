@@ -90,11 +90,6 @@ CP_BRINE = 2100.0               !   [J kg-1 K-1] default = 4200.0
 ! This module calculates the slow evolution of the ice mass, heat, and salt budgets.
 ICE_BULK_SALINITY = 5.0         !   [g/kg] default = 4.0
                                 ! The fixed bulk salinity of sea ice.
-SIS2_FILLING_FRAZIL = True      !   [Boolean] default = False
-                                ! If true, apply frazil to fill as many categories as
-                                ! possible to fill in a uniform (minimum) amount of ice
-                                ! in all the thinnest categories. Otherwise the frazil is
-                                ! always assigned to a single category.
 FILLING_FRAZIL_TIMESCALE = 8.64E+04 !   [s] default = 0.0
                                 ! A timescale with which the filling frazil causes the
                                 ! thinest cells to attain similar thicknesses, or a negative
@@ -126,7 +121,7 @@ ICE_TDAMP_ELASTIC = 0.0         !   [s or nondim] default = -0.2
 SIS_TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "UPWIND_2D"
                                 ! The horizontal transport scheme for tracers:
                                 !   UPWIND_2D - Non-directionally split upwind
-                                !   PCM    - Directionally split peicewise constant
+                                !   PCM    - Directionally split piecewise constant
                                 !   PLM    - Piecewise Linear Method
                                 !   PPM:H3 - Piecewise Parabolic Method (Huyhn 3rd order)
 

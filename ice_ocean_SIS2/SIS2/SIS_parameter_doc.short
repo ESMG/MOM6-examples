@@ -1,6 +1,11 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
 
 ! === module ice_model ===
+EULERIAN_TSURF = False          !   [Boolean] default = True
+                                ! If true, use previous calculations of the ice-top surface
+                                ! skin temperature for tsurf at the start of atmospheric
+                                ! time stepping, including interpolating between tsurf
+                                ! values from other categories in the same location.
 CONSTANT_COSZEN_IC = 0.0        !   [nondim] default = -1.0
                                 ! A constant value to use to initialize the cosine of
                                 ! the solar zenith angle for the first radiation step,
@@ -65,6 +70,11 @@ CP_BRINE = 2100.0               !   [J kg-1 K-1] default = 4200.0
 ! This module calculates the slow evolution of the ice mass, heat, and salt budgets.
 ICE_BULK_SALINITY = 5.0         !   [g/kg] default = 4.0
                                 ! The fixed bulk salinity of sea ice.
+SIS2_FILLING_FRAZIL = False     !   [Boolean] default = True
+                                ! If true, apply frazil to fill as many categories as
+                                ! possible to fill in a uniform (minimum) amount of ice
+                                ! in all the thinnest categories. Otherwise the frazil is
+                                ! always assigned to a single category.
 
 ! === module SIS2_ice_thm (updates) ===
 ! This sub-module does updates of the sea-ice due to thermodynamic changes.
@@ -83,6 +93,9 @@ DT_RHEOLOGY = 100.0             !   [seconds] default = -1.0
                                 ! The sub-cycling time step for iterating the rheology
                                 ! and ice momentum equations. If DT_RHEOLOGY is negative,
                                 ! the time step is set via NSTEPS_DYN.
+RECATEGORIZE_ICE = False        !   [Boolean] default = True
+                                ! If true, readjust the distribution into ice thickness
+                                ! categories after advection.
 
 ! === module SIS_tracer_advect ===
 
