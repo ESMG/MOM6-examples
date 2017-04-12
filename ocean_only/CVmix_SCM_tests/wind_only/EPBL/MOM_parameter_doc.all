@@ -959,6 +959,15 @@ KD_BBL_TR = 0.0                 !   [m2 s-1] default = 0.0
                                 ! over the same distance.
 TRACER_TRIDIAG = False          !   [Boolean] default = False
                                 ! If true, use the passive tracer tridiagonal solver for T and S
+MINIMUM_FORCING_DEPTH = 0.001   !   [m] default = 0.001
+                                ! The smallest depth over which forcing can be applied. This
+                                ! only takes effect when near-surface layers become thin
+                                ! relative to this scale, in which case the forcing tendencies
+                                ! scaled down by distributing the forcing over this depth scale.
+EVAP_CFL_LIMIT = 0.8            !   [nondim] default = 0.8
+                                ! The largest fraction of a layer than can be lost to forcing
+                                ! (e.g. evaporation, sea-ice formation) in one time-step. The unused
+                                ! mass loss is passed down through the column.
 DIAG_MLD_DENSITY_DIFF = 0.1     !   [kg/m3] default = 0.1
                                 ! The density difference used to determine a diagnostic mixed
                                 ! layer depth, MLD_user, following the definition of Levitus 1982.
@@ -1182,15 +1191,6 @@ PRESSURE_DEPENDENT_FRAZIL = False !   [Boolean] default = False
                                 ! If true, use a pressure dependent freezing temperature
                                 ! when making frazil. The default is false, which will be
                                 ! faster but is inappropriate with ice-shelf cavities.
-MINIMUM_FORCING_DEPTH = 0.001   !   [m] default = 0.001
-                                ! The smallest depth over which forcing can be applied. This
-                                ! only takes effect when near-surface layers become thin
-                                ! relative to this scale, in which case the forcing tendencies
-                                ! scaled down by distributing the forcing over this depth scale.
-EVAP_CFL_LIMIT = 0.8            !   [nondim] default = 0.8
-                                ! The largest fraction of a layer than can be lost to forcing
-                                ! (e.g. evaporation, sea-ice formation) in one time-step. The unused
-                                ! mass loss is passed down through the column.
 IGNORE_FLUXES_OVER_LAND = False !   [Boolean] default = False
                                 ! If true, the model does not check if fluxes are being applied
                                 ! over land points. This is needed when the ocean is coupled
@@ -1223,6 +1223,9 @@ MIX_LEN_EXPONENT = 2.0          !   [units=nondim] default = 2.0
 MSTAR_CAP = -1.0                !   [units=nondim] default = -1.0
                                 ! Maximum value of mstar allowed in model if non-negative
                                 ! (used if MSTAR_MODE>0).
+MSTAR_CONV_ADJ = 0.0            !   [units=nondim] default = 0.0
+                                ! Factor used for reducing mstar during convection
+                                !  due to reduction of stable density gradient.
 MSTAR_SLOPE = 0.85              !   [units=nondim] default = 0.85
                                 ! The slope of the linear relationship between mstar
                                 ! and the length scale ratio (used if MSTAR_MODE=1).
@@ -1311,11 +1314,12 @@ LA_DEPTH_RATIO = 0.04           !   [nondim] default = 0.04
                                 ! The depth (normalized by BLD) to average Stokes drift over in
                                 !  Lanmguir number calculation, where La = sqrt(ust/Stokes).
 LT_ENHANCE = 0                  !   [nondim] default = 0
-                                ! Integer for LT enhancement function mode.
+                                ! Integer for Langmuir number mode.
                                 !  *Requires USE_LA_LI2016 to be set to True.
-                                ! Options: 0 - no LT enhancement
+                                ! Options: 0 - No Langmuir
                                 !          1 - Van Roekel et al. 2014/Li et al., 2016
-                                !          2 - New LES net mixing based derivation (requires coefficients)
+                                !          2 - Multiplied w/ adjusted La.
+                                !          3 - Added w/ adjusted La.
 LT_ENHANCE_COEF = 0.447         !   [nondim] default = 0.447
                                 ! Coefficient for Langmuir enhancement if LT_ENHANCE > 1
 LT_ENHANCE_EXP = -1.33          !   [nondim] default = -1.33
