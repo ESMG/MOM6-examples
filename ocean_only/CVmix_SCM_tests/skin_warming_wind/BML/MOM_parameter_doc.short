@@ -101,8 +101,12 @@ TOPO_CONFIG = "flat"            !
                                 !       ISOMIP test case.
                                 !     DOME2D - use a shelf and slope configuration for the
                                 !       DOME2D gravity current/overflow test case.
+                                !     Kelvin - flat but with rotated land mask.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
+                                !     shelfwave - exponential slope for shelfwave test case.
+                                !     supercritical - flat but with 8.95 degree land mask.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
+                                !     dense - Denmark Strait-like dense water formation and overflow.
                                 !     USER - call a user modified routine.
 MINIMUM_DEPTH = 0.5             !   [m] default = 0.0
                                 ! The minimum depth of the ocean.
@@ -413,7 +417,7 @@ MAXCPU = 2.88E+04               !   [wall-clock seconds] default = -1.0
                                 ! factor of the number of processors used.
 
 ! === module MOM_main (MOM_driver) ===
-DAYMAX = 15.0                   !   [days]
+DAYMAX = 5.0                    !   [days]
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
                                 ! time of the present run segment if the end time is

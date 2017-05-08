@@ -6,6 +6,8 @@ VERBOSITY = 2                   ! default = 2
                                 !   0 = Only FATAL messages
                                 !   2 = Only FATAL, WARNING, NOTE [default]
                                 !   9 = All)
+DO_UNIT_TESTS = False           !   [Boolean] default = False
+                                ! If True, exercises unit tests at model start up.
 SPLIT = True                    !   [Boolean] default = True
                                 ! Use the split time stepping if true.
 USE_LEGACY_SPLIT = False        !   [Boolean] default = False
@@ -317,8 +319,12 @@ TOPO_CONFIG = "sloshing"        !
                                 !       ISOMIP test case.
                                 !     DOME2D - use a shelf and slope configuration for the
                                 !       DOME2D gravity current/overflow test case.
+                                !     Kelvin - flat but with rotated land mask.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
+                                !     shelfwave - exponential slope for shelfwave test case.
+                                !     supercritical - flat but with 8.95 degree land mask.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
+                                !     dense - Denmark Strait-like dense water formation and overflow.
                                 !     USER - call a user modified routine.
 MAXIMUM_DEPTH = 1000.0          !   [m]
                                 ! The maximum depth of the ocean.
@@ -418,6 +424,7 @@ REGRIDDING_COORDINATE_MODE = "RHO" ! default = "LAYER"
                                 !  RHO   - continuous isopycnal
                                 !  HYCOM1 - HyCOM-like hybrid coordinate
                                 !  SLIGHT - stretched coordinates above continuous isopycnal
+                                !  ADAPTIVE - optimize for smooth neutral density surfaces
 REGRIDDING_COORDINATE_UNITS = "kg m^-3" ! default = "kg m^-3"
                                 ! Units of the regridding coordinuate.
 INTERPOLATION_SCHEME = "PQM_IH4IH3" ! default = "P1M_H2"
@@ -436,10 +443,12 @@ INTERPOLATION_SCHEME = "PQM_IH4IH3" ! default = "P1M_H2"
                                 !  P3M_IH6IH5 (4th-order accurate)
                                 !  PQM_IH4IH3 (4th-order accurate)
                                 !  PQM_IH6IH5 (5th-order accurate)
-REGRID_COMPRESSIBILITY_FRACTION = 0.0 !   [not defined] default = 0.0
-                                ! When interpolating potential density profiles we can add
-                                ! some artificial compressibility solely to make homogenous
-                                ! regions appear stratified.
+BOUNDARY_EXTRAPOLATION = True   !   [Boolean] default = False
+                                ! When defined, a proper high-order reconstruction
+                                ! scheme is used within boundary cells rather
+                                ! than PCM. E.g., if PPM is used for remapping, a
+                                ! PPM reconstruction will also be used within
+                                ! boundary cells.
 ALE_COORDINATE_CONFIG = "UNIFORM" ! default = "UNIFORM"
                                 ! Determines how to specify the coordinate
                                 ! resolution. Valid options are:
@@ -463,15 +472,13 @@ ALE_COORDINATE_CONFIG = "UNIFORM" ! default = "UNIFORM"
                                 ! is of non-dimensional fractions of the water column.
 !TARGET_DENSITIES = 1034.0, 1034.2, 1034.4, 1034.6000000000001, 1034.8000000000002, 1035.0000000000002, 1035.2000000000003, 1035.4000000000003, 1035.6000000000004, 1035.8000000000004, 1036.0 !   [kg m^-3]
                                 ! RHO target densities for interfaces
+REGRID_COMPRESSIBILITY_FRACTION = 0.0 !   [not defined] default = 0.0
+                                ! When interpolating potential density profiles we can add
+                                ! some artificial compressibility solely to make homogenous
+                                ! regions appear stratified.
 MIN_THICKNESS = 0.001           !   [m] default = 0.001
                                 ! When regridding, this is the minimum layer
                                 ! thickness allowed.
-BOUNDARY_EXTRAPOLATION = True   !   [Boolean] default = False
-                                ! When defined, a proper high-order reconstruction
-                                ! scheme is used within boundary cells rather
-                                ! than PCM. E.g., if PPM is used for remapping, a
-                                ! PPM reconstruction will also be used within
-                                ! boundary cells.
 MAXIMUM_INT_DEPTH_CONFIG = "NONE" ! default = "NONE"
                                 ! Determines how to specify the maximum interface depths.
                                 ! Valid options are:
@@ -613,6 +620,10 @@ TRIM_IC_FOR_P_SURF = False      !   [Boolean] default = False
                                 ! If true, cuts way the top of the column for initial conditions
                                 ! at the depth where the hydrostatic presure matches the imposed
                                 ! surface pressure which is read from file.
+REGRID_ACCELERATE_INIT = False  !   [Boolean] default = False
+                                ! If true, runs REGRID_ACCELERATE_ITERATIONS iterations of the regridding
+                                ! algorithm to push the initial grid to be consistent with the initial
+                                ! condition. Useful only for state-based and iterative coordinates.
 SPONGE = False                  !   [Boolean] default = False
                                 ! If true, sponges may be applied anywhere in the domain.
                                 ! The exact location and properties of those sponges are

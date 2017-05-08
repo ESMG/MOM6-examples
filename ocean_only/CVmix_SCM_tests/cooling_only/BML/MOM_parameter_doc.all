@@ -6,6 +6,8 @@ VERBOSITY = 2                   ! default = 2
                                 !   0 = Only FATAL messages
                                 !   2 = Only FATAL, WARNING, NOTE [default]
                                 !   9 = All)
+DO_UNIT_TESTS = False           !   [Boolean] default = False
+                                ! If True, exercises unit tests at model start up.
 SPLIT = False                   !   [Boolean] default = True
                                 ! Use the split time stepping if true.
 USE_RK2 = False                 !   [Boolean] default = False
@@ -307,8 +309,12 @@ TOPO_CONFIG = "flat"            !
                                 !       ISOMIP test case.
                                 !     DOME2D - use a shelf and slope configuration for the
                                 !       DOME2D gravity current/overflow test case.
+                                !     Kelvin - flat but with rotated land mask.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
+                                !     shelfwave - exponential slope for shelfwave test case.
+                                !     supercritical - flat but with 8.95 degree land mask.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
+                                !     dense - Denmark Strait-like dense water formation and overflow.
                                 !     USER - call a user modified routine.
 MINIMUM_DEPTH = 0.5             !   [m] default = 0.0
                                 ! The minimum depth of the ocean.
@@ -1345,7 +1351,7 @@ DT_FORCING = 1200.0             !   [s] default = 1200.0
                                 ! The time step for changing forcing, coupling with other
                                 ! components, or potentially writing certain diagnostics.
                                 ! The default value is given by DT.
-DAYMAX = 15.0                   !   [days]
+DAYMAX = 5.0                    !   [days]
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
                                 ! time of the present run segment if the end time is

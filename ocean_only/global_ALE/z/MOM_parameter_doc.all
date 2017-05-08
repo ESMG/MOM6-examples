@@ -6,6 +6,8 @@ VERBOSITY = 2                   ! default = 2
                                 !   0 = Only FATAL messages
                                 !   2 = Only FATAL, WARNING, NOTE [default]
                                 !   9 = All)
+DO_UNIT_TESTS = False           !   [Boolean] default = False
+                                ! If True, exercises unit tests at model start up.
 SPLIT = True                    !   [Boolean] default = True
                                 ! Use the split time stepping if true.
 USE_LEGACY_SPLIT = False        !   [Boolean] default = False
@@ -148,6 +150,9 @@ BAD_VAL_SST_MAX = 45.0          !   [deg C] default = 45.0
                                 ! triggered, if CHECK_BAD_SURFACE_VALS is true.
 BAD_VAL_SST_MIN = -2.1          !   [deg C] default = -2.1
                                 ! The value of SST below which a bad value message is
+                                ! triggered, if CHECK_BAD_SURFACE_VALS is true.
+BAD_VAL_COLUMN_THICKNESS = 0.0  !   [m] default = 0.0
+                                ! The value of column thickness below which a bad value message is
                                 ! triggered, if CHECK_BAD_SURFACE_VALS is true.
 SAVE_INITIAL_CONDS = True       !   [Boolean] default = False
                                 ! If true, write the initial conditions to a file given
@@ -330,8 +335,12 @@ TOPO_CONFIG = "file"            !
                                 !       ISOMIP test case.
                                 !     DOME2D - use a shelf and slope configuration for the
                                 !       DOME2D gravity current/overflow test case.
+                                !     Kelvin - flat but with rotated land mask.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
+                                !     shelfwave - exponential slope for shelfwave test case.
+                                !     supercritical - flat but with 8.95 degree land mask.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
+                                !     dense - Denmark Strait-like dense water formation and overflow.
                                 !     USER - call a user modified routine.
 TOPO_FILE = "topog.nc"          ! default = "topog.nc"
                                 ! The file from which the bathymetry is read.
@@ -432,6 +441,7 @@ REGRIDDING_COORDINATE_MODE = "Z*" ! default = "LAYER"
                                 !  RHO   - continuous isopycnal
                                 !  HYCOM1 - HyCOM-like hybrid coordinate
                                 !  SLIGHT - stretched coordinates above continuous isopycnal
+                                !  ADAPTIVE - optimize for smooth neutral density surfaces
 REGRIDDING_COORDINATE_UNITS = "m" ! default = "m"
                                 ! Units of the regridding coordinuate.
 ALE_COORDINATE_CONFIG = "FILE:vgrid.nc,dz" ! default = "UNIFORM"
@@ -557,6 +567,10 @@ TRIM_IC_FOR_P_SURF = False      !   [Boolean] default = False
                                 ! If true, cuts way the top of the column for initial conditions
                                 ! at the depth where the hydrostatic presure matches the imposed
                                 ! surface pressure which is read from file.
+REGRID_ACCELERATE_INIT = False  !   [Boolean] default = False
+                                ! If true, runs REGRID_ACCELERATE_ITERATIONS iterations of the regridding
+                                ! algorithm to push the initial grid to be consistent with the initial
+                                ! condition. Useful only for state-based and iterative coordinates.
 SPONGE = False                  !   [Boolean] default = False
                                 ! If true, sponges may be applied anywhere in the domain.
                                 ! The exact location and properties of those sponges are
