@@ -467,3 +467,12 @@ RESTINT = 10.0                  !   [hours] default = 0.0
 ENERGYSAVEDAYS = 0.5            !   [hours] default = 1.44E+04
                                 ! The interval in units of TIMEUNIT between saves of the
                                 ! energies of the run and other globally summed diagnostics.
+SIMPLE_2ND_PPM_CONTINUITY = False !   [Boolean] default = False
+                                ! If true, CONTINUITY_PPM uses a simple 2nd order
+                                ! (arithmetic mean) interpolation of the edge values.
+                                ! This may give better PV conservation propterties. While
+                                ! it formally reduces the accuracy of the continuity
+                                ! solver itself in the strongly advective limit, it does
+                                ! not reduce the overall order of accuracy of the dynamic
+                                ! core.
+

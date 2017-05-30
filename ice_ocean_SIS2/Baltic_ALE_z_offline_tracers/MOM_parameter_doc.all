@@ -166,7 +166,7 @@ WRITE_GEOM = 1                  ! default = 1
                                 ! vertical grid files. Other values are invalid.
 
 ! === module MOM_domains ===
-REENTRANT_X = True              !   [Boolean] default = True
+REENTRANT_X = False             !   [Boolean] default = True
                                 ! If true, the domain is zonally reentrant.
 REENTRANT_Y = False             !   [Boolean] default = False
                                 ! If true, the domain is meridionally reentrant.
@@ -224,7 +224,7 @@ EOS_QUADRATURE = False          !   [Boolean] default = False
 TFREEZE_FORM = "LINEAR"         ! default = "LINEAR"
                                 ! TFREEZE_FORM determines which expression should be
                                 ! used for the freezing point.  Currently, the valid
-                                ! choices are "LINEAR", "MILLERO_78".
+                                ! choices are "LINEAR", "MILLERO_78", "TEOS10"
 TFREEZE_S0_P0 = 0.0             !   [deg C] default = 0.0
                                 ! When TFREEZE_FORM=LINEAR,
                                 ! this is the freezing potential temperature at
