@@ -1,9 +1,9 @@
 Grids
 766ee20f7271a24a6a02c2e1106a15c5  antarctic_spherical_supergrid.nc
 3998de4d53c0910a8c007f6a45f6229e  mercator_supergrid.nc
-6013e419cf638560bc9b80b1517c0adf  ncap_supergrid.nc
-a4a209750180ee3385c50b51c4f8a38f  supergrid.nc
-c13aba4f12ae805f717e7e3d98a65fa4  ocean_hgrid.nc
+c0438327b6ff990c96a3562c1e45bd9c  ncap_supergrid.nc
+b0090924660d5159804dd10c0c991e5f  supergrid.nc
+1fe92c147e780834a1c1cb08ffa16987  ocean_hgrid.nc
 
 Topography
 59fa18881a95d18de213e924d0c79d83  edit_topog.nc
@@ -84,6 +84,7 @@ Data
 bb52e2590d856f86c9963a766d2f7aec  salt_restore.nc
 315bf9d9d24e4e97e17ec9f65d7a6c86  seawifs_1998-2006_smoothed_2X.nc
 d42900af50a28b7c6c849fd94c82365f  tidal_amplitude.nc
+e4bd1352dd06ab68bf456931c57783de  geothermal_davies2013_v1.nc
 
 Obs
 37aab0de8ac2238a428f05c4ef0535d0  WOA05_ptemp_salt_monthly.nc
