@@ -146,14 +146,6 @@
     ! long_name: Inverse eddy time-scale, S*N, at v-points
     ! units: s^-1
     ! cell_methods: xh:mean yq:point
-"ocean_model", "L2u"  [Unused]
-    ! long_name: Length scale squared for mixing coefficient, at u-points
-    ! units: m^2
-    ! cell_methods: xq:point yh:mean
-"ocean_model", "L2v"  [Unused]
-    ! long_name: Length scale squared for mixing coefficient, at v-points
-    ! units: m^2
-    ! cell_methods: xh:mean yq:point
 "ocean_model", "Res_fn"  [Unused]
     ! long_name: Resolution function for scaling diffusivities
     ! units: Nondim
@@ -3039,6 +3031,22 @@
     ! long_name: Vertically Integrated Diffusive Meridional Flux of Salinity
     ! units: PPT meter3 second-1
     ! cell_methods: xh:mean yq:point
+"ocean_model", "h_pre_dyn"  [Unused]
+    ! long_name: Layer Thickness before dynamics step
+    ! units: meter
+    ! cell_methods: xh:mean yh:mean zl:mean
+"ocean_model", "h_pre_dyn_xyave"  [Unused]
+    ! long_name: Layer Thickness before dynamics step
+    ! units: meter
+    ! cell_methods: zl:mean
+"ocean_model_z", "h_pre_dyn"  [Unused]
+    ! long_name: Layer Thickness before dynamics step
+    ! units: meter
+    ! cell_methods: xh:mean yh:mean z_l:mean
+"ocean_model_z", "h_pre_dyn_xyave"  [Unused]
+    ! long_name: Layer Thickness before dynamics step
+    ! units: meter
+    ! cell_methods: z_l:mean
 "ocean_model", "u_predia"  [Unused]
     ! long_name: Zonal velocity before diabatic forcing
     ! units: meter second-1
@@ -3733,7 +3741,7 @@
     ! units: kilogram meter-2
     ! cell_methods: xh:mean yh:mean
 "ocean_model", "massin_flux"  [Unused]
-    ! long_name: Net mass mass flux of freshwater into the ocean (used in boundary flux calculation)
+    ! long_name: Net mass flux of freshwater into the ocean (used in boundary flux calculation)
     ! units: kilogram meter-2
     ! cell_methods: xh:mean yh:mean
 "ocean_model", "total_PRCmE"  [Used]

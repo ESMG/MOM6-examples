@@ -1,0 +1,3 @@
+  Step,       Day,  Truncs,      Energy/Mass,      Maximum CFL,  Mean sea level,   Total Mass,    Frac Mass Err
+            [days]                 [m2 s-2]           [Nondim]        [m]             [kg]           [Nondim]
+     0,       0.000,     0, En 8.293590480194E-13, CFL  0.00000, SL  0.0000E+00, Mass 2.65070E+18, Me  0.00E+00
