@@ -10,9 +10,6 @@ DO_UNIT_TESTS = False           !   [Boolean] default = False
                                 ! If True, exercises unit tests at model start up.
 SPLIT = True                    !   [Boolean] default = True
                                 ! Use the split time stepping if true.
-USE_LEGACY_SPLIT = False        !   [Boolean] default = False
-                                ! If true, use the full range of options available from
-                                ! the older GOLD-derived split time stepping code.
 CALC_RHO_FOR_SEA_LEVEL = False  !   [Boolean] default = False
                                 ! If true, the in-situ density is used to calculate the
                                 ! effective sea level that is returned to the coupler. If false,
@@ -174,8 +171,6 @@ H_TO_M = 1.0                    !   [m H-1] default = 1.0
 NK = 10                         !   [nondim]
                                 ! The number of model layers.
 
-! === module MOM_tracer_registry ===
-
 ! === module MOM_fixed_initialization ===
 INPUTDIR = "INPUT"              ! default = "."
                                 ! The directory in which input files are found.
@@ -324,6 +319,8 @@ USE_KELVIN_WAVE_OBC = False     !   [Boolean] default = False
 USE_SHELFWAVE_OBC = False       !   [Boolean] default = False
                                 ! If true, use the shelfwave open boundary.
 
+! === module MOM_tracer_registry ===
+
 ! === module MOM_restart ===
 RESTARTFILE = "MOM.res"         ! default = "MOM.res"
                                 ! The name-root of the restart file.
@@ -357,8 +354,6 @@ USE_PSEUDO_SALT_TRACER = False  !   [Boolean] default = False
                                 ! If true, use the pseudo salt tracer, typically run as a diagnostic.
 USE_BOUNDARY_IMPULSE_TRACER = False !   [Boolean] default = False
                                 ! If true, use the boundary impulse tracer.
-USE_DYED_OBC_TRACER = False     !   [Boolean] default = False
-                                ! If true, use the dyed_obc_tracer tracer package.
 
 ! === module DOME_tracer ===
 DOME_TRACER_IC_FILE = ""        ! default = ""
@@ -461,11 +456,10 @@ OBC_USER_CONFIG = "none"        ! default = "none"
                                 ! A string that sets how the user code is invoked to set open
                                 !  boundary data:
                                 !    DOME - specified inflow on northern boundary
-                                !    dyed_obcs - circle_obcs with dyes on the open boundaries
+                                !    tidal_bay - Flather with tidal forcing on eastern boundary
+                                !    supercritical - now only needed here for the allocations
                                 !    Kelvin - barotropic Kelvin wave forcing on the western boundary
                                 !    shelfwave - Flather with shelf wave forcing on western boundary
-                                !    supercritical - now only needed here for the allocations
-                                !    tidal_bay - Flather with tidal forcing on eastern boundary
                                 !    USER - user specified
 
 ! === module MOM_diag_mediator ===
