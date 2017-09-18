@@ -93,7 +93,7 @@ IC_OUTPUT_FILE = "GOLD_IC"      ! default = "MOM_IC"
 ! === module MOM_tracer_registry ===
 
 ! === module MOM_tracer_flow_control ===
-USE_DOME_TRACER = True          !   [Boolean] default = False
+USE_DOME_TRACER = False         !   [Boolean] default = False
                                 ! If true, use the DOME_tracer tracer package.
 
 ! === module DOME_tracer ===
