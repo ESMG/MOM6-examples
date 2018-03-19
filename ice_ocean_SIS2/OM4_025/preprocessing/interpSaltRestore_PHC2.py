@@ -21,5 +21,5 @@ SM=S.horiz_interp('salt',target=grid,src_modulo=True)
 SM.var_dict['salt']['xax_data']=grid.x_T[0,:]
 SM.var_dict['salt']['yax_data']=grid.y_T[:,grid.im/4]
 SM.salt=np.ma.filled(SM.salt,0.)
-fnam_out='salt_restore.nc'
+fnam_out='salt_restore_PHC2.nc'
 SM.write_nc(fnam_out,fields=['salt'])
