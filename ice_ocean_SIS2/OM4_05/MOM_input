@@ -24,7 +24,7 @@ DT = 1800.0                     !   [s]
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
                                 ! coupling timestep in coupled mode.)
-DT_THERM = 1.08E+04             !   [s] default = 1800.0
+DT_THERM = 7200.0               !   [s] default = 1800.0
                                 ! The thermodynamic and tracer advection time step.
                                 ! Ideally DT_THERM should be an integer multiple of DT
                                 ! and less than the forcing or coupling time-step, unless
@@ -281,11 +281,6 @@ REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
                                 ! PPM_IH4     (3rd-order accurate)
                                 ! PQM_IH4IH3  (4th-order accurate)
                                 ! PQM_IH6IH5  (5th-order accurate)
-REMAP_AFTER_INITIALIZATION = False !   [Boolean] default = True
-                                ! If true, applies regridding and remapping immediately after
-                                ! initialization so that the state is ALE consistent. This is a
-                                ! legacy step and should not be needed if the initialization is
-                                ! consistent with the coordinate mode.
 
 ! === module MOM_grid ===
 ! Parameters providing information about the lateral grid.
@@ -297,22 +292,25 @@ INIT_LAYERS_FROM_Z_FILE = True  !   [Boolean] default = False
                                 ! longitude grid.
 
 ! === module MOM_initialize_layers_from_Z ===
-TEMP_SALT_Z_INIT_FILE = "WOA05_pottemp_salt.nc" ! default = "temp_salt_z.nc"
+TEMP_SALT_Z_INIT_FILE = ""      ! default = "temp_salt_z.nc"
                                 ! The name of the z-space input file used to initialize
                                 ! temperatures (T) and salinities (S). If T and S are not
                                 ! in the same file, TEMP_Z_INIT_FILE and SALT_Z_INIT_FILE
                                 ! must be set.
-Z_INIT_FILE_PTEMP_VAR = "PTEMP" ! default = "ptemp"
+TEMP_Z_INIT_FILE = "woa13_decav_ptemp_monthly_fulldepth_01.nc" ! default = ""
+                                ! The name of the z-space input file used to initialize
+                                ! temperatures, only.
+SALT_Z_INIT_FILE = "woa13_decav_s_monthly_fulldepth_01.nc" ! default = ""
+                                ! The name of the z-space input file used to initialize
+                                ! temperatures, only.
+Z_INIT_FILE_PTEMP_VAR = "ptemp_an" ! default = "ptemp"
                                 ! The name of the potential temperature variable in
                                 ! TEMP_Z_INIT_FILE.
-Z_INIT_FILE_SALT_VAR = "SALT"   ! default = "salt"
+Z_INIT_FILE_SALT_VAR = "s_an"   ! default = "salt"
                                 ! The name of the salinity variable in
                                 ! SALT_Z_INIT_FILE.
 Z_INIT_ALE_REMAPPING = True     !   [Boolean] default = False
                                 ! If True, then remap straight to model coordinate from file.
-Z_INIT_REMAP_GENERAL = True     !   [Boolean] default = False
-                                ! If false, only initializes to z* coordinates.
-                                ! If true, allows initialization directly to general coordinates.
 
 ! === module MOM_diag_mediator ===
 NUM_DIAG_COORDS = 2             ! default = 1
@@ -483,8 +481,9 @@ BOUND_CORIOLIS = True           !   [Boolean] default = False
 
 ! === module MOM_PressureForce_AFV ===
 MASS_WEIGHT_IN_PRESSURE_GRADIENT = True !   [Boolean] default = False
-                                ! If true, use mass weighting when interpolation T/S for
-                                ! top/bottom integrals in AFV pressure gradient calculation.
+                                ! If true, use mass weighting when interpolating T/S for
+                                ! integrals near the bathymetry in AFV pressure gradient
+                                ! calculations.
 
 ! === module MOM_hor_visc ===
 LAPLACIAN = True                !   [Boolean] default = False
@@ -829,7 +828,8 @@ CHL_FILE = "seawifs-clim-1997-2010.720x576.v20180328.nc" !
                                 ! CHL_FILE is the file containing chl_a concentrations in
                                 ! the variable CHL_A. It is used when VAR_PEN_SW and
                                 ! CHL_FROM_FILE are true.
-CHL_VARNAME = "chlor_a"
+CHL_VARNAME = "chlor_a"         ! default = "CHL_A"
+                                ! Name of CHL_A variable in CHL_FILE.
 PEN_SW_NBANDS = 3               ! default = 1
                                 ! The number of bands of penetrating shortwave radiation.
 
@@ -847,6 +847,11 @@ CHECK_DIFFUSIVE_CFL = True      !   [Boolean] default = False
                                 ! If true, use enough iterations the diffusion to ensure
                                 ! that the diffusive equivalent of the CFL limit is not
                                 ! violated.  If false, always use 1 iteration.
+MAX_TR_DIFFUSION_CFL = 2.0      !   [nondim] default = -1.0
+                                ! If positive, locally limit the along-isopycnal tracer
+                                ! diffusivity to keep the diffusive CFL locally at or
+                                ! below this value.  The number of diffusive iterations
+                                ! is often this value or the next greater integer.
 
 ! === module MOM_neutral_diffusion ===
 ! This module implements neutral diffusion of tracers

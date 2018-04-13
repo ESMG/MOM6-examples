@@ -24,7 +24,7 @@ DT = 900.0                      !   [s]
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
                                 ! coupling timestep in coupled mode.)
-DT_THERM = 3600.0               !   [s] default = 900.0
+DT_THERM = 7200.0               !   [s] default = 900.0
                                 ! The thermodynamic and tracer advection time step.
                                 ! Ideally DT_THERM should be an integer multiple of DT
                                 ! and less than the forcing or coupling time-step, unless
@@ -298,15 +298,21 @@ INIT_LAYERS_FROM_Z_FILE = True  !   [Boolean] default = False
                                 ! longitude grid.
 
 ! === module MOM_initialize_layers_from_Z ===
-TEMP_SALT_Z_INIT_FILE = "WOA05_pottemp_salt.nc" ! default = "temp_salt_z.nc"
+TEMP_SALT_Z_INIT_FILE = ""      ! default = "temp_salt_z.nc"
                                 ! The name of the z-space input file used to initialize
                                 ! temperatures (T) and salinities (S). If T and S are not
                                 ! in the same file, TEMP_Z_INIT_FILE and SALT_Z_INIT_FILE
                                 ! must be set.
-Z_INIT_FILE_PTEMP_VAR = "PTEMP" ! default = "ptemp"
+TEMP_Z_INIT_FILE = "woa13_decav_ptemp_monthly_fulldepth_01.nc" ! default = ""
+                                ! The name of the z-space input file used to initialize
+                                ! temperatures, only.
+SALT_Z_INIT_FILE = "woa13_decav_s_monthly_fulldepth_01.nc" ! default = ""
+                                ! The name of the z-space input file used to initialize
+                                ! temperatures, only.
+Z_INIT_FILE_PTEMP_VAR = "ptemp_an" ! default = "ptemp"
                                 ! The name of the potential temperature variable in
                                 ! TEMP_Z_INIT_FILE.
-Z_INIT_FILE_SALT_VAR = "SALT"   ! default = "salt"
+Z_INIT_FILE_SALT_VAR = "s_an"   ! default = "salt"
                                 ! The name of the salinity variable in
                                 ! SALT_Z_INIT_FILE.
 Z_INIT_ALE_REMAPPING = True     !   [Boolean] default = False
