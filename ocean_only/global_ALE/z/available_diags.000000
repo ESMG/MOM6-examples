@@ -1382,38 +1382,6 @@
     ! long_name: Integral work done by lateral friction terms (excluding diffusion of energy)
     ! units: W m-2
     ! cell_methods: z_l:mean
-"ocean_model", "FrictWorkMax"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: xh:mean yh:mean zl:mean area:mean
-"ocean_model", "FrictWorkMax_xyave"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: zl:mean
-"ocean_model_z", "FrictWorkMax"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: xh:mean yh:mean z_l:mean area:mean
-"ocean_model_z", "FrictWorkMax_xyave"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: z_l:mean
-"ocean_model_d2", "FrictWorkMax"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: xh:mean yh:mean zl:mean area:mean
-"ocean_model_d2", "FrictWorkMax_xyave"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: zl:mean
-"ocean_model_z_d2", "FrictWorkMax"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: xh:mean yh:mean z_l:mean area:mean
-"ocean_model_z_d2", "FrictWorkMax_xyave"  [Unused]
-    ! long_name: Maximum possible integral work done by lateral friction terms
-    ! units: W m-2
-    ! cell_methods: z_l:mean
 "ocean_model", "FrictWorkIntz"  [Unused] (CMOR equivalent is "dispkexyfo")
     ! long_name: Depth integrated work done by lateral friction
     ! units: W m-2
@@ -6247,6 +6215,14 @@
     ! units: W m-2
     ! standard_name: nondownwelling_shortwave_flux_in_sea_water
     ! cell_methods: xh:mean yh:mean area:mean
+"ocean_model", "Chl_opac"  [Unused]
+    ! long_name: Surface chlorophyll A concentration used to find opacity
+    ! units: mg m-3
+    ! cell_methods: xh:mean yh:mean area:mean
+"ocean_model_d2", "Chl_opac"  [Unused]
+    ! long_name: Surface chlorophyll A concentration used to find opacity
+    ! units: mg m-3
+    ! cell_methods: xh:mean yh:mean area:mean
 "ocean_model", "ePBL_h_ML"  [Unused]
     ! long_name: Surface boundary layer depth
     ! units: m
@@ -6310,14 +6286,6 @@
 "ocean_model_d2", "ePBL_TKE_conv_decay"  [Unused]
     ! long_name: Convective energy decay sink of mixed layer TKE
     ! units: m3 s-3
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "ePBL_Hs_used"  [Unused]
-    ! long_name: Surface region thickness that is used
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "ePBL_Hs_used"  [Unused]
-    ! long_name: Surface region thickness that is used
-    ! units: m
     ! cell_methods: xh:mean yh:mean area:mean
 "ocean_model", "Mixing_Length"  [Unused]
     ! long_name: Mixing Length that is used
@@ -6383,76 +6351,12 @@
     ! long_name: Velocity Scale that is used.
     ! units: m s-1
     ! cell_methods: z_i:point
-"ocean_model", "LT_Enhancement"  [Unused]
-    ! long_name: LT enhancement that is used.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "LT_Enhancement"  [Unused]
-    ! long_name: LT enhancement that is used.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
 "ocean_model", "MSTAR"  [Unused]
-    ! long_name: MSTAR that is used.
+    ! long_name: Total mstar that is used.
     ! units: nondim
     ! cell_methods: xh:mean yh:mean area:mean
 "ocean_model_d2", "MSTAR"  [Unused]
-    ! long_name: MSTAR that is used.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "ePBL_OSBL"  [Unused]
-    ! long_name: ePBL Surface Boundary layer depth.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "ePBL_OSBL"  [Unused]
-    ! long_name: ePBL Surface Boundary layer depth.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "MLD_EKMAN"  [Unused]
-    ! long_name: Boundary layer depth over Ekman length.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "MLD_EKMAN"  [Unused]
-    ! long_name: Boundary layer depth over Ekman length.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "MLD_OBUKHOV"  [Unused]
-    ! long_name: Boundary layer depth over Obukhov length.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "MLD_OBUKHOV"  [Unused]
-    ! long_name: Boundary layer depth over Obukhov length.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "EKMAN_OBUKHOV"  [Unused]
-    ! long_name: Ekman length over Obukhov length.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "EKMAN_OBUKHOV"  [Unused]
-    ! long_name: Ekman length over Obukhov length.
-    ! units: m
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "LA"  [Unused]
-    ! long_name: Langmuir number.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "LA"  [Unused]
-    ! long_name: Langmuir number.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "LA_MOD"  [Unused]
-    ! long_name: Modified Langmuir number.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "LA_MOD"  [Unused]
-    ! long_name: Modified Langmuir number.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model", "MSTAR_LT"  [Unused]
-    ! long_name: MSTAR applied for LT effect.
-    ! units: nondim
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "MSTAR_LT"  [Unused]
-    ! long_name: MSTAR applied for LT effect.
+    ! long_name: Total mstar that is used.
     ! units: nondim
     ! cell_methods: xh:mean yh:mean area:mean
 "ocean_model", "deficit_ratio"  [Unused]
@@ -6480,109 +6384,101 @@
     ! units: W m-2
     ! cell_methods: xh:mean yh:mean area:mean
 "ocean_model", "opac_1"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean zl:mean area:mean
 "ocean_model", "opac_1_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: zl:mean
 "ocean_model_z", "opac_1"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean z_l:mean area:mean
 "ocean_model_z", "opac_1_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: z_l:mean
 "ocean_model_d2", "opac_1"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean zl:mean area:mean
 "ocean_model_d2", "opac_1_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: zl:mean
 "ocean_model_z_d2", "opac_1"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean z_l:mean area:mean
 "ocean_model_z_d2", "opac_1_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 1
+    ! long_name: Opacity for shortwave radiation in band 1, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: z_l:mean
 "ocean_model", "opac_2"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean zl:mean area:mean
 "ocean_model", "opac_2_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: zl:mean
 "ocean_model_z", "opac_2"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean z_l:mean area:mean
 "ocean_model_z", "opac_2_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: z_l:mean
 "ocean_model_d2", "opac_2"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean zl:mean area:mean
 "ocean_model_d2", "opac_2_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: zl:mean
 "ocean_model_z_d2", "opac_2"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean z_l:mean area:mean
 "ocean_model_z_d2", "opac_2_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 2
+    ! long_name: Opacity for shortwave radiation in band 2, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: z_l:mean
 "ocean_model", "opac_3"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean zl:mean area:mean
 "ocean_model", "opac_3_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: zl:mean
 "ocean_model_z", "opac_3"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean z_l:mean area:mean
 "ocean_model_z", "opac_3_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: z_l:mean
 "ocean_model_d2", "opac_3"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean zl:mean area:mean
 "ocean_model_d2", "opac_3_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: zl:mean
 "ocean_model_z_d2", "opac_3"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: xh:mean yh:mean z_l:mean area:mean
 "ocean_model_z_d2", "opac_3_xyave"  [Unused]
-    ! long_name: Opacity for shortwave radiation in band 3
+    ! long_name: Opacity for shortwave radiation in band 3, saved as L^-1 tanh(Opacity * L) for L = 10^-10 m
     ! units: m-1
     ! cell_methods: z_l:mean
-"ocean_model", "Chl_opac"  [Unused]
-    ! long_name: Surface chlorophyll A concentration used to find opacity
-    ! units: mg m-3
-    ! cell_methods: xh:mean yh:mean area:mean
-"ocean_model_d2", "Chl_opac"  [Unused]
-    ! long_name: Surface chlorophyll A concentration used to find opacity
-    ! units: mg m-3
-    ! cell_methods: xh:mean yh:mean area:mean
 "ocean_model", "KHTR_u"  [Used]
     ! long_name: Epipycnal tracer diffusivity at zonal faces of tracer cell
     ! units: m2 s-1
