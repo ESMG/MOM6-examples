@@ -4494,6 +4494,22 @@
     ! long_name: Meridional Acceleration from Diapycnal Mixing
     ! units: m s-2
     ! cell_methods: z_l:mean
+"ocean_model", "hf_dudt_dia_2d"  [Unused]
+    ! long_name: Depth-sum Fractional Thickness-weighted Zonal Acceleration from Diapycnal Mixing
+    ! units: m s-2
+    ! cell_methods: xq:point yh:mean
+"ocean_model_d2", "hf_dudt_dia_2d"  [Unused]
+    ! long_name: Depth-sum Fractional Thickness-weighted Zonal Acceleration from Diapycnal Mixing
+    ! units: m s-2
+    ! cell_methods: xq:point yh:mean
+"ocean_model", "hf_dvdt_dia_2d"  [Unused]
+    ! long_name: Depth-sum Fractional Thickness-weighted Meridional Acceleration from Diapycnal Mixing
+    ! units: m s-2
+    ! cell_methods: xh:mean yq:point
+"ocean_model_d2", "hf_dvdt_dia_2d"  [Unused]
+    ! long_name: Depth-sum Fractional Thickness-weighted Meridional Acceleration from Diapycnal Mixing
+    ! units: m s-2
+    ! cell_methods: xh:mean yq:point
 "ocean_model", "Tflx_dia_diff"  [Unused]
     ! long_name: Diffusive diapycnal temperature flux across interfaces
     ! units: degC m s-1
