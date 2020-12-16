@@ -504,9 +504,6 @@ KV_BBL_MIN = 1.0                !   [m2 s-1] default = 1.0
                                 ! The minimum viscosities in the bottom boundary layer.
 KV_TBL_MIN = 1.0                !   [m2 s-1] default = 1.0
                                 ! The minimum viscosities in the top boundary layer.
-CORRECT_BBL_BOUNDS = False      !   [Boolean] default = False
-                                ! If true, uses the correct bounds on the BBL thickness and viscosity so that
-                                ! the bottom layer feels the intended drag.
 
 ! === module MOM_thickness_diffuse ===
 KHTH = 0.0                      !   [m2 s-1] default = 0.0
@@ -904,6 +901,8 @@ READ_GUST_2D = False            !   [Boolean] default = False
                                 ! If true, use a 2-dimensional gustiness supplied from an input file
 
 ! === module MOM_restart ===
+ICE_SHELF = False               !   [Boolean] default = False
+                                ! If true, enables the ice shelf model.
 USE_WAVES = False               !   [Boolean] default = False
                                 ! If true, enables surface wave modules.
 LA_DEPTH_RATIO = 0.04           !   [nondim] default = 0.04
