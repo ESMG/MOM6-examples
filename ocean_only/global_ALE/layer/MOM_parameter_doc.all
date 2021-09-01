@@ -351,6 +351,8 @@ USE_BOUNDARY_IMPULSE_TRACER = False !   [Boolean] default = False
                                 ! If true, use the boundary impulse tracer.
 USE_DYED_OBC_TRACER = False     !   [Boolean] default = False
                                 ! If true, use the dyed_obc_tracer tracer package.
+USE_NW2_TRACERS = False         !   [Boolean] default = False
+                                ! If true, use the NeverWorld2 tracers.
 
 ! === module ideal_age_example ===
 DO_IDEAL_AGE = True             !   [Boolean] default = True
@@ -483,6 +485,8 @@ TRIM_IC_FOR_P_SURF = False      !   [Boolean] default = False
                                 ! If true, cuts way the top of the column for initial conditions at the depth
                                 ! where the hydrostatic pressure matches the imposed surface pressure which is
                                 ! read from file.
+ODA_INCUPD = False              !   [Boolean] default = False
+                                ! If true, oda incremental updates will be applied everywhere in the domain.
 SPONGE = False                  !   [Boolean] default = False
                                 ! If true, sponges may be applied anywhere in the domain. The exact location and
                                 ! properties of those sponges are specified via SPONGE_CONFIG.
@@ -614,6 +618,9 @@ MEKE_VISCOSITY_COEFF_AU = 0.0   !   [nondim] default = 0.0
 MEKE_FIXED_MIXING_LENGTH = 0.0  !   [m] default = 0.0
                                 ! If positive, is a fixed length contribution to the expression for mixing
                                 ! length used in MEKE-derived diffusivity.
+MEKE_FIXED_TOTAL_DEPTH = True   !   [Boolean] default = True
+                                ! If true, use the nominal bathymetric depth as the estimate of the time-varying
+                                ! ocean depth.  Otherwise base the depth on the total ocean massper unit area.
 MEKE_ALPHA_DEFORM = 0.0         !   [nondim] default = 0.0
                                 ! If positive, is a coefficient weighting the deformation scale in the
                                 ! expression for mixing length used in MEKE-derived diffusivity.
