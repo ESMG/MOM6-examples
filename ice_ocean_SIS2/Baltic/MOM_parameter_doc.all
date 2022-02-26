@@ -498,6 +498,9 @@ HOR_REGRID_2018_ANSWERS = False !   [Boolean] default = False
 ADJUST_THICKNESS = True         !   [Boolean] default = False
                                 ! If true, all mass below the bottom removed if the topography is shallower than
                                 ! the thickness input file would indicate.
+THICKNESS_TOLERANCE = 0.1       !   [m] default = 0.1
+                                ! A parameter that controls the tolerance when adjusting the thickness to fit
+                                ! the bathymetry. Used when ADJUST_THICKNESS=True.
 FIT_TO_TARGET_DENSITY_IC = True !   [Boolean] default = True
                                 ! If true, all the interior layers are adjusted to their target densities using
                                 ! mostly temperature This approach can be problematic, particularly in the high
@@ -948,9 +951,6 @@ SMAGORINSKY_KH = False          !   [Boolean] default = False
                                 ! If true, use a Smagorinsky nonlinear eddy viscosity.
 LEITH_KH = False                !   [Boolean] default = False
                                 ! If true, use a Leith nonlinear eddy viscosity.
-MODIFIED_LEITH = False          !   [Boolean] default = False
-                                ! If true, add a term to Leith viscosity which is proportional to the gradient
-                                ! of divergence.
 BOUND_KH = True                 !   [Boolean] default = True
                                 ! If true, the Laplacian coefficient is locally limited to be stable.
 BETTER_BOUND_KH = True          !   [Boolean] default = True
