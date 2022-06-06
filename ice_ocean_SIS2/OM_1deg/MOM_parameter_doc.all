@@ -206,6 +206,8 @@ GRID_FILE = "ocean_hgrid.nc"    !
 USE_TRIPOLAR_GEOLONB_BUG = True !   [Boolean] default = False
                                 ! If true, use older code that incorrectly sets the longitude in some points
                                 ! along the tripolar fold to be off by 360 degrees.
+RAD_EARTH = 6.378E+06           !   [m] default = 6.378E+06
+                                ! The radius of the Earth.
 TOPO_CONFIG = "file"            !
                                 ! This specifies how bathymetry is specified:
                                 !     file - read bathymetric information from the file
@@ -427,6 +429,7 @@ REGRIDDING_COORDINATE_MODE = "HYCOM1" ! default = "LAYER"
                                 !  SIGMA - terrain following coordinates
                                 !  RHO   - continuous isopycnal
                                 !  HYCOM1 - HyCOM-like hybrid coordinate
+                                !  HYBGEN - Hybrid coordinate from the Hycom hybgen code
                                 !  SLIGHT - stretched coordinates above continuous isopycnal
                                 !  ADAPTIVE - optimize for smooth neutral density surfaces
 REGRIDDING_COORDINATE_UNITS = "m" ! default = "m"
