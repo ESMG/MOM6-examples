@@ -84,6 +84,9 @@ HFREEZE = -1.0                  !   [m] default = -1.0
 INTERPOLATE_P_SURF = False      !   [Boolean] default = False
                                 ! If true, linearly interpolate the surface pressure over the coupling time
                                 ! step, using the specified value at the end of the step.
+DT_OBC_SEG_UPDATE_OBGC = 8.64E+04 !   [s] default = 8.64E+04
+                                ! The time between OBC segment data updates for OBGC tracers. This must be an
+                                ! integer multiple of DT and DT_THERM. The default is set to DT.
 FIRST_DIRECTION = 0             ! default = 0
                                 ! An integer that indicates which direction goes first in parts of the code that
                                 ! use directionally split updates, with even numbers (or 0) used for x- first
