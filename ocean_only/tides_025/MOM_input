@@ -270,7 +270,7 @@ DIRECT_STRESS = True            !   [Boolean] default = False
 HMIX_FIXED = 20.0               !   [m]
                                 ! The prescribed depth over which the near-surface viscosity and diffusivity are
                                 ! elevated when the bulk mixed layer is not used.
-KVML = 0.01                     !   [m2 s-1] default = 1.0E-04
+KVML = 0.0                      !   [m2 s-1] default = 1.0E-04
                                 ! The kinematic viscosity in the mixed layer.  A typical value is ~1e-2 m2 s-1.
                                 ! KVML is not used if BULKMIXEDLAYER is true.  The default is set by KV.
 MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
@@ -286,6 +286,10 @@ BT_PROJECT_VELOCITY = True      !   [Boolean] default = False
                                 ! use a predictor continuity step to find the pressure field, and then to do a
                                 ! corrector continuity step using a weighted average of the old and new
                                 ! velocities, with weights of (1-BEBT) and BEBT.
+BAROTROPIC_TIDAL_SAL_BUG = False !   [Boolean] default = True
+                                ! If true, the tidal self-attraction and loading anomaly in the barotropic
+                                ! solver has the wrong sign, replicating a long-standing bug with a scalar
+                                ! self-attraction and loading term or the SAL term from a previous simulation.
 BEBT = 0.2                      !   [nondim] default = 0.1
                                 ! BEBT determines whether the barotropic time stepping uses the forward-backward
                                 ! time-stepping scheme or a backward Euler scheme. BEBT is valid in the range
