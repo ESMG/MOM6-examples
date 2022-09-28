@@ -76,9 +76,6 @@ HFREEZE = -1.0                  !   [m] default = -1.0
 INTERPOLATE_P_SURF = False      !   [Boolean] default = False
                                 ! If true, linearly interpolate the surface pressure over the coupling time
                                 ! step, using the specified value at the end of the step.
-DT_OBC_SEG_UPDATE_OBGC = 1200.0 !   [s] default = 1200.0
-                                ! The time between OBC segment data updates for OBGC tracers. This must be an
-                                ! integer multiple of DT and DT_THERM. The default is set to DT.
 FRAZIL = False                  !   [Boolean] default = False
                                 ! If true, water freezes if it gets too cold, and the accumulated heat deficit
                                 ! is returned in the surface state.  FRAZIL is only used if
@@ -1125,6 +1122,10 @@ PRANDTL_BKGND = 1.0             !   [nondim] default = 1.0
 HENYEY_IGW_BACKGROUND = False   !   [Boolean] default = False
                                 ! If true, use a latitude-dependent scaling for the near surface background
                                 ! diffusivity, as described in Harrison & Hallberg, JPO 2008.
+HENYEY_IGW_BACKGROUND_NEW = False !   [Boolean] default = False
+                                ! If true, use a better latitude-dependent scaling for the background
+                                ! diffusivity, as described in Harrison & Hallberg, JPO 2008. This option is
+                                ! obsolete.
 KD_TANH_LAT_FN = False          !   [Boolean] default = False
                                 ! If true, use a tanh dependence of Kd_sfc on latitude, like CM2.1/CM2M.  There
                                 ! is no physical justification for this form, and it can not be used with
