@@ -84,6 +84,9 @@ HFREEZE = -1.0                  !   [m] default = -1.0
 INTERPOLATE_P_SURF = False      !   [Boolean] default = False
                                 ! If true, linearly interpolate the surface pressure over the coupling time
                                 ! step, using the specified value at the end of the step.
+DT_OBC_SEG_UPDATE_OBGC = 1200.0 !   [s] default = 1200.0
+                                ! The time between OBC segment data updates for OBGC tracers. This must be an
+                                ! integer multiple of DT and DT_THERM. The default is set to DT.
 FRAZIL = True                   !   [Boolean] default = False
                                 ! If true, water freezes if it gets too cold, and the accumulated heat deficit
                                 ! is returned in the surface state.  FRAZIL is only used if
