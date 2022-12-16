@@ -210,8 +210,8 @@ GRID_CONFIG = "cartesian"       !
 AXIS_UNITS = "degrees"          ! default = "degrees"
                                 ! The units for the Cartesian axes. Valid entries are:
                                 !     degrees - degrees of latitude and longitude
-                                !     m - meters
-                                !     k - kilometers
+                                !     m or meter(s) - meters
+                                !     k or km or kilometer(s) - kilometers
 SOUTHLAT = 30.0                 !   [degrees]
                                 ! The southern latitude of the domain or the equivalent starting value for the
                                 ! y-axis.
@@ -607,7 +607,7 @@ DIAG_COORDS = "z Z ZSTAR"       ! default = "z Z ZSTAR"
                                 ! A list of string tuples associating diag_table modules to a coordinate
                                 ! definition used for diagnostics. Each string is of the form "MODULE_SUFFIX
                                 ! PARAMETER_SUFFIX COORDINATE_NAME".
-DIAG_MISVAL = 1.0E+20           !   [not defined] default = 1.0E+20
+DIAG_MISVAL = 1.0E+20           !   [various] default = 1.0E+20
                                 ! Set the default missing value to use for diagnostics.
 DIAG_AS_CHKSUM = False          !   [Boolean] default = False
                                 ! Instead of writing diagnostics to the diag manager, write a text file
@@ -1177,14 +1177,6 @@ MINIMUM_OBL_DEPTH = 0.0         !   [m] default = 0.0
 MINIMUM_VT2 = 1.0E-10           !   [m2/s2] default = 1.0E-10
                                 ! Min of the unresolved velocity Vt2 used in Rib CVMix calculation.
                                 ! Scaling: MINIMUM_VT2 = const1*d*N*ws, with d=1m, N=1e-5/s, ws=1e-6 m/s.
-CORRECT_SURFACE_LAYER_AVERAGE = False !   [Boolean] default = False
-                                ! If true, applies a correction step to the averaging of surface layer
-                                ! properties. This option is obsolete.
-FIRST_GUESS_SURFACE_LAYER_DEPTH = 0.0 !   [m] default = 0.0
-                                ! The first guess at the depth of the surface layer used for averaging the
-                                ! surface layer properties. If =0, the top model level properties will be used
-                                ! for the surface layer. If CORRECT_SURFACE_LAYER_AVERAGE=True, a subsequent
-                                ! correction is applied. This parameter is obsolete
 NLT_SHAPE = "PARABOLIC"         ! default = "CVMix"
                                 ! MOM6 method to set nonlocal transport profile. Over-rides the result from
                                 ! CVMix.  Allowed values are:

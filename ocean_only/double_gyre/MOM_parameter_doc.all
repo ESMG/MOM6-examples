@@ -180,13 +180,13 @@ GRID_CONFIG = "spherical"       !
                                 !     cartesian - use a (flat) Cartesian grid.
                                 !     spherical - use a simple spherical grid.
                                 !     mercator - use a Mercator spherical grid.
-SOUTHLAT = 30.0                 !   [degrees]
+SOUTHLAT = 30.0                 !   [degrees_N]
                                 ! The southern latitude of the domain.
-LENLAT = 20.0                   !   [degrees]
+LENLAT = 20.0                   !   [degrees_N]
                                 ! The latitudinal length of the domain.
-WESTLON = 0.0                   !   [degrees] default = 0.0
+WESTLON = 0.0                   !   [degrees_E] default = 0.0
                                 ! The western longitude of the domain.
-LENLON = 22.0                   !   [degrees]
+LENLON = 22.0                   !   [degrees_E]
                                 ! The longitudinal length of the domain.
 RAD_EARTH = 6.378E+06           !   [m] default = 6.378E+06
                                 ! The radius of the Earth.
@@ -435,7 +435,7 @@ DIAG_COORDS = "z Z ZSTAR"       ! default = "z Z ZSTAR"
                                 ! A list of string tuples associating diag_table modules to a coordinate
                                 ! definition used for diagnostics. Each string is of the form "MODULE_SUFFIX
                                 ! PARAMETER_SUFFIX COORDINATE_NAME".
-DIAG_MISVAL = 1.0E+20           !   [not defined] default = 1.0E+20
+DIAG_MISVAL = 1.0E+20           !   [various] default = 1.0E+20
                                 ! Set the default missing value to use for diagnostics.
 DIAG_AS_CHKSUM = False          !   [Boolean] default = False
                                 ! Instead of writing diagnostics to the diag manager, write a text file
