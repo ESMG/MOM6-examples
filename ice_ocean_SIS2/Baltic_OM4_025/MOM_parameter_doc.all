@@ -742,6 +742,13 @@ DIAG_COORD_DEF_RHO2 = "RFNC1:35,999.5,1028,1028.5,8.,1038.,0.0078125" ! default 
                                 !                the filename and two variable names, separated
                                 !                by a comma or space, for sigma-2 and dz. e.g.
                                 !                HYBRID:vgrid.nc,sigma2,dz
+DIAG_COORD_P_REF_RHO2 = 2.0E+07 !   [Pa] default = 2.0E+07
+                                ! The pressure that is used for calculating the diagnostic coordinate density.
+                                ! (1 Pa = 1e4 dbar, so 2e7 is commonly used.) This is only used for the RHO
+                                ! coordinate.
+DIAG_COORD_REGRID_COMPRESSIBILITY_FRACTION_RHO2 = 0.0 !   [nondim] default = 0.0
+                                ! When interpolating potential density profiles we can add some artificial
+                                ! compressibility solely to make homogeneous regions appear stratified.
 
 ! === module MOM_MEKE ===
 USE_MEKE = True                 !   [Boolean] default = False
@@ -942,8 +949,9 @@ USE_SIMPLER_EADY_GROWTH_RATE = False !   [Boolean] default = False
 VARMIX_KTOP = 2                 !   [nondim] default = 2
                                 ! The layer number at which to start vertical integration of S*N for purposes of
                                 ! finding the Eady growth rate.
-VISBECK_L_SCALE = 0.0           !   [m] default = 0.0
-                                ! The fixed length scale in the Visbeck formula.
+VISBECK_L_SCALE = 0.0           !   [m or nondim] default = 0.0
+                                ! The fixed length scale in the Visbeck formula, or if negative a nondimensional
+                                ! scaling factor relating this length scale squared to the cell areas.
 KH_RES_SCALE_COEF = 1.0         !   [nondim] default = 1.0
                                 ! A coefficient that determines how KhTh is scaled away if RESOLN_SCALED_... is
                                 ! true, as F = 1 / (1 + (KH_RES_SCALE_COEF*Rd/dx)^KH_RES_FN_POWER).
@@ -1105,11 +1113,8 @@ USE_GM_WORK_BUG = True          !   [Boolean] default = False
                                 ! sign, for legacy reproducibility.
 STOCH_EOS = False               !   [Boolean] default = False
                                 ! If true, stochastic perturbations are applied to the EOS in the PGF.
-STANLEY_COEFF = -1.0            !   [not defined] default = -1.0
+STANLEY_COEFF = -1.0            !   [nondim] default = -1.0
                                 ! Coefficient correlating the temperature gradient and SGS T variance.
-STANLEY_A = 1.0                 !   [not defined] default = 1.0
-                                ! Coefficient a which scales chi in stochastic perturbation of the SGS T
-                                ! variance.
 
 ! === module MOM_porous_barriers ===
 PORBAR_ANSWER_DATE = 99991231   ! default = 99991231
@@ -1585,6 +1590,14 @@ MLE_TAIL_DH = 0.0               !   [nondim] default = 0.0
 MLE_MLD_STRETCH = 1.0           !   [nondim] default = 1.0
                                 ! A scaling coefficient for stretching/shrinking the MLD used in the MLE scheme.
                                 ! This simply multiplies MLD wherever used.
+KV_RESTRAT = 0.0                !   [m2 s-1] default = 0.0
+                                ! A small viscosity that sets a floor on the momentum mixing rate during
+                                ! restratification.  If this is positive, it will prevent some possible
+                                ! divisions by zero even if ustar, RESTRAT_USTAR_MIN, and f are all 0.
+RESTRAT_USTAR_MIN = 1.45842E-18 !   [m s-1] default = 1.45842E-18
+                                ! The minimum value of ustar that will be used by the mixed layer
+                                ! restratification module.  This can be tiny, but if this is greater than 0, it
+                                ! will prevent divisions by zero when f and KV_RESTRAT are zero.
 
 ! === module MOM_diagnostics ===
 DIAG_EBT_MONO_N2_COLUMN_FRACTION = 0.0 !   [nondim] default = 0.0
