@@ -654,6 +654,18 @@ HOR_REGRID_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! later versions add parentheses for rotational symmetry.  If both
                                 ! HOR_REGRID_2018_ANSWERS and HOR_REGRID_ANSWER_DATE are specified, the latter
                                 ! takes precedence.
+LAND_FILL_TEMP = 0.0            !   [degC] default = 0.0
+                                ! A value to use to fill in ocean temperatures on land points.
+LAND_FILL_SALIN = 35.0          !   [1e-3] default = 35.0
+                                ! A value to use to fill in ocean salinities on land points.
+HORIZ_INTERP_TOL_TEMP = 0.001   !   [degC] default = 0.001
+                                ! The tolerance in temperature changes between iterations when interpolating
+                                ! ifrom an nput dataset using horiz_interp_and_extrap_tracer.  This routine
+                                ! converges slowly, so an overly small tolerance can get expensive.
+HORIZ_INTERP_TOL_SALIN = 0.001  !   [1e-3] default = 0.001
+                                ! The tolerance in salinity changes between iterations when interpolating ifrom
+                                ! an nput dataset using horiz_interp_and_extrap_tracer.  This routine converges
+                                ! slowly, so an overly small tolerance can get expensive.
 DEPRESS_INITIAL_SURFACE = False !   [Boolean] default = False
                                 ! If true,  depress the initial surface to avoid huge tsunamis when a large
                                 ! surface pressure is applied.
@@ -889,6 +901,9 @@ RESOLN_USE_EBT = False          !   [Boolean] default = False
 KHTH_USE_EBT_STRUCT = False     !   [Boolean] default = False
                                 ! If true, uses the equivalent barotropic structure as the vertical structure of
                                 ! thickness diffusivity.
+KD_GL90_USE_EBT_STRUCT = False  !   [Boolean] default = False
+                                ! If true, uses the equivalent barotropic structure as the vertical structure of
+                                ! diffusivity in the GL90 scheme.
 KHTH_SLOPE_CFF = 0.0            !   [nondim] default = 0.0
                                 ! The nondimensional coefficient in the Visbeck formula for the interface depth
                                 ! diffusivity
@@ -1431,6 +1446,9 @@ HARMONIC_BL_SCALE = 0.0         !   [nondim] default = 0.0
 HMIX_FIXED = 0.5                !   [m]
                                 ! The prescribed depth over which the near-surface viscosity and diffusivity are
                                 ! elevated when the bulk mixed layer is not used.
+USE_GL90_IN_SSW = False         !   [Boolean] default = False
+                                ! If true, use simpler method to calculate 1/N^2 in GL90 vertical viscosity
+                                ! coefficient. This method is valid in stacked shallow water mode.
 KV_ML_INVZ2 = 0.0               !   [m2 s-1] default = 0.0
                                 ! An extra kinematic viscosity in a mixed layer of thickness HMIX_FIXED, with
                                 ! the actual viscosity scaling as 1/(z*HMIX_FIXED)^2, where z is the distance
@@ -1913,6 +1931,10 @@ KD_KAPPA_SHEAR_0 = 2.0E-05      !   [m2 s-1] default = 2.0E-05
                                 ! The background diffusivity that is used to smooth the density and shear
                                 ! profiles before solving for the diffusivities.  The default is the greater of
                                 ! KD and 1e-7 m2 s-1.
+KD_SEED_KAPPA_SHEAR = 1.0       !   [m2 s-1] default = 1.0
+                                ! A moderately large seed value of diapycnal diffusivity that is used as a
+                                ! starting turbulent diffusivity in the iterations to find an energetically
+                                ! constrained solution for the shear-driven diffusivity.
 KD_TRUNC_KAPPA_SHEAR = 2.0E-07  !   [m2 s-1] default = 2.0E-07
                                 ! The value of shear-driven diffusivity that is considered negligible and is
                                 ! rounded down to 0. The default is 1% of KD_KAPPA_SHEAR_0.
@@ -1987,6 +2009,9 @@ RECLAIM_FRAZIL = True           !   [Boolean] default = True
                                 ! If true, try to use any frazil heat deficit to cool any overlying layers down
                                 ! to the freezing point, thereby avoiding the creation of thin ice when the SST
                                 ! is above the freezing point.
+SALT_EXTRACTION_LIMIT = 0.9999  !   [nondim] default = 0.9999
+                                ! An upper limit on the fraction of the salt in a layer that can be lost to the
+                                ! net surface salt fluxes within a timestep.
 PRESSURE_DEPENDENT_FRAZIL = False !   [Boolean] default = False
                                 ! If true, use a pressure dependent freezing temperature when making frazil. The
                                 ! default is false, which will be faster but is inappropriate with ice-shelf

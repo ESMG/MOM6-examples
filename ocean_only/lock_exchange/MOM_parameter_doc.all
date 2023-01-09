@@ -591,6 +591,9 @@ RESOLN_USE_EBT = False          !   [Boolean] default = False
 KHTH_USE_EBT_STRUCT = False     !   [Boolean] default = False
                                 ! If true, uses the equivalent barotropic structure as the vertical structure of
                                 ! thickness diffusivity.
+KD_GL90_USE_EBT_STRUCT = False  !   [Boolean] default = False
+                                ! If true, uses the equivalent barotropic structure as the vertical structure of
+                                ! diffusivity in the GL90 scheme.
 KHTH_SLOPE_CFF = 0.0            !   [nondim] default = 0.0
                                 ! The nondimensional coefficient in the Visbeck formula for the interface depth
                                 ! diffusivity
@@ -983,6 +986,9 @@ HARMONIC_BL_SCALE = 0.0         !   [nondim] default = 0.0
 HMIX_FIXED = 1.0E-10            !   [m]
                                 ! The prescribed depth over which the near-surface viscosity and diffusivity are
                                 ! elevated when the bulk mixed layer is not used.
+USE_GL90_IN_SSW = False         !   [Boolean] default = False
+                                ! If true, use simpler method to calculate 1/N^2 in GL90 vertical viscosity
+                                ! coefficient. This method is valid in stacked shallow water mode.
 KV_ML_INVZ2 = 0.0               !   [m2 s-1] default = 0.0
                                 ! An extra kinematic viscosity in a mixed layer of thickness HMIX_FIXED, with
                                 ! the actual viscosity scaling as 1/(z*HMIX_FIXED)^2, where z is the distance
@@ -1329,6 +1335,10 @@ DOUBLE_DIFFUSION = False        !   [Boolean] default = False
 USE_JACKSON_PARAM = False       !   [Boolean] default = False
                                 ! If true, use the Jackson-Hallberg-Legg (JPO 2008) shear mixing
                                 ! parameterization.
+KD_SEED_KAPPA_SHEAR = 1.0       !   [m2 s-1] default = 1.0
+                                ! A moderately large seed value of diapycnal diffusivity that is used as a
+                                ! starting turbulent diffusivity in the iterations to find an energetically
+                                ! constrained solution for the shear-driven diffusivity.
 TKE_BACKGROUND = 0.0            !   [m2 s-2] default = 0.0
                                 ! A background level of TKE used in the first iteration of the kappa equation.
                                 ! TKE_BACKGROUND could be 0.
@@ -1355,6 +1365,9 @@ RECLAIM_FRAZIL = True           !   [Boolean] default = True
                                 ! If true, try to use any frazil heat deficit to cool any overlying layers down
                                 ! to the freezing point, thereby avoiding the creation of thin ice when the SST
                                 ! is above the freezing point.
+SALT_EXTRACTION_LIMIT = 0.9999  !   [nondim] default = 0.9999
+                                ! An upper limit on the fraction of the salt in a layer that can be lost to the
+                                ! net surface salt fluxes within a timestep.
 PRESSURE_DEPENDENT_FRAZIL = False !   [Boolean] default = False
                                 ! If true, use a pressure dependent freezing temperature when making frazil. The
                                 ! default is false, which will be faster but is inappropriate with ice-shelf

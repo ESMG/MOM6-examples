@@ -546,10 +546,51 @@ Z_INIT_SEPARATE_MIXED_LAYER = True !   [Boolean] default = False
 Z_INIT_HMIX_DEPTH = 0.5         !   [m] default = 0.5
                                 ! The mixed layer depth in the initial conditions when
                                 ! Z_INIT_SEPARATE_MIXED_LAYER is set to true.
+DENSITY_INTERP_TOLERANCE = 1.0E-10 !   [kg m-3] default = 1.0E-10
+                                ! A small density tolerance used when finding depths in a density profile.
 LAYER_Z_INIT_IC_EXTRAP_BUG = False !   [Boolean] default = False
                                 ! If true use an expression with a vertical indexing bug for extrapolating the
                                 ! densities at the bottom of unstable profiles from data when finding the
                                 ! initial interface locations in layered mode from a dataset of T and S.
+LAND_FILL_TEMP = 0.0            !   [degC] default = 0.0
+                                ! A value to use to fill in ocean temperatures on land points.
+LAND_FILL_SALIN = 35.0          !   [1e-3] default = 35.0
+                                ! A value to use to fill in ocean salinities on land points.
+HORIZ_INTERP_TOL_TEMP = 0.001   !   [degC] default = 0.001
+                                ! The tolerance in temperature changes between iterations when interpolating
+                                ! ifrom an nput dataset using horiz_interp_and_extrap_tracer.  This routine
+                                ! converges slowly, so an overly small tolerance can get expensive.
+HORIZ_INTERP_TOL_SALIN = 0.001  !   [1e-3] default = 0.001
+                                ! The tolerance in salinity changes between iterations when interpolating ifrom
+                                ! an nput dataset using horiz_interp_and_extrap_tracer.  This routine converges
+                                ! slowly, so an overly small tolerance can get expensive.
+
+! === module determine_temperature ===
+DETERMINE_TEMP_ADJUST_T_AND_S = False !   [Boolean] default = False
+                                ! If true, simltaneously adjust the estimates of the temperature and salinity
+                                ! based on the ratio of the thermal and haline coefficients.  Otherwise try to
+                                ! match the density by only adjusting temperatures within a maximum range before
+                                ! revising estimates of the salinity.
+DETERMINE_TEMP_T_MIN = -2.0     !   [degC] default = -2.0
+                                ! The minimum temperature that can be found by determine_temperature.
+DETERMINE_TEMP_T_MAX = 31.0     !   [degC] default = 31.0
+                                ! The maximum temperature that can be found by determine_temperature.
+DETERMINE_TEMP_S_MIN = 0.5      !   [1e-3] default = 0.5
+                                ! The minimum salinity that can be found by determine_temperature.
+DETERMINE_TEMP_S_MAX = 65.0     !   [1e-3] default = 65.0
+                                ! The maximum salinity that can be found by determine_temperature.
+DETERMINE_TEMP_T_TOLERANCE = 1.0E-04 !   [degC] default = 1.0E-04
+                                ! The convergence tolerance for temperature in determine_temperature.
+DETERMINE_TEMP_S_TOLERANCE = 1.0E-04 !   [1e-3] default = 1.0E-04
+                                ! The convergence tolerance for temperature in determine_temperature.
+DETERMINE_TEMP_RHO_TOLERANCE = 1.0E-04 !   [kg m-3] default = 1.0E-04
+                                ! The convergence tolerance for density in determine_temperature.
+DETERMINE_TEMP_T_ADJ_RANGE = 1.0 !   [degC] default = 1.0
+                                ! The maximum amount by which the initial layer temperatures can be modified in
+                                ! determine_temperature.
+DETERMINE_TEMP_S_ADJ_RANGE = 0.5 !   [1e-3] default = 0.5
+                                ! The maximum amount by which the initial layer salinities can be modified in
+                                ! determine_temperature.
 DEPRESS_INITIAL_SURFACE = False !   [Boolean] default = False
                                 ! If true,  depress the initial surface to avoid huge tsunamis when a large
                                 ! surface pressure is applied.
@@ -656,6 +697,9 @@ RESOLN_USE_EBT = False          !   [Boolean] default = False
 KHTH_USE_EBT_STRUCT = False     !   [Boolean] default = False
                                 ! If true, uses the equivalent barotropic structure as the vertical structure of
                                 ! thickness diffusivity.
+KD_GL90_USE_EBT_STRUCT = False  !   [Boolean] default = False
+                                ! If true, uses the equivalent barotropic structure as the vertical structure of
+                                ! diffusivity in the GL90 scheme.
 KHTH_SLOPE_CFF = 0.25           !   [nondim] default = 0.0
                                 ! The nondimensional coefficient in the Visbeck formula for the interface depth
                                 ! diffusivity
@@ -678,6 +722,9 @@ USE_SIMPLER_EADY_GROWTH_RATE = False !   [Boolean] default = False
 VARMIX_KTOP = 6                 !   [nondim] default = 2
                                 ! The layer number at which to start vertical integration of S*N for purposes of
                                 ! finding the Eady growth rate.
+MIN_DZ_FOR_SLOPE_N2 = 1.0       !   [m] default = 1.0
+                                ! The minimum vertical distance to use in the denominator of the bouyancy
+                                ! frequency used in the slope calculation.
 VISBECK_L_SCALE = 3.0E+04       !   [m or nondim] default = 0.0
                                 ! The fixed length scale in the Visbeck formula, or if negative a nondimensional
                                 ! scaling factor relating this length scale squared to the cell areas.
@@ -1143,6 +1190,9 @@ HARMONIC_BL_SCALE = 0.0         !   [nondim] default = 0.0
                                 ! A scale to determine when water is in the boundary layers based solely on
                                 ! harmonic mean thicknesses for the purpose of determining the extent to which
                                 ! the thicknesses used in the viscosities are upwinded.
+USE_GL90_IN_SSW = False         !   [Boolean] default = False
+                                ! If true, use simpler method to calculate 1/N^2 in GL90 vertical viscosity
+                                ! coefficient. This method is valid in stacked shallow water mode.
 MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
                                 ! The maximum velocity allowed before the velocity components are truncated.
 CFL_BASED_TRUNCATIONS = True    !   [Boolean] default = True
@@ -1389,6 +1439,9 @@ MAX_ENT_IT = 20                 ! default = 5
                                 ! diapycnal entrainment.
 TOLERANCE_ENT = 1.0E-05         !   [m] default = 2.683281572999748E-05
                                 ! The tolerance with which to solve for entrainment values.
+ENTRAIN_DIFFUSIVE_MAX_ENT = 1.0E+04 !   [m] default = 1.0E+04
+                                ! A large ceiling on the maximum permitted amount of entrainment across each
+                                ! interface between the mixed and buffer layers within a timestep.
 
 ! === module MOM_geothermal ===
 GEOTHERMAL_SCALE = 0.001        !   [W m-2 or various] default = 0.0
@@ -1608,6 +1661,10 @@ KD_KAPPA_SHEAR_0 = 2.0E-05      !   [m2 s-1] default = 2.0E-05
                                 ! The background diffusivity that is used to smooth the density and shear
                                 ! profiles before solving for the diffusivities.  The default is the greater of
                                 ! KD and 1e-7 m2 s-1.
+KD_SEED_KAPPA_SHEAR = 1.0       !   [m2 s-1] default = 1.0
+                                ! A moderately large seed value of diapycnal diffusivity that is used as a
+                                ! starting turbulent diffusivity in the iterations to find an energetically
+                                ! constrained solution for the shear-driven diffusivity.
 KD_TRUNC_KAPPA_SHEAR = 2.0E-07  !   [m2 s-1] default = 2.0E-07
                                 ! The value of shear-driven diffusivity that is considered negligible and is
                                 ! rounded down to 0. The default is 1% of KD_KAPPA_SHEAR_0.
@@ -1685,6 +1742,9 @@ RECLAIM_FRAZIL = True           !   [Boolean] default = True
                                 ! If true, try to use any frazil heat deficit to cool any overlying layers down
                                 ! to the freezing point, thereby avoiding the creation of thin ice when the SST
                                 ! is above the freezing point.
+SALT_EXTRACTION_LIMIT = 0.9999  !   [nondim] default = 0.9999
+                                ! An upper limit on the fraction of the salt in a layer that can be lost to the
+                                ! net surface salt fluxes within a timestep.
 PRESSURE_DEPENDENT_FRAZIL = False !   [Boolean] default = False
                                 ! If true, use a pressure dependent freezing temperature when making frazil. The
                                 ! default is false, which will be faster but is inappropriate with ice-shelf
@@ -1722,6 +1782,10 @@ BULK_RI_CONVECTIVE = 0.05       !   [nondim] default = 0.05
 HMIX_MIN = 2.0                  !   [m] default = 0.0
                                 ! The minimum mixed layer depth if the mixed layer depth is determined
                                 ! dynamically.
+MECH_TKE_FLOOR = 1.0E-150       !   [m3 s-2] default = 1.0E-150
+                                ! A tiny floor on the amount of turbulent kinetic energy that is used when the
+                                ! mixed layer does not yet contain HMIX_MIN fluid.  The default is so small that
+                                ! its actual value is irrelevant, so long as it is greater than 0.
 LIMIT_BUFFER_DETRAIN = True     !   [Boolean] default = False
                                 ! If true, limit the detrainment from the buffer layers to not be too different
                                 ! from the neighbors.
@@ -1804,6 +1868,11 @@ REG_SFC_DENSE_MATCH_TOLERANCE = 0.6 !   [nondim] default = 0.6
                                 ! A relative tolerance for how well the densities must match with the target
                                 ! densities during detrainment when regularizing the near-surface layers.  The
                                 ! default of 0.6 gives 20% overlaps in density
+REG_SFC_SUFFICIENT_ADJ = 0.6    !   [nondim] default = 0.6
+                                ! The fraction of the target entrainment of mass to the mixed and buffer layers
+                                ! that is enough for one timestep when regularizing the near-surface layers. No
+                                ! more mass will be sought from deeper layers in the interior after this
+                                ! fraction is exceeded.
 REGULARIZE_LAYERS_2018_ANSWERS = False !   [Boolean] default = False
                                 ! If true, use the order of arithmetic and expressions that recover the answers
                                 ! from the end of 2018.  Otherwise, use updated and more robust forms of the
