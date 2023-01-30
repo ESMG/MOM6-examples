@@ -13,11 +13,11 @@ def section2quadmesh(x, z, q, representation='pcm'):
 
   Returns X(2*ni+1), Z(nk+1,2*ni+1) and Q(nk,2*ni) to be passed to pcolormesh.
 
-  TBD: Optionally, x can be dimensioned as x(ni) in which case it will be extraplated as if it had 
+  TBD: Optionally, x can be dimensioned as x(ni) in which case it will be extraplated as if it had
   had dimensions x(ni+1).
-  
+
   Optional argument:
-  
+
   representation='pcm' (default) yields a step-wise visualization, appropriate for
            z-coordinate models.
   representation='plm' yields a piecewise-linear visualization more representative
@@ -29,7 +29,7 @@ def section2quadmesh(x, z, q, representation='pcm'):
 
   if x.ndim!=1: raise Exception('The x argument must be a vector')
   if z.ndim!=2: raise Exception('The z argument should be a 2D array')
-  if q.ndim!=2: raise Exception('The z argument should be a 2D array')
+  if q.ndim!=2: raise Exception('The q argument should be a 2D array')
   qnk, qni = q.shape
   znk, zni = z.shape
   xni = x.size
@@ -184,7 +184,7 @@ def MOCpsi(vh, vmsk=None):
         else: psi[n,k-1,:] = psi[n,k,:] - (vmsk*vh[n,k-1]).sum(axis=-1)
   return psi
 
- 
+
 def moc_maskedarray(vh,mask=None):
     if mask is not None:
         _mask = np.ma.masked_where(np.not_equal(mask,1.),mask)
@@ -233,13 +233,13 @@ def genBasinMasks(x,y,depth,verbose=False):
   tmp = 1 - wet; tmp[x<-30] = 0
   tmp = ice9Wrapper(x, y, tmp, (20,-30.))
   yCGH = (tmp*y).min()
-  if verbose: print(('done.', yCGH))
+  if verbose: print('done.', yCGH)
 
   if verbose: print('Finding Melbourne ...')
   tmp = 1 - wet; tmp[x>-180] = 0
   tmp = ice9Wrapper(x, y, tmp, (-220,-25.))
   yMel = (tmp*y).min()
-  if verbose: print(('done.', yMel))
+  if verbose: print('done.', yMel)
 
   if verbose: print('Processing Persian Gulf ...')
   tmp = wet*( 1-southOf(x, y, (55.,23.), (56.5,27.)) )
@@ -272,16 +272,16 @@ def genBasinMasks(x,y,depth,verbose=False):
   wet = wet - tmp # Removed named points
 
   if verbose: print('Processing Hudson Bay ...')
-  tmp = wet*( 
+  tmp = wet*(
              ( 1-(1-southOf(x, y, (-95.,66.), (-83.5,67.5)))
-                *(1-southOf(x, y, (-83.5,67.5), (-84.,71.))) 
+                *(1-southOf(x, y, (-83.5,67.5), (-84.,71.)))
              )*( 1-southOf(x, y, (-70.,58.), (-70.,65.)) ) )
   tmp = ice9Wrapper(x, y, tmp, (-85.,60.))
   code[tmp>0] = 8
   wet = wet - tmp # Removed named points
 
   if verbose: print('Processing Arctic ...')
-  tmp = wet*( 
+  tmp = wet*(
             (1-southOf(x, y, (-171.,66.), (-166.,65.5))) * (1-southOf(x, y, (-64.,66.4), (-50.,68.5))) # Lab Sea
        +    southOf(x, y, (-50.,0.), (-50.,90.)) * (1- southOf(x, y, (0.,65.5), (360.,65.5))  ) # Denmark Strait
        +    southOf(x, y, (-18.,0.), (-18.,65.)) * (1- southOf(x, y, (0.,64.9), (360.,64.9))  ) # Iceland-Sweden
@@ -295,9 +295,9 @@ def genBasinMasks(x,y,depth,verbose=False):
   if verbose: print('Processing Pacific ...')
   tmp = wet*( (1-southOf(x, y, (0.,yMel), (360.,yMel)))
              -southOf(x, y, (-257,1), (-257,0))*southOf(x, y, (0,3), (1,3))
-             -southOf(x, y, (-254.25,1), (-254.25,0))*southOf(x, y, (0,-5), (1,-5)) 
-             -southOf(x, y, (-243.7,1), (-243.7,0))*southOf(x, y, (0,-8.4), (1,-8.4)) 
-             -southOf(x, y, (-234.5,1), (-234.5,0))*southOf(x, y, (0,-8.9), (1,-8.9)) 
+             -southOf(x, y, (-254.25,1), (-254.25,0))*southOf(x, y, (0,-5), (1,-5))
+             -southOf(x, y, (-243.7,1), (-243.7,0))*southOf(x, y, (0,-8.4), (1,-8.4))
+             -southOf(x, y, (-234.5,1), (-234.5,0))*southOf(x, y, (0,-8.9), (1,-8.9))
             )
   tmp = ice9Wrapper(x, y, tmp, (-150.,0.))
   code[tmp>0] = 3
@@ -328,10 +328,10 @@ def genBasinMasks(x,y,depth,verbose=False):
   if j:
     if verbose: print('There are leftover points unassigned to a basin code')
     while j:
-      print((x[j,i],y[j,i],[j,i]))
+      print(x[j,i],y[j,i],[j,i])
       wet[j,i]=0
       (j,i) = np.unravel_index( wet.argmax(), x.shape)
-  else: 
+  else:
     if verbose: print('All points assigned a basin code')
 
   if verbose:
@@ -359,28 +359,28 @@ if __name__ == '__main__':
   x=np.arange(5)
   z=np.array([[0,0.2,0.3,-.1],[1,1.5,.7,.4],[2,2,1.5,2],[3,2.3,1.5,2.1]])*-1
   q=np.matlib.rand(3,4)
-  print(('x=',x))
-  print(('z=',z))
-  print(('q=',q))
+  print('x=',x)
+  print('z=',z)
+  print('q=',q)
 
   X, Z, Q = section2quadmesh(x, z, q)
-  print(('X=',X))
-  print(('Z=',Z))
-  print(('Q=',Q))
+  print('X=',X)
+  print('Z=',Z)
+  print('Q=',Q)
   plt.subplot(3,1,1)
   plt.pcolormesh(X, Z, Q)
 
   X, Z, Q = section2quadmesh(x, z, q, representation='linear')
-  print(('X=',X))
-  print(('Z=',Z))
-  print(('Q=',Q))
+  print('X=',X)
+  print('Z=',Z)
+  print('Q=',Q)
   plt.subplot(3,1,2)
   plt.pcolormesh(X, Z, Q)
 
   X, Z, Q = section2quadmesh(x, z, q, representation='plm')
-  print(('X=',X))
-  print(('Z=',Z))
-  print(('Q=',Q))
+  print('X=',X)
+  print('Z=',Z)
+  print('Q=',Q)
   plt.subplot(3,1,3)
   plt.pcolormesh(X, Z, Q)
 
