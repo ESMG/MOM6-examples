@@ -314,14 +314,20 @@ NK = 63                         !   [nondim]
 ! === module MOM_EOS ===
 EQN_OF_STATE = "WRIGHT"         ! default = "WRIGHT"
                                 ! EQN_OF_STATE determines which ocean equation of state should be used.
-                                ! Currently, the valid choices are "LINEAR", "UNESCO", "WRIGHT", "NEMO" and
-                                ! "TEOS10". This is only used if USE_EOS is true.
+                                ! Currently, the valid choices are "LINEAR", "UNESCO", "JACKETT_MCD", "WRIGHT",
+                                ! "WRIGHT_REDUCED", "WRIGHT_FULL", "NEMO", "ROQUET_RHO", "ROQUET_SPV" and
+                                ! "TEOS10".  This is only used if USE_EOS is true.
+USE_WRIGHT_2ND_DERIV_BUG = False !   [Boolean] default = False
+                                ! If true, use a bug in the calculation of the second derivatives of density
+                                ! with temperature and with temperature and pressure that causes some terms to
+                                ! be only 2/3 of what they should be.
 EOS_QUADRATURE = False          !   [Boolean] default = False
                                 ! If true, always use the generic (quadrature) code code for the integrals of
                                 ! density.
 TFREEZE_FORM = "LINEAR"         ! default = "LINEAR"
                                 ! TFREEZE_FORM determines which expression should be used for the freezing
-                                ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS10"
+                                ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS_POLY",
+                                ! "TEOS10"
 TFREEZE_S0_P0 = 0.0             !   [deg C] default = 0.0
                                 ! When TFREEZE_FORM=LINEAR, this is the freezing potential temperature at S=0,
                                 ! P=0.
@@ -382,16 +388,22 @@ USE_NW2_TRACERS = False         !   [Boolean] default = False
 
 ! === module ideal_age_example ===
 DO_IDEAL_AGE = True             !   [Boolean] default = True
-                                ! If true, use an ideal age tracer that is set to 0 age in the mixed layer and
-                                ! ages at unit rate in the interior.
+                                ! If true, use an ideal age tracer that is set to 0 age in the boundary layer
+                                ! and ages at unit rate in the interior.
 DO_IDEAL_VINTAGE = False        !   [Boolean] default = False
                                 ! If true, use an ideal vintage tracer that is set to an exponentially
-                                ! increasing value in the mixed layer and is conserved thereafter.
+                                ! increasing value in the boundary layer and is conserved thereafter.
 DO_IDEAL_AGE_DATED = False      !   [Boolean] default = False
                                 ! If true, use an ideal age tracer that is everywhere 0 before
                                 ! IDEAL_AGE_DATED_START_YEAR, but the behaves like the standard ideal age tracer
-                                ! - i.e. is set to 0 age in the mixed layer and ages at unit rate in the
+                                ! - i.e. is set to 0 age in the boundary layer and ages at unit rate in the
                                 ! interior.
+DO_BL_RESIDENCE = False         !   [Boolean] default = False
+                                ! If true, use a residence tracer that is set to 0 age in the interior and ages
+                                ! at unit rate in the boundary layer.
+USE_REAL_BL_DEPTH = False       !   [Boolean] default = False
+                                ! If true, the ideal age tracers will use the boundary layer depth diagnosed
+                                ! from the BL or bulkmixedlayer scheme.
 AGE_IC_FILE = ""                ! default = ""
                                 ! The file in which the age-tracer initial values can be found, or an empty
                                 ! string for internal initialization.

@@ -100,6 +100,10 @@ OBC_SEGMENT_003 = "I=N,J=0:N,FLATHER,ORLANSKI" !
                                 ! Documentation needs to be dynamic?????
 OBC_SEGMENT_004 = "I=0,J=N:0,FLATHER,ORLANSKI" !
                                 ! Documentation needs to be dynamic?????
+OBC_RADIATION_MAX = 10.0        !   [nondim] default = 1.0
+                                ! The maximum magnitude of the baroclinic radiation velocity (or speed of
+                                ! characteristics), in gridpoints per timestep.  This is only used if one of the
+                                ! open boundary segments is using Orlanski.
 ROTATION = "beta"               ! default = "2omegasinlat"
                                 ! This specifies how the Coriolis parameter is specified:
                                 !     2omegasinlat - Use twice the planetary rotation rate

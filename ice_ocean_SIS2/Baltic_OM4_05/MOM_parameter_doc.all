@@ -344,14 +344,20 @@ NK = 75                         !   [nondim]
 ! === module MOM_EOS ===
 EQN_OF_STATE = "WRIGHT"         ! default = "WRIGHT"
                                 ! EQN_OF_STATE determines which ocean equation of state should be used.
-                                ! Currently, the valid choices are "LINEAR", "UNESCO", "WRIGHT", "NEMO" and
-                                ! "TEOS10". This is only used if USE_EOS is true.
+                                ! Currently, the valid choices are "LINEAR", "UNESCO", "JACKETT_MCD", "WRIGHT",
+                                ! "WRIGHT_REDUCED", "WRIGHT_FULL", "NEMO", "ROQUET_RHO", "ROQUET_SPV" and
+                                ! "TEOS10".  This is only used if USE_EOS is true.
+USE_WRIGHT_2ND_DERIV_BUG = False !   [Boolean] default = False
+                                ! If true, use a bug in the calculation of the second derivatives of density
+                                ! with temperature and with temperature and pressure that causes some terms to
+                                ! be only 2/3 of what they should be.
 EOS_QUADRATURE = False          !   [Boolean] default = False
                                 ! If true, always use the generic (quadrature) code code for the integrals of
                                 ! density.
 TFREEZE_FORM = "LINEAR"         ! default = "LINEAR"
                                 ! TFREEZE_FORM determines which expression should be used for the freezing
-                                ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS10"
+                                ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS_POLY",
+                                ! "TEOS10"
 TFREEZE_S0_P0 = 0.0             !   [deg C] default = 0.0
                                 ! When TFREEZE_FORM=LINEAR, this is the freezing potential temperature at S=0,
                                 ! P=0.
@@ -412,16 +418,22 @@ USE_NW2_TRACERS = False         !   [Boolean] default = False
 
 ! === module ideal_age_example ===
 DO_IDEAL_AGE = True             !   [Boolean] default = True
-                                ! If true, use an ideal age tracer that is set to 0 age in the mixed layer and
-                                ! ages at unit rate in the interior.
+                                ! If true, use an ideal age tracer that is set to 0 age in the boundary layer
+                                ! and ages at unit rate in the interior.
 DO_IDEAL_VINTAGE = False        !   [Boolean] default = False
                                 ! If true, use an ideal vintage tracer that is set to an exponentially
-                                ! increasing value in the mixed layer and is conserved thereafter.
+                                ! increasing value in the boundary layer and is conserved thereafter.
 DO_IDEAL_AGE_DATED = False      !   [Boolean] default = False
                                 ! If true, use an ideal age tracer that is everywhere 0 before
                                 ! IDEAL_AGE_DATED_START_YEAR, but the behaves like the standard ideal age tracer
-                                ! - i.e. is set to 0 age in the mixed layer and ages at unit rate in the
+                                ! - i.e. is set to 0 age in the boundary layer and ages at unit rate in the
                                 ! interior.
+DO_BL_RESIDENCE = False         !   [Boolean] default = False
+                                ! If true, use a residence tracer that is set to 0 age in the interior and ages
+                                ! at unit rate in the boundary layer.
+USE_REAL_BL_DEPTH = False       !   [Boolean] default = False
+                                ! If true, the ideal age tracers will use the boundary layer depth diagnosed
+                                ! from the BL or bulkmixedlayer scheme.
 AGE_IC_FILE = ""                ! default = ""
                                 ! The file in which the age-tracer initial values can be found, or an empty
                                 ! string for internal initialization.
@@ -470,7 +482,6 @@ REGRIDDING_COORDINATE_MODE = "HYCOM1" ! default = "LAYER"
                                 !  RHO   - continuous isopycnal
                                 !  HYCOM1 - HyCOM-like hybrid coordinate
                                 !  HYBGEN - Hybrid coordinate from the Hycom hybgen code
-                                !  SLIGHT - stretched coordinates above continuous isopycnal
                                 !  ADAPTIVE - optimize for smooth neutral density surfaces
 REGRIDDING_COORDINATE_UNITS = "m" ! default = "m"
                                 ! Units of the regridding coordinate.
@@ -478,10 +489,12 @@ INTERPOLATION_SCHEME = "P1M_H2" ! default = "P1M_H2"
                                 ! This sets the interpolation scheme to use to determine the new grid. These
                                 ! parameters are only relevant when REGRIDDING_COORDINATE_MODE is set to a
                                 ! function of state. Otherwise, it is not used. It can be one of the following
-                                ! schemes:  P1M_H2     (2nd-order accurate)
+                                ! schemes:
+                                !  P1M_H2     (2nd-order accurate)
                                 !  P1M_H4     (2nd-order accurate)
                                 !  P1M_IH4    (2nd-order accurate)
                                 !  PLM        (2nd-order accurate)
+                                !  PPM_CW     (3rd-order accurate)
                                 !  PPM_H4     (3rd-order accurate)
                                 !  PPM_IH4    (3rd-order accurate)
                                 !  P3M_IH4IH3 (4th-order accurate)
@@ -530,6 +543,9 @@ REGRID_COMPRESSIBILITY_FRACTION = 0.01 !   [nondim] default = 0.0
                                 ! compressibility solely to make homogeneous regions appear stratified.
 MIN_THICKNESS = 0.001           !   [m] default = 0.001
                                 ! When regridding, this is the minimum layer thickness allowed.
+HYCOM1_ONLY_IMPROVES = False    !   [Boolean] default = False
+                                ! When regridding, an interface is only moved if this improves the fit to the
+                                ! target density.
 MAXIMUM_INT_DEPTH_CONFIG = "FNC1:5,8000.0,1.0,.01" ! default = "NONE"
                                 ! Determines how to specify the maximum interface depths.
                                 ! Valid options are:
@@ -554,8 +570,8 @@ MAX_LAYER_THICKNESS_CONFIG = "FNC1:400,31000.0,0.1,.01" ! default = "NONE"
                                 ! The list of maximum thickness for each layer.
 REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
                                 ! This sets the reconstruction scheme used for vertical remapping for all
-                                ! variables. It can be one of the following schemes: PCM         (1st-order
-                                ! accurate)
+                                ! variables. It can be one of the following schemes:
+                                ! PCM         (1st-order accurate)
                                 ! PLM         (2nd-order accurate)
                                 ! PLM_HYBGEN  (2nd-order accurate)
                                 ! PPM_H4      (3rd-order accurate)
@@ -567,7 +583,8 @@ REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
 VELOCITY_REMAPPING_SCHEME = "PPM_H4" ! default = "PPM_H4"
                                 ! This sets the reconstruction scheme used for vertical remapping of velocities.
                                 ! By default it is the same as REMAPPING_SCHEME. It can be one of the following
-                                ! schemes: PCM         (1st-order accurate)
+                                ! schemes:
+                                ! PCM         (1st-order accurate)
                                 ! PLM         (2nd-order accurate)
                                 ! PLM_HYBGEN  (2nd-order accurate)
                                 ! PPM_H4      (3rd-order accurate)

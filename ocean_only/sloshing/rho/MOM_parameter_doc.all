@@ -323,8 +323,8 @@ NK = 10                         !   [nondim]
 EQN_OF_STATE = "LINEAR"         ! default = "WRIGHT"
                                 ! EQN_OF_STATE determines which ocean equation of state should be used.
                                 ! Currently, the valid choices are "LINEAR", "UNESCO", "JACKETT_MCD", "WRIGHT",
-                                ! "WRIGHT_RED", "WRIGHT_FULL", "NEMO", "ROQUET_RHO", "ROQUET_SPV" and "TEOS10".
-                                ! This is only used if USE_EOS is true.
+                                ! "WRIGHT_REDUCED", "WRIGHT_FULL", "NEMO", "ROQUET_RHO", "ROQUET_SPV" and
+                                ! "TEOS10".  This is only used if USE_EOS is true.
 RHO_T0_S0 = 1000.0              !   [kg m-3] default = 1000.0
                                 ! When EQN_OF_STATE=LINEAR, this is the density at T=0, S=0.
 DRHO_DT = 0.0                   !   [kg m-3 K-1] default = -0.2
@@ -338,7 +338,8 @@ EOS_QUADRATURE = False          !   [Boolean] default = False
                                 ! density.
 TFREEZE_FORM = "LINEAR"         ! default = "LINEAR"
                                 ! TFREEZE_FORM determines which expression should be used for the freezing
-                                ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS10"
+                                ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS_POLY",
+                                ! "TEOS10"
 TFREEZE_S0_P0 = 0.0             !   [deg C] default = 0.0
                                 ! When TFREEZE_FORM=LINEAR, this is the freezing potential temperature at S=0,
                                 ! P=0.
@@ -435,7 +436,6 @@ REGRIDDING_COORDINATE_MODE = "RHO" ! default = "LAYER"
                                 !  RHO   - continuous isopycnal
                                 !  HYCOM1 - HyCOM-like hybrid coordinate
                                 !  HYBGEN - Hybrid coordinate from the Hycom hybgen code
-                                !  SLIGHT - stretched coordinates above continuous isopycnal
                                 !  ADAPTIVE - optimize for smooth neutral density surfaces
 REGRIDDING_COORDINATE_UNITS = "kg m^-3" ! default = "kg m^-3"
                                 ! Units of the regridding coordinate.
@@ -443,10 +443,12 @@ INTERPOLATION_SCHEME = "PQM_IH4IH3" ! default = "P1M_H2"
                                 ! This sets the interpolation scheme to use to determine the new grid. These
                                 ! parameters are only relevant when REGRIDDING_COORDINATE_MODE is set to a
                                 ! function of state. Otherwise, it is not used. It can be one of the following
-                                ! schemes:  P1M_H2     (2nd-order accurate)
+                                ! schemes:
+                                !  P1M_H2     (2nd-order accurate)
                                 !  P1M_H4     (2nd-order accurate)
                                 !  P1M_IH4    (2nd-order accurate)
                                 !  PLM        (2nd-order accurate)
+                                !  PPM_CW     (3rd-order accurate)
                                 !  PPM_H4     (3rd-order accurate)
                                 !  PPM_IH4    (3rd-order accurate)
                                 !  P3M_IH4IH3 (4th-order accurate)
@@ -515,8 +517,8 @@ MAX_LAYER_THICKNESS_CONFIG = "NONE" ! default = "NONE"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
 REMAPPING_SCHEME = "PQM_IH4IH3" ! default = "PLM"
                                 ! This sets the reconstruction scheme used for vertical remapping for all
-                                ! variables. It can be one of the following schemes: PCM         (1st-order
-                                ! accurate)
+                                ! variables. It can be one of the following schemes:
+                                ! PCM         (1st-order accurate)
                                 ! PLM         (2nd-order accurate)
                                 ! PLM_HYBGEN  (2nd-order accurate)
                                 ! PPM_H4      (3rd-order accurate)
@@ -528,7 +530,8 @@ REMAPPING_SCHEME = "PQM_IH4IH3" ! default = "PLM"
 VELOCITY_REMAPPING_SCHEME = "PQM_IH4IH3" ! default = "PQM_IH4IH3"
                                 ! This sets the reconstruction scheme used for vertical remapping of velocities.
                                 ! By default it is the same as REMAPPING_SCHEME. It can be one of the following
-                                ! schemes: PCM         (1st-order accurate)
+                                ! schemes:
+                                ! PCM         (1st-order accurate)
                                 ! PLM         (2nd-order accurate)
                                 ! PLM_HYBGEN  (2nd-order accurate)
                                 ! PPM_H4      (3rd-order accurate)
