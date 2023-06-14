@@ -301,6 +301,13 @@ RHO_0 = 1035.0                  !   [kg m-3] default = 1035.0
                                 ! some parameters from vertical units of m to kg m-2.
 BOUSSINESQ = False              !   [Boolean] default = True
                                 ! If true, make the Boussinesq approximation.
+SEMI_BOUSSINESQ = True          !   [Boolean] default = True
+                                ! If true, do non-Boussinesq pressure force calculations and use mass-based
+                                ! thicknesses, but use RHO_0 to convert layer thicknesses into certain height
+                                ! changes.  This only applies if BOUSSINESQ is false.
+RHO_KV_CONVERT = 1035.0         !   [kg m-3] default = 1035.0
+                                ! The density used to convert input kinematic viscosities into dynamic
+                                ! viscosities in non-BOUSSINESQ mode, and similarly for vertical diffusivities.
 ANGSTROM = 1.0E-10              !   [m] default = 1.0E-10
                                 ! The minimum layer thickness, usually one-Angstrom.
 H_TO_KG_M2 = 1.0                !   [kg m-2 H-1] default = 1.0
@@ -1152,7 +1159,9 @@ VERT_FRICTION_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the viscous
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use expressions that do not use an arbitrary hard-coded
-                                ! maximum viscous coupling coefficient  between layers.  If both
+                                ! maximum viscous coupling coefficient between layers.  Values below 20230601
+                                ! recover a form of the viscosity within the mixed layer that breaks up the
+                                ! magnitude of the wind stress in some non-Boussinesq cases.  If both
                                 ! VERT_FRICTION_2018_ANSWERS and VERT_FRICTION_ANSWER_DATE are specified, the
                                 ! latter takes precedence.
 DIRECT_STRESS = False           !   [Boolean] default = False
@@ -1326,6 +1335,8 @@ MIXEDLAYER_RESTRAT = True       !   [Boolean] default = False
                                 ! If true, a density-gradient dependent re-stratifying flow is imposed in the
                                 ! mixed layer. Can be used in ALE mode without restriction but in layer mode can
                                 ! only be used if BULKMIXEDLAYER is true.
+MLE%
+%MLE
 FOX_KEMPER_ML_RESTRAT_COEF = 20.0 !   [nondim] default = 0.0
                                 ! A nondimensional coefficient that is proportional to the ratio of the
                                 ! deformation radius to the dominant lengthscale of the submesoscale mixed layer

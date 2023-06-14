@@ -1172,7 +1172,9 @@ VERT_FRICTION_ANSWER_DATE = 20181231 ! default = 20181231
                                 ! The vintage of the order of arithmetic and expressions in the viscous
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use expressions that do not use an arbitrary hard-coded
-                                ! maximum viscous coupling coefficient  between layers.  If both
+                                ! maximum viscous coupling coefficient between layers.  Values below 20230601
+                                ! recover a form of the viscosity within the mixed layer that breaks up the
+                                ! magnitude of the wind stress in some non-Boussinesq cases.  If both
                                 ! VERT_FRICTION_2018_ANSWERS and VERT_FRICTION_ANSWER_DATE are specified, the
                                 ! latter takes precedence.
 DIRECT_STRESS = False           !   [Boolean] default = False
@@ -1342,6 +1344,8 @@ MIXEDLAYER_RESTRAT = True       !   [Boolean] default = False
                                 ! If true, a density-gradient dependent re-stratifying flow is imposed in the
                                 ! mixed layer. Can be used in ALE mode without restriction but in layer mode can
                                 ! only be used if BULKMIXEDLAYER is true.
+MLE%
+%MLE
 FOX_KEMPER_ML_RESTRAT_COEF = 20.0 !   [nondim] default = 0.0
                                 ! A nondimensional coefficient that is proportional to the ratio of the
                                 ! deformation radius to the dominant lengthscale of the submesoscale mixed layer
