@@ -118,7 +118,7 @@ EQN_OF_STATE = "LINEAR"         ! default = "WRIGHT"
 DRHO_DT = 0.0                   !   [kg m-3 K-1] default = -0.2
                                 ! When EQN_OF_STATE=LINEAR, this is the partial derivative of density with
                                 ! temperature.
-DRHO_DS = 1.0                   !   [kg m-3 PSU-1] default = 0.8
+DRHO_DS = 1.0                   !   [kg m-3 ppt-1] default = 0.8
                                 ! When EQN_OF_STATE=LINEAR, this is the partial derivative of density with
                                 ! salinity.
 
@@ -241,8 +241,6 @@ KV = 1.0E-06                    !   [m2 s-1]
 ! === module MOM_porous_barriers ===
 
 ! === module MOM_dynamics_split_RK2 ===
-
-! === module MOM_continuity ===
 
 ! === module MOM_continuity_PPM ===
 ETA_TOLERANCE = 1.0E-12         !   [m] default = 5.000000000000001E-15
