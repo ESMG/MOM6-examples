@@ -396,6 +396,8 @@ USE_DYED_OBC_TRACER = False     !   [Boolean] default = False
                                 ! If true, use the dyed_obc_tracer tracer package.
 USE_NW2_TRACERS = False         !   [Boolean] default = False
                                 ! If true, use the NeverWorld2 tracers.
+MLE%
+%MLE
 
 ! === module MOM_coord_initialization ===
 COORD_CONFIG = "linear"         ! default = "none"

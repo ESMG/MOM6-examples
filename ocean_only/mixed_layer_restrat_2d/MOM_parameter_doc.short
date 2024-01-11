@@ -103,6 +103,8 @@ EQN_OF_STATE = "LINEAR"         ! default = "WRIGHT"
                                 ! "TEOS10".  This is only used if USE_EOS is true.
 
 ! === module MOM_tracer_flow_control ===
+MLE%
+%MLE
 
 ! === module MOM_coord_initialization ===
 COORD_CONFIG = "linear"         ! default = "none"
