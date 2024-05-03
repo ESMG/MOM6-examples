@@ -593,6 +593,9 @@ REMAP_BOUND_INTERMEDIATE_VALUES = False !   [Boolean] default = False
 REMAP_BOUNDARY_EXTRAP = False   !   [Boolean] default = False
                                 ! If true, values at the interfaces of boundary cells are extrapolated instead
                                 ! of piecewise constant
+INIT_BOUNDARY_EXTRAP = False    !   [Boolean] default = False
+                                ! If true, values at the interfaces of boundary cells are extrapolated instead
+                                ! of piecewise constant during initialization.Defaults to REMAP_BOUNDARY_EXTRAP.
 PARTIAL_CELL_VELOCITY_REMAP = False !   [Boolean] default = False
                                 ! If true, use partial cell thicknesses at velocity points that are masked out
                                 ! where they extend below the shallower of the neighboring bathymetry for
@@ -1392,7 +1395,7 @@ USE_KH_BG_2D = True             !   [Boolean] default = False
                                 ! viscosity is the maximum of the other terms and this background value.
 KH_BG_2D_BUG = False            !   [Boolean] default = False
                                 ! If true, retain an answer-changing horizontal indexing bug in setting the
-                                ! corner-point viscosities when USE_KH_BG_2D=True. This isnot recommended.
+                                ! corner-point viscosities when USE_KH_BG_2D=True.  This is not recommended.
 KH_BG_2D_FILENAME = "KH_background_2d.nc" ! default = "KH_background_2d.nc"
                                 ! The filename containing a 2d map of "Kh".
 KH_BG_2D_VARNAME = "Kh"         ! default = "Kh"
@@ -1867,6 +1870,9 @@ HENYEY_IGW_BACKGROUND = True    !   [Boolean] default = False
 HENYEY_N0_2OMEGA = 20.0         !   [nondim] default = 20.0
                                 ! The ratio of the typical Buoyancy frequency to twice the Earth's rotation
                                 ! period, used with the Henyey scaling from the mixing.
+HENYEY_MAX_LAT = 95.0           !   [degN] default = 95.0
+                                ! A latitude poleward of which the Henyey profile is returned to the minimum
+                                ! diffusivity
 KD_TANH_LAT_FN = False          !   [Boolean] default = False
                                 ! If true, use a tanh dependence of Kd_sfc on latitude, like CM2.1/CM2M.  There
                                 ! is no physical justification for this form, and it can not be used with

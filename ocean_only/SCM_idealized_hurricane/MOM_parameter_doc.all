@@ -484,6 +484,9 @@ REMAP_BOUND_INTERMEDIATE_VALUES = False !   [Boolean] default = False
 REMAP_BOUNDARY_EXTRAP = False   !   [Boolean] default = False
                                 ! If true, values at the interfaces of boundary cells are extrapolated instead
                                 ! of piecewise constant
+INIT_BOUNDARY_EXTRAP = False    !   [Boolean] default = False
+                                ! If true, values at the interfaces of boundary cells are extrapolated instead
+                                ! of piecewise constant during initialization.Defaults to REMAP_BOUNDARY_EXTRAP.
 REMAPPING_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! The vintage of the expressions and order of arithmetic to use for remapping.
                                 ! Values below 20190101 result in the use of older, less accurate expressions
@@ -1233,6 +1236,10 @@ STOKES_MIXING = False           !   [Boolean] default = False
                                 ! Flag for Langmuir turbulence enhancement of turbulentmixing coefficient.
 USE_KPP_LT_VT2 = False          !   [Boolean] default = False
                                 ! Flag for Langmuir turbulence enhancement of Vt2in Bulk Richardson Number.
+ANSWER_DATE = 20240101          ! default = 20240101
+                                ! The vintage of the order of arithmetic in the CVMix KPP calculations.  Values
+                                ! below 20240501 recover the answers from early in 2024, while higher values use
+                                ! expressions that have been refactored for rotational symmetry.
 %KPP
 
 ! === module MOM_CVMix_conv ===
@@ -1573,10 +1580,10 @@ IDL_HURR_Y0 = 0.0               !   [m] default = 0.0
                                 ! Idealized Hurricane initial Y position
 IDL_HURR_TAU_CURR_REL = False   !   [Boolean] default = False
                                 ! Current relative stress switch used in the idealized hurricane wind profile.
-IDL_HURR_SCM_BR_BENCH = False   !   [Boolean] default = False
+IDL_HURR_SCM_BR_BENCH = True    !   [Boolean] default = False
                                 ! Single column mode benchmark case switch, which is invoking a modification
                                 ! (bug) in the wind profile meant to reproduce a previous implementation.
-IDL_HURR_SCM = False            !   [Boolean] default = False
+IDL_HURR_SCM = True             !   [Boolean] default = False
                                 ! Single Column mode switch used in the SCM idealized hurricane wind profile.
 IDL_HURR_SCM_LOCY = 5.0E+04     !   [m] default = 5.0E+04
                                 ! Y distance of station used in the SCM idealized hurricane wind profile.
