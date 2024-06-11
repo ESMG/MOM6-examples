@@ -485,6 +485,12 @@ DETERMINE_TEMP_ADJUST_T_AND_S = False !   [Boolean] default = False
                                 ! based on the ratio of the thermal and haline coefficients.  Otherwise try to
                                 ! match the density by only adjusting temperatures within a maximum range before
                                 ! revising estimates of the salinity.
+DETERMINE_TEMP_CONVERGENCE_BUG = True !   [Boolean] default = True
+                                ! If true, use layout-dependent tests on the changes in temperature and salinity
+                                ! to determine when the iterations have converged when
+                                ! DETERMINE_TEMP_ADJUST_T_AND_S is false.  For realistic equations of state and
+                                ! the default values of the various tolerances, this bug does not impact the
+                                ! solutions.
 DETERMINE_TEMP_T_MIN = -2.0     !   [degC] default = -2.0
                                 ! The minimum temperature that can be found by determine_temperature.
 DETERMINE_TEMP_T_MAX = 31.0     !   [degC] default = 31.0
@@ -818,6 +824,9 @@ CONT_PPM_USE_VISC_REM_MAX = True !   [Boolean] default = True
 CONT_PPM_MARGINAL_FACE_AREAS = True !   [Boolean] default = True
                                 ! If true, use the marginal face areas from the continuity solver for use as the
                                 ! weights in the barotropic solver. Otherwise use the transport averaged areas.
+VISC_REM_CONT_HVEL_FIX = False  !   [Boolean] default = False
+                                ! If true, velocity cell thickness h_[uv] from the continuity solver is not
+                                ! multiplied by visc_rem_[uv]. Default of this flag is set by VISC_REM_BUG.
 
 ! === module MOM_CoriolisAdv ===
 NOSLIP = False                  !   [Boolean] default = False
@@ -899,8 +908,8 @@ HOR_VISC_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! end of 2018, while higher values use updated and more robust forms of the same
                                 ! expressions.
 USE_CONT_THICKNESS = False      !   [Boolean] default = False
-                                ! If true, use thickness at velocity points from continuity solver. This
-                                ! optioncurrently only works with split mode.
+                                ! If true, use thickness at velocity points from continuity solver. This option
+                                ! currently only works with split mode.
 LAPLACIAN = False               !   [Boolean] default = False
                                 ! If true, use a Laplacian horizontal viscosity.
 BIHARMONIC = False              !   [Boolean] default = True
