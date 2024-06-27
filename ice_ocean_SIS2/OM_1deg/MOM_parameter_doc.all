@@ -1385,6 +1385,13 @@ BETTER_BOUND_AH = True          !   [Boolean] default = True
 RE_AH = 0.0                     !   [nondim] default = 0.0
                                 ! If nonzero, the biharmonic coefficient is scaled so that the biharmonic
                                 ! Reynolds number is equal to this.
+BACKSCATTER_UNDERBOUND = True   !   [Boolean] default = True
+                                ! If true, the bounds on the biharmonic viscosity are allowed to increase where
+                                ! the Laplacian viscosity is negative (due to backscatter parameterizations)
+                                ! beyond the largest timestep-dependent stable values of biharmonic viscosity
+                                ! when no Laplacian viscosity is applied.  The default is true for historical
+                                ! reasons, but this option probably should not be used because it can contribute
+                                ! to numerical instabilities.
 SMAG_BI_CONST = 0.06            !   [nondim] default = 0.0
                                 ! The nondimensional biharmonic Smagorinsky constant, typically 0.015 - 0.06.
 BOUND_CORIOLIS_BIHARM = True    !   [Boolean] default = True
@@ -1410,6 +1417,10 @@ USE_KH_BG_2D = True             !   [Boolean] default = False
 KH_BG_2D_BUG = False            !   [Boolean] default = False
                                 ! If true, retain an answer-changing horizontal indexing bug in setting the
                                 ! corner-point viscosities when USE_KH_BG_2D=True.  This is not recommended.
+FRICTWORK_BUG = True            !   [Boolean] default = True
+                                ! If true, retain an answer-changing bug in calculating the FrictWork, which
+                                ! cancels the h in thickness flux and the h at velocity point. This isnot
+                                ! recommended.
 KH_BG_2D_FILENAME = "KH_background_2d.nc" ! default = "KH_background_2d.nc"
                                 ! The filename containing a 2d map of "Kh".
 KH_BG_2D_VARNAME = "Kh"         ! default = "Kh"

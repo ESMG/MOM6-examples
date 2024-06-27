@@ -1157,6 +1157,13 @@ BETTER_BOUND_AH = True          !   [Boolean] default = True
 RE_AH = 0.0                     !   [nondim] default = 0.0
                                 ! If nonzero, the biharmonic coefficient is scaled so that the biharmonic
                                 ! Reynolds number is equal to this.
+BACKSCATTER_UNDERBOUND = True   !   [Boolean] default = True
+                                ! If true, the bounds on the biharmonic viscosity are allowed to increase where
+                                ! the Laplacian viscosity is negative (due to backscatter parameterizations)
+                                ! beyond the largest timestep-dependent stable values of biharmonic viscosity
+                                ! when no Laplacian viscosity is applied.  The default is true for historical
+                                ! reasons, but this option probably should not be used because it can contribute
+                                ! to numerical instabilities.
 SMAG_BI_CONST = 0.06            !   [nondim] default = 0.0
                                 ! The nondimensional biharmonic Smagorinsky constant, typically 0.015 - 0.06.
 BOUND_CORIOLIS_BIHARM = True    !   [Boolean] default = True
@@ -1179,6 +1186,10 @@ HORVISC_BOUND_COEF = 0.8        !   [nondim] default = 0.8
 USE_KH_BG_2D = False            !   [Boolean] default = False
                                 ! If true, read a file containing 2-d background harmonic viscosities. The final
                                 ! viscosity is the maximum of the other terms and this background value.
+FRICTWORK_BUG = True            !   [Boolean] default = True
+                                ! If true, retain an answer-changing bug in calculating the FrictWork, which
+                                ! cancels the h in thickness flux and the h at velocity point. This isnot
+                                ! recommended.
 
 ! === module MOM_vert_friction ===
 VERT_FRICTION_ANSWER_DATE = 99991231 ! default = 99991231
