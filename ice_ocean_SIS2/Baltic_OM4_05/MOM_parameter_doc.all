@@ -1673,7 +1673,7 @@ FOX_KEMPER_ML_RESTRAT_COEF = 1.0 !   [nondim] default = 0.0
                                 ! instabilities, times the minimum of the ratio of the mesoscale eddy kinetic
                                 ! energy to the large-scale geostrophic kinetic energy or 1 plus the square of
                                 ! the grid spacing over the deformation radius, as detailed by Fox-Kemper et al.
-                                ! (2010)
+                                ! (2011)
 USE_STANLEY_ML = False          !   [Boolean] default = False
                                 ! If true, turn on Stanley SGS T variance parameterization in ML restrat code.
 FOX_KEMPER_ML_RESTRAT_COEF2 = 0.0 !   [nondim] default = 0.0
@@ -2294,6 +2294,10 @@ TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "PLM"
                                 !   PLM    - Piecewise Linear Method
                                 !   PPM:H3 - Piecewise Parabolic Method (Huyhn 3rd order)
                                 !   PPM    - Piecewise Parabolic Method (Colella-Woodward)
+USE_HUYNH_STENCIL_BUG = False   !   [Boolean] default = False
+                                ! If true, use a stencil width of 2 in PPM:H3 tracer advection. This is
+                                ! incorrect and will produce regressions in certain configurations, but may be
+                                ! required to reproduce results in legacy simulations.
 
 ! === module MOM_tracer_hor_diff ===
 KHTR = 50.0                     !   [m2 s-1] default = 0.0

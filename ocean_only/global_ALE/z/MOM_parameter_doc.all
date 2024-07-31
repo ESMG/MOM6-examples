@@ -1269,6 +1269,23 @@ TIDE_M2_AMP = 0.242334          !   [m] default = 0.242334
 TIDE_M2_PHASE_T0 = 0.0          !   [radians] default = 0.0
                                 ! Phase of the M2 tidal constituent at time 0. This is only used if TIDES and
                                 ! TIDE_M2 are true.
+HA_START_TIME = 0.0             !   [days] default = 0.0
+                                ! Start time of harmonic analysis, in units of days after the start of the
+                                ! current run segment. Must be smaller than HA_END_TIME, otherwise harmonic
+                                ! analysis will not be performed. If negative, |HA_START_TIME| determines the
+                                ! length of harmonic analysis, and harmonic analysis will start |HA_START_TIME|
+                                ! days before HA_END_TIME, or at the beginning of the run segment, whichever
+                                ! occurs later.
+HA_END_TIME = 0.0               !   [days] default = 0.0
+                                ! End time of harmonic analysis, in units of days after the start of the current
+                                ! run segment. Must be positive and smaller than the length of the currnet run
+                                ! segment, otherwise harmonic analysis will not be performed.
+HA_SSH = False                  !   [Boolean] default = False
+                                ! If true, perform harmonic analysis of sea serface height.
+HA_UBT = False                  !   [Boolean] default = False
+                                ! If true, perform harmonic analysis of zonal barotropic velocity.
+HA_VBT = False                  !   [Boolean] default = False
+                                ! If true, perform harmonic analysis of meridional barotropic velocity.
 
 ! === module MOM_PressureForce ===
 ANALYTIC_FV_PGF = True          !   [Boolean] default = True
@@ -1621,7 +1638,7 @@ FOX_KEMPER_ML_RESTRAT_COEF = 20.0 !   [nondim] default = 0.0
                                 ! instabilities, times the minimum of the ratio of the mesoscale eddy kinetic
                                 ! energy to the large-scale geostrophic kinetic energy or 1 plus the square of
                                 ! the grid spacing over the deformation radius, as detailed by Fox-Kemper et al.
-                                ! (2010)
+                                ! (2011)
 USE_STANLEY_ML = False          !   [Boolean] default = False
                                 ! If true, turn on Stanley SGS T variance parameterization in ML restrat code.
 FOX_KEMPER_ML_RESTRAT_COEF2 = 0.0 !   [nondim] default = 0.0
@@ -1648,7 +1665,7 @@ MLE_MLD_DECAY_TIME2 = 0.0       !   [s] default = 0.0
                                 ! to the current MLD.
 MLE_DENSITY_DIFF = 0.03         !   [kg/m3] default = 0.03
                                 ! Density difference used to detect the mixed-layer depth used for the
-                                ! mixed-layer eddy parameterization by Fox-Kemper et al. (2010)
+                                ! mixed-layer eddy parameterization by Fox-Kemper et al. (2011)
 MLE_TAIL_DH = 0.0               !   [nondim] default = 0.0
                                 ! Fraction by which to extend the mixed-layer restratification depth used for a
                                 ! smoother stream function at the base of the mixed-layer.
@@ -2179,6 +2196,10 @@ TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "PLM"
                                 !   PLM    - Piecewise Linear Method
                                 !   PPM:H3 - Piecewise Parabolic Method (Huyhn 3rd order)
                                 !   PPM    - Piecewise Parabolic Method (Colella-Woodward)
+USE_HUYNH_STENCIL_BUG = False   !   [Boolean] default = False
+                                ! If true, use a stencil width of 2 in PPM:H3 tracer advection. This is
+                                ! incorrect and will produce regressions in certain configurations, but may be
+                                ! required to reproduce results in legacy simulations.
 
 ! === module MOM_tracer_hor_diff ===
 KHTR = 600.0                    !   [m2 s-1] default = 0.0
