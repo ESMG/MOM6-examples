@@ -1,5 +1,5 @@
 parameter_files:
   tags:
-    - ncrc5
+    - mom6-ci-c5
   script:
     - make -f tools/MRS/Makefile m6e-pipeline -j
