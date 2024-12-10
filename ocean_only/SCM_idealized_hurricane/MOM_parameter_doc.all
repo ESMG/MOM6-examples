@@ -1577,7 +1577,7 @@ BUOY_CONFIG = "const"           ! default = "zero"
 SENSIBLE_HEAT_FLUX = 0.0        !   [W/m2]
                                 ! A constant heat forcing (positive into ocean) applied through the sensible
                                 ! heat flux field.
-WIND_CONFIG = "SCM_ideal_hurr"  ! default = "zero"
+WIND_CONFIG = "ideal_hurr"      ! default = "zero"
                                 ! The character string that indicates how wind forcing is specified.  Valid
                                 ! options include (file), (data_override), (2gyre), (1gyre), (gyres), (zero),
                                 ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_ideal_hurr),
@@ -1619,7 +1619,7 @@ IDL_HURR_TRAN_SPEED = 5.0       !   [m/s] default = 5.0
 IDL_HURR_TRAN_DIR = 180.0       !   [degrees] default = 180.0
                                 ! Translation direction (towards) of hurricane used in the idealized hurricane
                                 ! wind profile.
-IDL_HURR_X0 = 0.0               !   [m] default = 0.0
+IDL_HURR_X0 = 6.48E+05          !   [m] default = 0.0
                                 ! Idealized Hurricane initial X position
 IDL_HURR_Y0 = 0.0               !   [m] default = 0.0
                                 ! Idealized Hurricane initial Y position
