@@ -1383,6 +1383,11 @@ MKE_TO_TKE_EFFIC = 0.0          !   [nondim] default = 0.0
 TKE_DECAY = 2.5                 !   [nondim] default = 2.5
                                 ! TKE_DECAY relates the vertical rate of decay of the TKE available for
                                 ! mechanical entrainment to the natural Ekman depth.
+DIRECT_EPBL_MIXING_CALC = False !   [Boolean] default = False
+                                ! If true and there is no conversion from mean kinetic energy to ePBL turbulent
+                                ! kinetic energy, use a direct calculation of the diffusivity that is supported
+                                ! by a given energy input instead of the more general but slower iterative
+                                ! solver.
 EPBL_MSTAR_SCHEME = "CONSTANT"  ! default = "CONSTANT"
                                 ! EPBL_MSTAR_SCHEME selects the method for setting mstar.  Valid values are:
                                 !    CONSTANT   - Use a fixed mstar given by MSTAR
@@ -1426,11 +1431,18 @@ EPBL_VEL_SCALE_FACTOR = 1.0     !   [nondim] default = 1.0
                                 ! the PBL diffusivity.
 VSTAR_SURF_FAC = 1.2            !   [nondim] default = 1.2
                                 ! The proportionality times ustar to set vstar at the surface.
+EPBL_BBL_EFFIC = 0.0            !   [nondim] default = 0.0
+                                ! The efficiency of bottom boundary layer mixing via ePBL.  Setting this to a
+                                ! value that is greater than 0 to enable bottom boundary layer mixing from EPBL.
 USE_LA_LI2016 = False           !   [Boolean] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
 EPBL_LT = False                 !   [Boolean] default = False
                                 ! A logical to use a LT parameterization.
+EPBL_OPTIONS_DIFF = 0           ! default = 0
+                                ! If positive, this is a coded integer indicating a pair of settings whose
+                                ! differences are diagnosed in a passive diagnostic mode  via extra calls to
+                                ! ePBL_column.  If this is 0 or negative no extra calls occur.
 !EPBL_USTAR_MIN = 1.45842E-18   !   [m s-1]
                                 ! The (tiny) minimum friction velocity used within the ePBL code, derived from
                                 ! OMEGA and ANGSTROM.
@@ -1577,8 +1589,7 @@ BUOY_CONFIG = "zero"            ! default = "zero"
 WIND_CONFIG = "const"           ! default = "zero"
                                 ! The character string that indicates how wind forcing is specified.  Valid
                                 ! options include (file), (data_override), (2gyre), (1gyre), (gyres), (zero),
-                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_ideal_hurr),
-                                ! (SCM_CVmix_tests) and (USER).
+                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_CVmix_tests) and (USER).
 RESTOREBUOY = False             !   [Boolean] default = False
                                 ! If true, the buoyancy fluxes drive the model back toward some specified
                                 ! surface state with a rate given by FLUXCONST.

@@ -1158,6 +1158,10 @@ PV_ADV_SCHEME = "PV_ADV_CENTERED" ! default = "PV_ADV_CENTERED"
                                 !    PV_ADV_UPWIND1  - upwind, first order
 
 ! === module MOM_self_attr_load ===
+SAL_USE_BPA = False             !   [Boolean] default = False
+                                ! If true, use bottom pressure anomaly to calculate self-attraction and loading
+                                ! (SAL). Otherwise sea surface height anomaly is used, which is only correct for
+                                ! homogenous flow.
 SAL_SCALAR_APPROX = True        !   [Boolean] default = True
                                 ! If true, use the scalar approximation to calculate self-attraction and
                                 ! loading.
@@ -1206,7 +1210,7 @@ TIDAL_SAL_FROM_FILE = False     !   [Boolean] default = False
 USE_PREVIOUS_TIDES = False      !   [Boolean] default = False
                                 ! If true, use the SAL from the previous iteration of the tides to facilitate
                                 ! convergent iteration. This is only used if TIDES is true.
-TIDE_REF_DATE = 0, 0, 0         ! default = 0
+TIDE_REF_DATE = 0, 0, 0         ! default = 0, 0, 0
                                 ! Year,month,day to use as reference date for tidal forcing. If not specified,
                                 ! defaults to 0.
 TIDE_USE_EQ_PHASE = False       !   [Boolean] default = False
@@ -1253,9 +1257,18 @@ RHO_PGF_REF = 1035.0            !   [kg m-3] default = 1035.0
                                 ! non-Boussinesq mode.  The default is RHO_0.
 TIDES_ANSWER_DATE = 20230630    ! default = 20230630
                                 ! The vintage of self-attraction and loading (SAL) and tidal forcing
-                                ! calculations in Boussinesq mode. Values below 20230701 recover the old answers
-                                ! in which the SAL is part of the tidal forcing calculation.  The change is due
-                                ! to a reordered summation and the difference is only at bit level.
+                                ! calculations.  Setting dates before 20230701 recovers old answers (Boussinesq
+                                ! and non-Boussinesq modes) when SAL is part of the tidal forcing calculation.
+                                ! The answer difference is only at bit level and due to a reordered summation.
+                                ! Setting dates before 20250201 recovers answers (Boussinesq mode) that
+                                ! interface heights are modified before pressure force integrals are calculated.
+BOUSSINESQ_SAL_TIDES = False    !   [Boolean] default = False
+                                ! If true, in Boussinesq mode, use an alternative method to include
+                                ! self-attraction and loading (SAL) and tidal forcings in pressure gradient, in
+                                ! which their gradients are calculated separately, instead of adding
+                                ! geopotential anomalies as corrections to the interface height.  This
+                                ! alternative method elimates a baroclinic component of the SAL and tidal
+                                ! forcings.
 SSH_IN_EOS_PRESSURE_FOR_PGF = False !   [Boolean] default = False
                                 ! If true, include contributions from the sea surface height in the height-based
                                 ! pressure used in the equation of state calculations for the Boussinesq
@@ -2141,6 +2154,18 @@ PEN_SW_FLUX_ABSORB = 2.5E-11    !   [degC m s-1] default = 2.5E-11
 PEN_SW_ABSORB_MINTHICK = 1.0    !   [m] default = 1.0
                                 ! A thickness that is used to absorb the remaining penetrating shortwave heat
                                 ! flux when it drops below PEN_SW_FLUX_ABSORB.
+OPACITY_VALUES_MANIZZA = 0.0232, 0.074, 0.225, 0.037, 2.86, 0.0 !   [m-1] default = 0.0232, 0.074, 0.225, 0.037, 2.86, 0.0
+                                ! Pairs of opacity coefficients for blue, red and near-infrared radiation with
+                                ! parameterizations following the functional form from Manizza et al., GRL 2005,
+                                ! namely in the form opacity = coef_1 + coef_2 * chl**pow for each band.
+                                ! Although coefficients are set for 3 bands, more or less bands may actually be
+                                ! used, with extra bands following the same properties as band 3.
+CHOROPHYLL_POWER_MANIZZA = 0.674, 0.629, 0.0 !   [nondim] default = 0.674, 0.629, 0.0
+                                ! Powers of chlorophyll for blue, red and near-infrared radiation bands in
+                                ! expressions for opacity of the form opacity = coef_1 + coef_2 * chl**pow.
+OPACITY_BAND_WAVELENGTHS = 0.0, 550.0, 700.0, 2800.0 !   [nm] default = 0.0, 550.0, 700.0, 2800.0
+                                ! The bounding wavelengths for the various bands of shortwave radiation, with
+                                ! defaults that depend on the setting for OPACITY_SCHEME.
 OPACITY_LAND_VALUE = 10.0       !   [m-1] default = 10.0
                                 ! The value to use for opacity over land. The default is 10 m-1 - a value for
                                 ! muddy water.
@@ -2263,31 +2288,60 @@ LONGWAVE_FILE = "ocean_forcing_daily.nc" !
                                 ! LONGWAVE_FORCING_VAR.
 LONGWAVE_FORCING_VAR = "LW"     ! default = "LW"
                                 ! The variable with the longwave forcing field.
+LONGWAVE_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of longwave fluxes per time level in
+                                ! LONGWAVE_FILE, or if negative the number of time levels per day.  If 31 change
+                                ! forcing monthly, or if 0 the model will guess the right value based on the
+                                ! file size.
 SHORTWAVE_FILE = "ocean_forcing_daily.nc" !
                                 ! The file with the shortwave heat flux, in the variable given by
                                 ! SHORTWAVE_FORCING_VAR.
 SHORTWAVE_FORCING_VAR = "SW"    ! default = "SW"
                                 ! The variable with the shortwave forcing field.
+SHORTWAVE_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of shortwave fluxes per time level in
+                                ! SHORTWAVE_FILE, or if negative the number of time levels per day.  If 31
+                                ! change forcing monthly, or if 0 the model will guess the right value based on
+                                ! the file size.
 EVAPORATION_FILE = "ocean_forcing_daily.nc" !
                                 ! The file with the evaporative moisture flux, in the variable given by
                                 ! EVAP_FORCING_VAR.
 EVAP_FORCING_VAR = "evap"       ! default = "evap"
                                 ! The variable with the evaporative moisture flux.
+EVAPORATION_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of evaporation per time level in
+                                ! EVAPORATION_FILE, or if negative the number of time levels per day.  If 31
+                                ! change forcing monthly, or if 0 the model will guess the right value based on
+                                ! the file size.
 LATENTHEAT_FILE = "ocean_forcing_daily.nc" !
                                 ! The file with the latent heat flux, in the variable given by
                                 ! LATENT_FORCING_VAR.
 LATENT_FORCING_VAR = "latent"   ! default = "latent"
                                 ! The variable with the latent heat flux.
+LATENTHEAT_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of latent heat fluxes per time level in
+                                ! LATENTHEAT_FILE, or if negative the number of time levels per day.  If 31
+                                ! change forcing monthly, or if 0 the model will guess the right value based on
+                                ! the file size.
 SENSIBLEHEAT_FILE = "ocean_forcing_daily.nc" !
                                 ! The file with the sensible heat flux, in the variable given by
                                 ! SENSIBLE_FORCING_VAR.
 SENSIBLE_FORCING_VAR = "sensible" ! default = "sensible"
                                 ! The variable with the sensible heat flux.
+SENSIBLEHEAT_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of sensible heat fluxes per time level in
+                                ! SENSIBLEHEAT_FILE, or if negative the number of time levels per day.  If 31
+                                ! change forcing monthly, or if 0 the model will guess the right value based on
+                                ! the file size.
 RAIN_FILE = "ocean_precip_monthly.nc" !
                                 ! The file with the liquid precipitation flux, in the variable given by
                                 ! RAIN_FORCING_VAR.
 RAIN_FORCING_VAR = "liq_precip" ! default = "liq_precip"
                                 ! The variable with the liquid precipitation flux.
+RAIN_FILE_DAYS_PER_RECORD = 0   ! default = 0
+                                ! If positive the number of days of rain fluxes per time level in RAIN_FILE, or
+                                ! if negative the number of time levels per day.  If 31 change forcing monthly,
+                                ! or if 0 the model will guess the right value based on the file size.
 SNOW_FILE = "ocean_precip_monthly.nc" !
                                 ! The file with the frozen precipitation flux, in the variable given by
                                 ! SNOW_FORCING_VAR.
@@ -2300,6 +2354,10 @@ LIQ_RUNOFF_FORCING_VAR = "liq_runoff" ! default = "liq_runoff"
                                 ! The variable with the liquid runoff flux.
 FROZ_RUNOFF_FORCING_VAR = "froz_runoff" ! default = "froz_runoff"
                                 ! The variable with the frozen runoff flux.
+RUNOFF_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of runoff per time level in RUNOFF_FILE, or if
+                                ! negative the number of time levels per day.  If 31 change forcing monthly, or
+                                ! if 0 the model will guess the right value based on the file size.
 SSTRESTORE_FILE = "ocean_forcing_daily.nc" !
                                 ! The file with the SST toward which to restore in the variable given by
                                 ! SST_RESTORE_VAR.
@@ -2308,13 +2366,21 @@ SALINITYRESTORE_FILE = "ocean_forcing_daily.nc" !
                                 ! given by SSS_RESTORE_VAR.
 SST_RESTORE_VAR = "SST"         ! default = "SST"
                                 ! The variable with the SST toward which to restore.
+SSTRESTORE_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of SST per time level in SSTRESTORE_FILE, or if
+                                ! negative the number of time levels per day.  If 31 change forcing monthly, or
+                                ! if 0 the model will guess the right value based on the file size.
 SSS_RESTORE_VAR = "SSS"         ! default = "SSS"
                                 ! The variable with the SSS toward which to restore.
+SALINITYRESTORE_FILE_DAYS_PER_RECORD = 0 ! default = 0
+                                ! If positive the number of days of salinity per time level in
+                                ! SALINITYRESTORE_FILE, or if negative the number of time levels per day.  If 31
+                                ! change forcing monthly, or if 0 the model will guess the right value based on
+                                ! the file size.
 WIND_CONFIG = "file"            ! default = "zero"
                                 ! The character string that indicates how wind forcing is specified.  Valid
                                 ! options include (file), (data_override), (2gyre), (1gyre), (gyres), (zero),
-                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_ideal_hurr),
-                                ! (SCM_CVmix_tests) and (USER).
+                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_CVmix_tests) and (USER).
 WIND_FILE = "ocean_forcing_daily.nc" !
                                 ! The file in which the wind stresses are found in variables STRESS_X and
                                 ! STRESS_Y.
@@ -2330,6 +2396,10 @@ WINDSTRESS_SCALE = 1.0          !   [nondim] default = 1.0
 USTAR_FORCING_VAR = ""          ! default = ""
                                 ! The name of the friction velocity variable in WIND_FILE or blank to get ustar
                                 ! from the wind stresses plus the gustiness.
+WIND_FILE_DAYS_PER_RECORD = 0   ! default = 0
+                                ! If positive the number of days of wind stress per time level in WIND_FILE, or
+                                ! if negative the number of time levels per day.  If 31 change forcing monthly,
+                                ! or if 0 the model will guess the right value based on the file size.
 RESTOREBUOY = True              !   [Boolean] default = False
                                 ! If true, the buoyancy fluxes drive the model back toward some specified
                                 ! surface state with a rate given by FLUXCONST.

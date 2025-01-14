@@ -521,8 +521,7 @@ SALINITYRESTORE_FILE = "ocean_forcing_daily.nc" !
 WIND_CONFIG = "file"            ! default = "zero"
                                 ! The character string that indicates how wind forcing is specified.  Valid
                                 ! options include (file), (data_override), (2gyre), (1gyre), (gyres), (zero),
-                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_ideal_hurr),
-                                ! (SCM_CVmix_tests) and (USER).
+                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_CVmix_tests) and (USER).
 WIND_FILE = "ocean_forcing_daily.nc" !
                                 ! The file in which the wind stresses are found in variables STRESS_X and
                                 ! STRESS_Y.
