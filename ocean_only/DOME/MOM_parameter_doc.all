@@ -298,6 +298,9 @@ OBC_RAMP_TIMESCALE = 1.0        !   [days] default = 1.0
                                 ! If RAMP_OBCS is true, this sets the ramping timescale.
 OBC_TIDE_N_CONSTITUENTS = 0     ! default = 0
                                 ! Number of tidal constituents being added to the open boundary.
+EXTERIOR_OBC_BUG = True         !   [Boolean] default = True
+                                ! If true, recover a bug in barotropic solver and other routines when boundary
+                                ! contitions interior to the domain are used.
 OBC_SEGMENT_001 = "J=N,I=110:100,SIMPLE" !
                                 ! Documentation needs to be dynamic?????
 OBC_REMAPPING_SCHEME = "PLM"    ! default = "PLM"
