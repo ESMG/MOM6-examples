@@ -2198,16 +2198,40 @@
     ! variants: {N2,N2_xyave,obvfsq,obvfsq_xyave}
 "Kd_shear"  [Used]
     ! modules: {ocean_model,ocean_model_z,ocean_model_d2,ocean_model_z_d2}
-    ! long_name: Shear-driven Diapycnal Diffusivity
+    ! long_name: Shear-driven Diapycnal Diffusivity at horizontal tracer points
     ! units: m2 s-1
     ! cell_methods: xh:mean yh:mean zi:point area:mean
     ! variants: {Kd_shear,Kd_shear_xyave}
 "TKE_shear"  [Unused]
     ! modules: {ocean_model,ocean_model_z,ocean_model_d2,ocean_model_z_d2}
-    ! long_name: Shear-driven Turbulent Kinetic Energy
+    ! long_name: Shear-driven Turbulent Kinetic Energy at horizontal tracer points
     ! units: m2 s-2
     ! cell_methods: xh:mean yh:mean zi:point area:mean
     ! variants: {TKE_shear,TKE_shear_xyave}
+"S2_shear_in"  [Unused]
+    ! modules: {ocean_model,ocean_model_z,ocean_model_d2,ocean_model_z_d2}
+    ! long_name: Interface shear squared at horizontal tracer points, as input to kappa-shear
+    ! units: s-2
+    ! cell_methods: xh:mean yh:mean zi:point area:mean
+    ! variants: {S2_shear_in,S2_shear_in_xyave}
+"N2_shear_in"  [Unused]
+    ! modules: {ocean_model,ocean_model_z,ocean_model_d2,ocean_model_z_d2}
+    ! long_name: Interface stratification at horizontal tracer points, as input to kappa-shear
+    ! units: s-2
+    ! cell_methods: xh:mean yh:mean zi:point area:mean
+    ! variants: {N2_shear_in,N2_shear_in_xyave}
+"S2_shear_mean"  [Unused]
+    ! modules: {ocean_model,ocean_model_z,ocean_model_d2,ocean_model_z_d2}
+    ! long_name: Interface shear squared at horizontal tracer points, averaged over timestep in kappa-shear
+    ! units: s-2
+    ! cell_methods: xh:mean yh:mean zi:point area:mean
+    ! variants: {S2_shear_mean,S2_shear_mean_xyave}
+"N2_shear_mean"  [Unused]
+    ! modules: {ocean_model,ocean_model_z,ocean_model_d2,ocean_model_z_d2}
+    ! long_name: Interface stratification at horizontal tracer points, averaged ove timestep in kappa-shear
+    ! units: s-2
+    ! cell_methods: xh:mean yh:mean zi:point area:mean
+    ! variants: {N2_shear_mean,N2_shear_mean_xyave}
 "Chl_opac"  [Unused]
     ! modules: {ocean_model,ocean_model_d2}
     ! long_name: Surface chlorophyll A concentration used to find opacity
