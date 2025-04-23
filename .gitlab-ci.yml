@@ -2,4 +2,58 @@ parameter_files:
   tags:
     - mom6-ci-c5
   script:
-    - make -f tools/MRS/Makefile m6e-pipeline -j
+    # Set up environment
+    - echo -e "\e[0Ksection_start:`date +%s`:setup[collapsed=true]\r\e[0KSetup working directory and environment"
+    - module unload PrgEnv-gnu
+    - module unload PrgEnv-intel
+    - module unload PrgEnv-nvhpc
+    - module load PrgEnv-gnu
+    - module load cray-hdf5
+    - module load cray-netcdf
+    - module switch gcc-native/12.3
+    - module load python
+
+    # Update source code
+    - git submodule update --init --recursive
+
+    # Configure Makefile
+    - echo "CC = cc" >> config.mk
+    - echo "MPICC = cc" >> config.mk
+    - echo "FC = ftn" >> config.mk
+    - echo "MPIFC = ftn" >> config.mk
+    - echo "FCFLAGS = -g -Og -fbacktrace" >> config.mk
+    - echo "LAUNCHER = srun" >> config.mk
+    - echo "LAUNCHER_NP_FLAG = -n" >> config.mk
+    - echo "LAUNCHER_FLAGS = -mblock --exclusive" >> config.mk
+    - echo "PYTHON = python3" >> config.mk
+    - echo -e "\e[0Ksection_end:`date +%s`:setup\r\e[0K"
+
+    # Build models
+    - echo -e "\e[0Ksection_start:`date +%s`:compile[collapsed=true]\r\e[0KCompiling models"
+    - make -j FMS_CODEBASE=src/FMS1 gfdl > build.out
+    - echo -e "\e[0Ksection_end:`date +%s`:compile\r\e[0K"
+
+    # Link input datasets
+    - ln -s /gpfs/f5/gfdl_o/world-shared/datasets .datasets
+
+    # Run models and test parameter output
+    - |
+      echo -e "\e[0Ksection_start:`date +%s`:run[collapsed=true]\r\e[0KRunning experiments"
+      sbatch -M c5 -N 8 -t 15:00 -A gfdl_o -q debug -J mom6_examples_tests -o log.$CI_PIPELINE_ID -W << EOF
+      #!/bin/sh
+      module unload PrgEnv-gnu
+      module unload PrgEnv-intel
+      module unload PrgEnv-nvhpc
+      module load PrgEnv-gnu
+      module switch gcc-native/12.3
+      module load python
+      make -j run.gfdl FMS_CODEBASE=src/FMS1 TESTDIR=.
+      EOF
+      # This double checks that the runs completed (the error code from the first pass is not passed back from the job)
+      make run.gfdl FMS_CODEBASE=src/FMS1 TESTDIR=.
+      echo -e "\e[0Ksection_end:`date +%s`:run\r\e[0K"
+
+    # Validate parameter output
+    - echo -e "\e[0Ksection_start:`date +%s`:test[collapsed=false]\r\e[0KResults"
+    - git diff --exit-code
+    - echo -e "\e[0Ksection_end:`date +%s`:test\r\e[0K"

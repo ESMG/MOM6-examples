@@ -43,7 +43,10 @@ cd 02.ignore
 test -d ../INPUT && ln -sf ../INPUT .
 cp -f ../MOM_* ../*table ../input.nml .
 test -e ../isopyc_coords.nc && cp -f ../isopyc_coords.nc .
-sed -i "/^DAYMAX/d" MOM_input; echo "DAYMAX=$DOUBLE_DAYMAX" >> MOM_input
+if [[ ${INPUT_DAYS} -eq "0" && ${INPUT_HOURS} -eq "0" ]]; then
+    sed -i "/^DAYMAX/d" MOM_input
+    echo "DAYMAX=$DOUBLE_DAYMAX" >> MOM_input
+fi
 sed -i "/^TIMEUNIT/d" MOM_input; echo TIMEUNIT=1. >> MOM_input
 sed -i "/^ENERGYSAVEDAYS/d" MOM_input; echo "ENERGYSAVEDAYS=$DT" >> MOM_input
 [[ ! -z $INPUT_DAYS ]] && sed -i "/days/c days=$DOUBLE_DAYS," input.nml
@@ -57,7 +60,10 @@ cd ../01.ignore
 test -d ../INPUT && ln -sf ../INPUT .
 cp -f ../MOM_* ../*table ../input.nml .
 test -e ../isopyc_coords.nc && cp -f ../isopyc_coords.nc .
-sed -i "/^DAYMAX/d" MOM_input; echo "DAYMAX=$HALF_DAYMAX" >> MOM_input
+if [[ ${INPUT_DAYS} -eq "0" && ${INPUT_HOURS} -eq "0" ]]; then
+    sed -i "/^DAYMAX/d" MOM_input
+    echo "DAYMAX=$HALF_DAYMAX" >> MOM_input
+fi
 sed -i "/^TIMEUNIT/d" MOM_input; echo TIMEUNIT=1. >> MOM_input
 sed -i "/^ENERGYSAVEDAYS/d" MOM_input; echo "ENERGYSAVEDAYS=$DT" >> MOM_input
 sed -i "/^RESTART_CONTROL/d" MOM_input; echo "RESTART_CONTROL=1" >> MOM_input
@@ -72,7 +78,10 @@ cd ../12.ignore
 test -d ../INPUT && mkdir -p INPUT && ( cd INPUT && ln -sf ../../INPUT/* . )
 cp -f ../MOM_* ../*table ../input.nml .
 test -e ../isopyc_coords.nc && cp -f ../isopyc_coords.nc .
-sed -i "/^DAYMAX/d" MOM_input; echo "DAYMAX=$DOUBLE_DAYMAX" >> MOM_input
+if [[ ${INPUT_DAYS} -eq "0" && ${INPUT_HOURS} -eq "0" ]]; then
+    sed -i "/^DAYMAX/d" MOM_input
+    echo "DAYMAX=$DOUBLE_DAYMAX" >> MOM_input
+fi
 sed -i "/^TIMEUNIT/d" MOM_input; echo TIMEUNIT=1. >> MOM_input
 sed -i "/^ENERGYSAVEDAYS/d" MOM_input; echo "ENERGYSAVEDAYS=$DT" >> MOM_input
 [[ ! -z $INPUT_DAYS ]] && sed -i "/days/c days=$HALF_DAYS," input.nml

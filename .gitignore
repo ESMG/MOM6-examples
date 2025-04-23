@@ -7,6 +7,7 @@ build*
 CPU_stats
 CPU_stats.*
 _read_error.nml
+scratch
 
 # Ignore most available_diags.* files, but add two as a sample
 available_diags.0*

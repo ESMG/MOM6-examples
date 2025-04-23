@@ -1,3 +1,6 @@
+# User-defined configuration
+-include config.mk
+
 # Build configuration
 BUILD ?= build
 MOM_MEMORY ?=
@@ -20,13 +23,17 @@ MAKEDEP ?= $(MOM_CODEBASE)/ac/makedep
 
 # Run configuration
 EXPT ?=
-OUTPUT ?= ./$(EXPT)
+RUNDIR ?= ./$(EXPT)
 LAUNCHER ?= mpirun
-# The following runs do not appear to work
+LAUNCHER_NP_FLAG ?= -np
+LAUNCHER_FLAGS ?=
+PYTHON ?= python
+
+# Test suite
+TESTDIR ?= scratch
 EXCLUDE ?= \
   OM4_025.JRA \
-  SIS2_icebergs \
-  SIS2_bergs_cgrid
+  SIS2_icebergs
 
 # Autoconf setup
 EXTRA_SRC_DIRS := \
@@ -88,21 +95,23 @@ endif
 # Disable builtin rules and variables
 MAKEFLAGS += -rR
 
-#----
 
+#--------
+# `make`
+
+$(BUILD)/coupler_main: $(wildcard $(MOM_CODEBASE)/src/*)
+$(BUILD)/coupler_main: $(wildcard $(MOM_CODEBASE)/src/*/*)
+$(BUILD)/coupler_main: $(wildcard $(MOM_CODEBASE)/src/*/*/*)
+$(BUILD)/coupler_main: $(wildcard $(MOM_CODEBASE)/config_src/drivers/FMS_cap/*)
+$(BUILD)/coupler_main: $(wildcard $(MOM_CODEBASE)/config_src/infra/*/*)
+$(BUILD)/coupler_main: $(wildcard $(MOM_CODEBASE)/config_src/external/*/*)
+$(BUILD)/coupler_main: $(foreach dir,$(EXTRA_SRC_DIRS),$(wildcard $(dir)/*))
 $(BUILD)/coupler_main: $(FMS_BUILD)/libFMS.a
 $(BUILD)/coupler_main: $(ATMOS_BUILD)/libatmos_null.a
 $(BUILD)/coupler_main: $(LAND_BUILD)/libland_null.a
 $(BUILD)/coupler_main: $(ICE_PARAM_BUILD)/libice_param.a
 $(BUILD)/coupler_main: $(ICEBERGS_BUILD)/libicebergs.a
-$(BUILD)/coupler_main: FORCE $(BUILD)/Makefile
-	if test $(FMS_BUILD)/libFMS.a -nt $@ \
-	    -o $(ATMOS_BUILD)/libatmos_null.a -nt $@ \
-	    -o $(LAND_BUILD)/libland_null.a -nt $@ \
-	    -o $(ICE_PARAM_BUILD)/libice_param.a -nt $@ \
-	    -o $(ICEBERGS_BUILD)/libicebergs.a -nt $@ ; then \
-	  $(MAKE) -C $(@D) clean ; \
-	fi
+$(BUILD)/coupler_main: $(BUILD)/Makefile
 	$(MAKE) -C $(BUILD) coupler_main
 
 $(BUILD)/Makefile: $(BUILD)/config.status $(BUILD)/Makefile.in
@@ -139,39 +148,31 @@ $(BUILD):
 #----
 # Dependencies
 
-$(ATMOS_BUILD)/libatmos_null.a: FORCE $(FMS_BUILD)/libFMS.a
-	if test $(FMS_BUILD)/libFMS.a -nt $@ ; then \
-	  $(MAKE) -C ../shared/atmos_null clean ; \
-	fi
+$(ATMOS_BUILD)/libatmos_null.a: $(wildcard ../src/atmos_null/*)
+$(ATMOS_BUILD)/libatmos_null.a: $(FMS_BUILD)/libFMS.a
 	$(MAKE) -C ../shared/atmos_null \
 	  BUILD=$(abspath $(ATMOS_BUILD)) \
 	  FMS_BUILD=$(abspath $(FMS_BUILD))
 
-$(LAND_BUILD)/libland_null.a: FORCE $(FMS_BUILD)/libFMS.a
-	if test $(FMS_BUILD)/libFMS.a -nt $@ ; then \
-	  $(MAKE) -C ../shared/land_null clean ; \
-	fi
+$(LAND_BUILD)/libland_null.a: $(wildcard,../src/land_null/*)
+$(LAND_BUILD)/libland_null.a: $(FMS_BUILD)/libFMS.a
 	$(MAKE) -C ../shared/land_null \
 	  BUILD=$(abspath $(LAND_BUILD)) \
 	  FMS_BUILD=$(abspath $(FMS_BUILD))
 
-$(ICE_PARAM_BUILD)/libice_param.a: FORCE $(FMS_BUILD)/libFMS.a
-	if test $(FMS_BUILD)/libFMS.a -nt $@ ; then \
-	  $(MAKE) -C ../shared/ice_param clean ; \
-	fi
+$(ICE_PARAM_BUILD)/libice_param.a: $(wildcard,../src/ice_param/*)
+$(ICE_PARAM_BUILD)/libice_param.a: $(FMS_BUILD)/libFMS.a
 	$(MAKE) -C ../shared/ice_param \
 	  BUILD=$(abspath $(ICE_PARAM_BUILD)) \
 	  FMS_BUILD=$(abspath $(FMS_BUILD))
 
-$(ICEBERGS_BUILD)/libicebergs.a: FORCE $(FMS_BUILD)/libFMS.a
-	if test $(FMS_BUILD)/libFMS.a -nt $@ ; then \
-	  $(MAKE) -C ../shared/icebergs clean ; \
-	fi
+$(ICEBERGS_BUILD)/libicebergs.a: $(wildcard,../src/icebergs/src/*)
+$(ICEBERGS_BUILD)/libicebergs.a: $(FMS_BUILD)/libFMS.a
 	$(MAKE) -C ../shared/icebergs \
 	  BUILD=$(abspath $(ICEBERGS_BUILD)) \
 	  FMS_BUILD=$(abspath $(FMS_BUILD))
 
-$(FMS_BUILD)/libFMS.a: FORCE
+$(FMS_BUILD)/libFMS.a: $(wildcard,$(FMS_CODEBASE)/*/*)
 	$(MAKE) -C ../shared/fms \
 	  BUILD=$(abspath $(FMS_BUILD)) \
 	  CODEBASE=$(abspath $(FMS_CODEBASE))
@@ -179,65 +180,111 @@ $(FMS_BUILD)/libFMS.a: FORCE
 FORCE:
 
 
-#----
-# Experiments
+#------------
+# `make run`
 
-EXPTS = $(patsubst ./%/,%,$(dir $(shell find . -name MOM_parameter_doc.all)))
-GET_NPROCS = $(abspath ../shared/tools/get_nprocs.sh)
+GET_NPROCS = $(abspath ../shared/tools/get_nprocs.py)
 
-REG_EXPTS = $(filter-out $(EXCLUDE),$(EXPTS))
+.PHONY: run
+run: $(RUNDIR)/ocean.stats
 
-RUNDIR = $(if $(OUTPUT),$(OUTPUT)/$(1),$(1))
+# `make run` directs user to select an experiment.
+.PHONY: ./ocean.stats
+./ocean.stats:
+	@echo "Please specify the experiment to run.  For example:"
+	@echo "  make run EXPT=double_gyre"
+	@echo "  make run.double_gyre"
+	@exit 1
 
-.PHONY: run.all
-run.all: $(foreach e,$(REG_EXPTS),run.$(e))
+# NOTE: This alias rule can only be used on single directories, not full paths.
+.PHONY: run.%
+run.%:
+	$(MAKE) EXPT=$* run
 
-define EXPT_RULE
-.PHONY: run.$(1)
-run.$(1): $(RUNDIR)/ocean.stats | $(RUNDIR)
+ifdef EXPT
+INPUT_MANIFEST = \
+  $(shell $(PYTHON) ../shared/tools/gen_input_manifest.py $(EXPT))
 
-$(RUNDIR)/ocean.stats: $(BUILD)/coupler_main $(RUNDIR)/input.nml
-	mkdir -p $(RUNDIR)/RESTART
-	cd $(RUNDIR) && srun -mblock --exclusive -n $$$$($(GET_NPROCS) .) \
+$(RUNDIR)/ocean.stats: \
+  $(BUILD)/coupler_main $(foreach f,$(INPUT_MANIFEST),$(RUNDIR)/$f) | $(RUNDIR)
+	cd $(@D) \
+	&& $(LAUNCHER) \
+	  $(LAUNCHER_NP_FLAG) $$($(PYTHON) $(GET_NPROCS) $(abspath $(EXPT))) \
+	  $(LAUNCHER_FLAGS) \
 	  $(abspath $(BUILD)/coupler_main)
+endif
 
-# TODO: Whitelist the files/dirs to copy?
-# TODO: What about symbolic links?
-$(RUNDIR)/input.nml: | $(RUNDIR)
-	cp -r $(1)/* $(RUNDIR)/
+# Define rules for moving data
+ifneq ($(realpath $(EXPT)), $(realpath $(RUNDIR)))
+
+define copy
+$(RUNDIR)/$(1): $(EXPT)/$(1) | $(RUNDIR)
+	cp -p $$^ $$@
+endef
+$(foreach f,$(filter-out INPUT,$(INPUT_MANIFEST)),$(eval $(call copy,$f)))
+
+# TODO: Symlink will cause issues with restart runs
+$(RUNDIR)/INPUT: $(EXPT)/INPUT | $(RUNDIR)
+	if [ -e $< ]; then ln -s $(abspath $^) $@ ; fi
 
 $(RUNDIR):
-	mkdir -p $(RUNDIR)
+	mkdir -p $@
 
-clean.$(1):
-	rm -f $(RUNDIR)/CPU_stats
-	rm -f $(RUNDIR)/Depth_list.nc
-	rm -rf $(RUNDIR)/RESTART
-	rm -f $(RUNDIR)/Vertical_coordinate.nc
-	rm -f $(RUNDIR)/available_diags.??????
-	rm -f $(RUNDIR)/ave_prog__*.nc
-	rm -f $(RUNDIR)/cont__*.nc
-	rm -f $(RUNDIR)/exitcode
-	rm -f $(RUNDIR)/logfile.??????.out
-	rm -f $(RUNDIR)/ocean.stats
-	rm -f $(RUNDIR)/ocean.stats.nc
-	rm -f $(RUNDIR)/ocean_geometry.nc
-	rm -f $(RUNDIR)/prog__*.nc
-	rm -f $(RUNDIR)/time_stamp.out
-endef
-$(foreach expt,$(EXPTS),$(eval $(call EXPT_RULE,$(expt))))
+endif
+
+
+#-------------
+# `make test`
+
+# This testing validates the parameter and diagnostic logs.
+
+.PHONY: test.%
+test.%:
+	$(MAKE) EXPT=$* test
+
+.PHONY: test
+ifneq ($(realpath $(EXPT)), $(realpath $(RUNDIR)))
+test: FORCE $(RUNDIR)/ocean.stats
+	diff --color --to-file=$(RUNDIR) \
+	  $(wildcard $(EXPT)/*_parameter_doc.* $(EXPT)/available_diags*)
+else
+test: FORCE $(RUNDIR)/ocean.stats
+	git diff --exit-code $(EXPT)
+endif
+
+
+#------------
+# Test suite
+
+ALL_EXPTS := $(patsubst %/,%,\
+  $(dir $(shell git ls-files . | grep MOM_parameter_doc.all)))
+
+EXPT_MANIFEST := $(filter-out $(EXCLUDE) $(TESTDIR)/%,$(ALL_EXPTS))
+
+.PHONY: run.all
+run.all: $(foreach e,$(EXPT_MANIFEST),$(TESTDIR)/$(e)/run)
+
+# This is a dummy rule used to avoid recursive ocean.stats rules.
+.PHONY: $(TESTDIR)/%/run
+$(TESTDIR)/%/run: $(BUILD)/coupler_main
+	$(MAKE) run EXPT=$* RUNDIR=$(TESTDIR)/$* TESTDIR=$(TESTDIR)
+
+.PHONY: test.all
+test.all: $(foreach e,$(EXPT_MANIFEST),$(TESTDIR)/$(e)/test)
+
+# Another dummy rule
+.PHONY: $(TESTDIR)/%/test
+$(TESTDIR)/%/test: $(BUILD)/coupler_main
+	$(MAKE) test EXPT=$* RUNDIR=$(TESTDIR)/$* TESTDIR=$(TESTDIR)
+
 
 #----
 # Cleanup
 
 .PHONY: clean
 clean:
+	$(MAKE) -C ../shared/atmos_null BUILD=$(abspath $(ATMOS_BUILD)) clean
+	$(MAKE) -C ../shared/land_null BUILD=$(abspath $(LAND_BUILD)) clean
+	$(MAKE) -C ../shared/ice_param BUILD=$(abspath $(ICE_PARAM_BUILD)) clean
+	$(MAKE) -C ../shared/icebergs BUILD=$(abspath $(ICEBERGS_BUILD)) clean
 	rm -rf $(BUILD)
-	$(MAKE) -C ../shared/atmos_null clean
-	$(MAKE) -C ../shared/land_null clean
-	$(MAKE) -C ../shared/ice_param clean
-	$(MAKE) -C ../shared/icebergs clean
-	$(MAKE) -C ../shared/fms clean
-
-.PHONY: clean.runs
-clean.runs: $(foreach e,$(EXPTS),clean.$(e))
