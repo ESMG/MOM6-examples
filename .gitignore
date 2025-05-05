@@ -21,6 +21,7 @@ fort.*
 *.nc
 *.nc.*
 RESTART
+DOUBLE-GYRE*
 ocean.stats
 ocean.stats.*
 seaice.stats
