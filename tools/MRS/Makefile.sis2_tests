@@ -41,7 +41,7 @@ $(RESULTS)/$(1)_$(2).tar.gz:
 	tar zvcf $$(@D)/params_$$(@F) `find *SIS2/ -name "*_parameter_doc.*" -o -name "*available_diags*"`
 	@echo -e "\e[0Ksection_end:`date +%s`:$$(@F)\r\e[0K"
 endef
-$(foreach c,$(COMPILERS),$(eval $(call collect-regressions,non_symmetric,$(c),$(c)_ice_ocean_SIS2 $(c)_coupled_AM2_LM3_SIS2)))
+$(foreach c,$(COMPILERS),$(eval $(call collect-regressions,non_symmetric,$(c),$(c)_ice_ocean_SIS2 $(c)_coupled_AM2_LM3_SIS2 MEMORY=dynamic_nonsymmetric)))
 $(foreach c,$(COMPILERS),$(eval $(call collect-regressions,symmetric,$(c),$(c)_ice_ocean_SIS2 $(c)_coupled_AM2_LM3_SIS2 MEMORY=dynamic_symmetric)))
 #$(foreach c,$(COMPILERS),$(eval $(call collect-regressions,static,$(c),$c_static_ocean_only MEMORY=static)))
 

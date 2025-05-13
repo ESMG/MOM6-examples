@@ -45,7 +45,7 @@ $(foreach s,01 12 02,$(foreach f,input.nml MOM_input MOM_override,$(CONFIGS)/%/$
 -include $(MANIFEST)
 
 MODE ?= repro
-MEMORY ?= dynamic_nonsymmetric
+MEMORY ?= dynamic_symmetric
 
 # Dynamic pathway for building ocean.stats.*
 define run-dynamic-model
