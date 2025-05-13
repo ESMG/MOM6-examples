@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -t 1:00:00
-#SBATCH --ntasks=24
+#SBATCH --ntasks=1
 #SBATCH --job-name=DOUBLE-GYRE
 #SBATCH --account=akwaters
 #SBATCH --output=DOUBLE-GYRE.%j
@@ -34,7 +34,7 @@ TBEGIN=`echo "print time();" | perl`
 #rm diag_table.yaml
 #diag-table-to-yaml -f diag_table
 
-mpirun -np $SLURM_NTASKS --mca mpi_paffinity_alone 1 /import/c1/AKWATERS/kshedstrom/MOM6_3/build/nvfortran/ocean_only/debug/MOM6
+srun -n $SLURM_NTASKS /import/c1/AKWATERS/kshedstrom/MOM6_3/build/nvfortran/ocean_only/debug/MOM6
 
 #
 #  Epilog
