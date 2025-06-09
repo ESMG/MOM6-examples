@@ -574,9 +574,10 @@ DOME_SPONGE_WIDTH = 200.0       !   [km] default = 200.0
                                 ! The width of the the DOME sponges.
 !Total sponge columns = 2400    !
                                 ! The total number of columns where sponges are applied.
-OBC_RESERVOIR_RESTART_BUG = True !   [Boolean] default = True
-                                ! If true, reset the OBC tracer reservoirs at startup without consideration of
-                                ! what may be in the restart files.
+OBC_RESERVOIR_INIT_BUG = True   !   [Boolean] default = True
+                                ! If true, set the OBC tracer reservoirs at the startup of a new run from the
+                                ! interior tracer concentrations regardless of properties that may be explicitly
+                                ! specified for the reservoir concentrations.
 OBC_USER_CONFIG = "DOME"        ! default = "none"
                                 ! A string that sets how the user code is invoked to set open boundary data:
                                 !    DOME - specified inflow on northern boundary
