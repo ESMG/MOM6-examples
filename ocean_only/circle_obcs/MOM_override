@@ -1,3 +1,6 @@
 ! Blank file in which we can put "overrides" for parameters
 DEBUG = False
 DEBUG_BT = False
+ENABLE_BUGS_BY_DEFAULT = False
+BACKSCATTER_UNDERBOUND = False
+DRAG_DIFFUSIVITY_ANSWER_DATE = 99991231

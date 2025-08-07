@@ -399,3 +399,5 @@ V_TRUNC_FILE = "V_velocity_truncations" ! default = ""
                                 ! The absolute path to a file into which the accelerations leading to meridional
                                 ! velocity truncations are written. Undefine this for efficiency if this
                                 ! diagnostic is not needed.
+DRAG_DIFFUSIVITY_ANSWER_DATE = 99991231 ! default = 99991231
+ENABLE_BUGS_BY_DEFAULT = False
