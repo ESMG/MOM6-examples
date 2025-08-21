@@ -371,10 +371,6 @@ FOX_KEMPER_ML_RESTRAT_COEF = 10.0 !   [nondim] default = 0.0
 ! The following parameters are used for diabatic processes.
 
 ! === module MOM_set_diffusivity ===
-DRAG_DIFFUSIVITY_ANSWER_DATE = 99991231 ! default = 20250101
-                                ! The vintage of the order of arithmetic in the drag diffusivity calculations.
-                                ! Values above 20250301 use less confusing expressions to set the bottom-drag
-                                ! generated diffusivity when USE_LOTW_BBL_DIFFUSIVITY is false.
 
 ! === module MOM_bkgnd_mixing ===
 ! Adding static vertical background mixing coefficients

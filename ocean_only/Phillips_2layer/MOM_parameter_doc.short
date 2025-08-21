@@ -338,10 +338,6 @@ TOLERANCE_ENT = 1.0E-05         !   [m] default = 2.449489742783178E-05
                                 ! The tolerance with which to solve for entrainment values.
 
 ! === module MOM_set_diffusivity ===
-DRAG_DIFFUSIVITY_ANSWER_DATE = 99991231 ! default = 20250101
-                                ! The vintage of the order of arithmetic in the drag diffusivity calculations.
-                                ! Values above 20250301 use less confusing expressions to set the bottom-drag
-                                ! generated diffusivity when USE_LOTW_BBL_DIFFUSIVITY is false.
 
 ! === module MOM_bkgnd_mixing ===
 ! Adding static vertical background mixing coefficients

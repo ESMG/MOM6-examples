@@ -959,7 +959,7 @@ VISC_REM_BUG = True             !   [Boolean] default = False
                                 ! for in two places. This parameter controls the defaults of two individual
                                 ! flags, VISC_REM_TIMESTEP_BUG in MOM_dynamics_split_RK2(b) and
                                 ! VISC_REM_BT_WEIGHT_BUG in MOM_barotropic.
-VISC_REM_TIMESTEP_BUG = False   !   [Boolean] default = False
+VISC_REM_TIMESTEP_BUG = True    !   [Boolean] default = True
                                 ! If true, recover a bug that uses dt_pred rather than dt in vertvisc_remnant()
                                 ! at the end of predictor stage for the following continuity() and btstep()
                                 ! calls in the corrector step. Default of this flag is set by VISC_REM_BUG
@@ -1268,7 +1268,7 @@ BAROTROPIC_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! The vintage of the expressions in the barotropic solver. Values below 20190101
                                 ! recover the answers from the end of 2018, while higher values use more
                                 ! efficient or general expressions.
-VISC_REM_BT_WEIGHT_BUG = False  !   [Boolean] default = False
+VISC_REM_BT_WEIGHT_BUG = True   !   [Boolean] default = True
                                 ! If true, recover a bug in barotropic solver that uses an unnormalized weight
                                 ! function for vertical averages of baroclinic velocity and forcing. Default of
                                 ! this flag is set by VISC_REM_BUG.
