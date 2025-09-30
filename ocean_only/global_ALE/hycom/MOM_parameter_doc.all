@@ -556,16 +556,38 @@ ALE_COORDINATE_CONFIG = "HYBRID:hycom1_50.nc,sigma2,dz" ! default = "UNIFORM"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
-                                !                by a comma or space, for sigma-2 and dz. e.g.
-                                !                HYBRID:vgrid.nc,sigma2,dz
+                                !                by a comma or space, for sigma-2 and dz.
+                                !                e.g. HYBRID:vgrid.nc,sigma2,dz
+                                !  HYBRID_3D:string - read from a file. The string specifies
+                                !                the filename and two 3D variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. The
+                                !                latter can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_3D:vgrid.nc,sigma2,dz
+                                !  HYBRID_MAP:string - read from a file. The string specifies
+                                !                the filename and three variable names, separated
+                                !                by a comma or space, for map, sigma-2 and dz.
+                                !                Map is a spatial index array with, maxval(map)=N,
+                                !                and the others are 2D arrays containing N profiles.
+                                !                Map typically contains integer values, but it can
+                                !                contain real values, I+w, which imply using
+                                !                the weighted sum of profiles I and I+1.
+                                !                Dz can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_MAP:vgrid.nc,map,sigma2,dz
 !ALE_RESOLUTION = 4*5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 17*30.0 !   [m]
                                 ! The distribution of vertical resolution for the target
                                 ! grid used for Eulerian-like coordinates. For example,
                                 ! in z-coordinate mode, the parameter is a list of level
                                 ! thicknesses (in m). In sigma-coordinate mode, the list
                                 ! is of non-dimensional fractions of the water column.
-!TARGET_DENSITIES = 1010.0, 1016.1289, 1020.843, 1024.821, 1027.0275, 1028.2911, 1029.2795, 1030.1194, 1030.8626, 1031.5364, 1032.1572, 1032.7358, 1033.2798, 1033.7948, 1034.2519, 1034.5828, 1034.8508, 1035.0821, 1035.2886, 1035.4769, 1035.6511, 1035.814, 1035.9675, 1036.1107, 1036.2411, 1036.3615, 1036.4739, 1036.5797, 1036.68, 1036.7755, 1036.8526, 1036.9024, 1036.9418, 1036.9754, 1037.0052, 1037.0323, 1037.0574, 1037.082, 1037.1066, 1037.1312, 1037.1558, 1037.1804, 1037.206, 1037.2337, 1037.2642, 1037.2986, 1037.3389, 1037.3901, 1037.475, 1037.7204, 1038.0 !   [m]
+!TARGET_DENSITIES = 1010.0, 1016.1289, 1020.843, 1024.821, 1027.0275, 1028.2911, 1029.2795, 1030.1194, 1030.8626, 1031.5364, 1032.1572, 1032.7358, 1033.2798, 1033.7948, 1034.2519, 1034.5828, 1034.8508, 1035.0821, 1035.2886, 1035.4769, 1035.6511, 1035.814, 1035.9675, 1036.1107, 1036.2411, 1036.3615, 1036.4739, 1036.5797, 1036.68, 1036.7755, 1036.8526, 1036.9024, 1036.9418, 1036.9754, 1037.0052, 1037.0323, 1037.0574, 1037.082, 1037.1066, 1037.1312, 1037.1558, 1037.1804, 1037.206, 1037.2337, 1037.2642, 1037.2986, 1037.3389, 1037.3901, 1037.475, 1037.7204, 1038.0 !   [kg m-3]
                                 ! HYBRID target densities for interfaces
+SHALLOW_ALE_RESOLUTION = 50*0.0 !   [m] default = 0.0
+                                ! HYBGEN-style Z-sigma-Z near surface fixed coordinate. The default of all zeros
+                                ! turns this option off. Let N_SIGMA be the number of consecutive non-zero
+                                ! entries, typically < NK. Use SHALLOW_ALE_RESOLUTION when rest depth is
+                                ! shallower than SUM(SHALLOW_ALE_RESOLUTION(1:N_SIGMA)). Use ALE_RESOLUTION when
+                                ! rest depth is deeper than SUM(ALE_RESOLUTION(1:N_SIGMA)). Otherwise use a
+                                ! linear sum of the two weighted by rest depth.
 REGRID_COMPRESSIBILITY_FRACTION = 0.0 !   [nondim] default = 0.0
                                 ! When interpolating potential density profiles we can add some artificial
                                 ! compressibility solely to make homogeneous regions appear stratified.
@@ -794,8 +816,23 @@ DIAG_COORD_DEF_Z = "WOA09"      ! default = "WOA09"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
-                                !                by a comma or space, for sigma-2 and dz. e.g.
-                                !                HYBRID:vgrid.nc,sigma2,dz
+                                !                by a comma or space, for sigma-2 and dz.
+                                !                e.g. HYBRID:vgrid.nc,sigma2,dz
+                                !  HYBRID_3D:string - read from a file. The string specifies
+                                !                the filename and two 3D variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. The
+                                !                latter can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_3D:vgrid.nc,sigma2,dz
+                                !  HYBRID_MAP:string - read from a file. The string specifies
+                                !                the filename and three variable names, separated
+                                !                by a comma or space, for map, sigma-2 and dz.
+                                !                Map is a spatial index array with, maxval(map)=N,
+                                !                and the others are 2D arrays containing N profiles.
+                                !                Map typically contains integer values, but it can
+                                !                contain real values, I+w, which imply using
+                                !                the weighted sum of profiles I and I+1.
+                                !                Dz can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_MAP:vgrid.nc,map,sigma2,dz
 
 ! === module MOM_MEKE ===
 USE_MEKE = True                 !   [Boolean] default = False
@@ -1199,6 +1236,8 @@ TIDES = True                    !   [Boolean] default = False
                                 ! If true, apply tidal momentum forcing.
 CALCULATE_SAL = True            !   [Boolean] default = True
                                 ! If true, calculate self-attraction and loading.
+USE_HA = False                  !   [Boolean] default = False
+                                ! If true, perform inline harmonic analysis.
 BE = 0.6                        !   [nondim] default = 0.6
                                 ! If SPLIT is true, BE determines the relative weighting of a  2nd-order
                                 ! Runga-Kutta baroclinic time stepping scheme (0.5) and a backward Euler scheme
@@ -1299,6 +1338,9 @@ CORIOLIS_SCHEME = "SADOURNY75_ENERGY" ! default = "SADOURNY75_ENERGY"
                                 !    ARAKAWA_LAMB81    - Arakawa & Lamb, 1981; En. + Enst.
                                 !    ARAKAWA_LAMB_BLEND - A blend of Arakawa & Lamb with
                                 !                         Arakawa & Hsu and Sadourny energy
+                                !    WENOVI5TH_PV_ENSTRO   - 5th-order WENO PV enstrophy
+                                !    WENOVI3RD_PV_ENSTRO   - 3rd-order WENO PV enstrophy
+                                !    WENOVI7TH_PV_ENSTRO  - 7th-order WENO PV enstrophy
 BOUND_CORIOLIS = True           !   [Boolean] default = False
                                 ! If true, the Coriolis terms at u-points are bounded by the four estimates of
                                 ! (f+rv)v from the four neighboring v-points, and similarly at v-points.  This
@@ -1307,7 +1349,7 @@ BOUND_CORIOLIS = True           !   [Boolean] default = False
 KE_SCHEME = "KE_ARAKAWA"        ! default = "KE_ARAKAWA"
                                 ! KE_SCHEME selects the discretization for acceleration due to the kinetic
                                 ! energy gradient. Valid values are:
-                                !    KE_ARAKAWA, KE_SIMPLE_GUDONOV, KE_GUDONOV
+                                !    KE_ARAKAWA, KE_SIMPLE_GUDONOV, KE_GUDONOV, KE_UP3
 PV_ADV_SCHEME = "PV_ADV_CENTERED" ! default = "PV_ADV_CENTERED"
                                 ! PV_ADV_SCHEME selects the discretization for PV advection. Valid values are:
                                 !    PV_ADV_CENTERED - centered (aka Sadourny, 75)
@@ -1386,23 +1428,6 @@ TIDE_ADD_NODAL = False          !   [Boolean] default = False
 TIDE_NODAL_REF_DATE = 0, 0, 0   ! default = 0, 0, 0
                                 ! Fixed reference date to use for nodal modulation of astronomical tidal
                                 ! forcing.
-HA_START_TIME = 0.0             !   [days] default = 0.0
-                                ! Start time of harmonic analysis, in units of days after the start of the
-                                ! current run segment. Must be smaller than HA_END_TIME, otherwise harmonic
-                                ! analysis will not be performed. If negative, |HA_START_TIME| determines the
-                                ! length of harmonic analysis, and harmonic analysis will start |HA_START_TIME|
-                                ! days before HA_END_TIME, or at the beginning of the run segment, whichever
-                                ! occurs later.
-HA_END_TIME = 0.0               !   [days] default = 0.0
-                                ! End time of harmonic analysis, in units of days after the start of the current
-                                ! run segment. Must be positive and smaller than the length of the currnet run
-                                ! segment, otherwise harmonic analysis will not be performed.
-HA_SSH = False                  !   [Boolean] default = False
-                                ! If true, perform harmonic analysis of sea serface height.
-HA_UBT = False                  !   [Boolean] default = False
-                                ! If true, perform harmonic analysis of zonal barotropic velocity.
-HA_VBT = False                  !   [Boolean] default = False
-                                ! If true, perform harmonic analysis of meridional barotropic velocity.
 
 ! === module MOM_PressureForce ===
 ANALYTIC_FV_PGF = True          !   [Boolean] default = True
@@ -1484,6 +1509,9 @@ USE_ZB2020 = False              !   [Boolean] default = False
                                 ! mesoscale eddies.
 
 ! === module MOM_hor_visc ===
+USE_CIRCULATION_IN_HORVISC = False !   [Boolean] default = False
+                                ! Use circulation theorem to compute vorticity in horvisc module (for ZB20 or
+                                ! Leith)
 USE_CONT_THICKNESS = False      !   [Boolean] default = False
                                 ! If true, use thickness at velocity points from continuity solver. This option
                                 ! currently only works with split mode.

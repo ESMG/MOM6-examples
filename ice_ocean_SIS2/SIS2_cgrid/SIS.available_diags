@@ -272,6 +272,9 @@
 "ice_model", "del_sh_min"  [Used]
     ! long_name: minimum ice strain rate magnitude
     ! units: s-1
+"ice_model", "itheta"  [Unused]
+    ! long_name: ice atan(shear/divergence)
+    ! units: rad
 "ice_model", "ui_hf"  [Unused]
     ! long_name: ice velocity - x component
     ! units: m/s
@@ -329,6 +332,9 @@
 "ice_model", "RDG_RATE"  [Unused]
     ! long_name: ice ridging rate
     ! units: 1/sec
+"ice_model", "RDG_HEIGHT"  [Unused]
+    ! long_name: ice ridge height
+    ! units: m
 "ice_model", "FA_X"  [Used]
     ! long_name: Air stress on ice on C-grid - x component
     ! units: Pa
@@ -368,9 +374,6 @@
     ! units: m-ice
 "ice_model", "sivol"  [Unused]
     ! long_name: ice volume
-    ! units: m-ice
-"ice_model", "sivol_CMOR"  [Unused]
-    ! long_name: Sea-ice Volume per Area
     ! units: m-ice
 "ice_model", "sisnconc"  [Unused]
     ! long_name: snow concentration
@@ -419,8 +422,11 @@
     ! long_name: ice mass
     ! units: kg/m^2
 "ice_model", "simass_n"  [Unused]
-    ! long_name: ice mass
+    ! long_name: ice mass in categories
     ! units: kg/m^2
+"ice_model", "siitdthick"  [Unused]
+    ! long_name: ice thickness in categories
+    ! units: m-ice
 "ice_model", "sisnmass"  [Unused]
     ! long_name: snow mass
     ! units: kg/m^2

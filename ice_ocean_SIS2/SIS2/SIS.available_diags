@@ -194,6 +194,9 @@
 "ice_model", "RDG_RATE"  [Unused]
     ! long_name: ice ridging rate
     ! units: 1/sec
+"ice_model", "RDG_HEIGHT"  [Unused]
+    ! long_name: ice ridge height
+    ! units: m
 "ice_model", "FA_X"  [Used]
     ! long_name: air stress on ice - x component
     ! units: Pa
@@ -233,9 +236,6 @@
     ! units: m-ice
 "ice_model", "sivol"  [Unused]
     ! long_name: ice volume
-    ! units: m-ice
-"ice_model", "sivol_CMOR"  [Unused]
-    ! long_name: Sea-ice Volume per Area
     ! units: m-ice
 "ice_model", "sisnconc"  [Unused]
     ! long_name: snow concentration
@@ -284,8 +284,11 @@
     ! long_name: ice mass
     ! units: kg/m^2
 "ice_model", "simass_n"  [Unused]
-    ! long_name: ice mass
+    ! long_name: ice mass in categories
     ! units: kg/m^2
+"ice_model", "siitdthick"  [Unused]
+    ! long_name: ice thickness in categories
+    ! units: m-ice
 "ice_model", "sisnmass"  [Unused]
     ! long_name: snow mass
     ! units: kg/m^2
