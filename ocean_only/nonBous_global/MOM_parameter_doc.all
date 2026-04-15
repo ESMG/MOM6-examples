@@ -171,8 +171,6 @@ ICE_SHELF = False               !   [Boolean] default = False
                                 ! If true, enables the ice shelf model.
 USE_PARTICLES = False           !   [Boolean] default = False
                                 ! If true, use the particles package.
-USE_UH_PARTICLES = False        !   [Boolean] default = False
-                                ! If true, use the uh velocity in the particles package.
 ENSEMBLE_OCEAN = False          !   [Boolean] default = False
                                 ! If False, The model is being run in serial mode as a single realization. If
                                 ! True, The current model realization is part of a larger ensemble and at the
@@ -1507,6 +1505,10 @@ INTWAVE_REMAPPING_USE_OM4_SUBCELLS = True !   [Boolean] default = True
                                 ! If true, use the OM4 remapping-via-subcells algorithm for calculating EBT
                                 ! structure. See REMAPPING_USE_OM4_SUBCELLS for details. We recommend setting
                                 ! this option to false.
+ACCURATE_NONBOUS_THICK_CELLO = False !   [Boolean] default = False
+                                ! If true, use the same careful integrals to find the diagnosed non-Boussinesq
+                                ! layer thicknesses as are used to find the free surface height, instead of
+                                ! using an approximate thickness based on division by the mid-layer density.
 
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
