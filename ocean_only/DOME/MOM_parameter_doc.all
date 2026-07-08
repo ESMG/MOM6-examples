@@ -303,6 +303,12 @@ OBC_HOR_INDEXING_BUG = False    !   [Boolean] default = False
 OBC_TEMP_SALT_NEEDED_BUG = True !   [Boolean] default = True
                                 ! If true, recover a bug that OBC temperature and salinity can be ignored even
                                 ! if they are registered tracers in the rest of the model.
+IGNORE_DT_OBC_SEG_UPDATE_OBGC = False !   [Boolean] default = False
+                                ! If true, DT_OBC_SEG_UPDATE_OBGC is ignored and all OBC segment tracer data
+                                ! (T/S and BGC) is updated every tracer advection step.  If false, T/S is
+                                ! updated every dynamic step, which is unnecessary, while BGC follows its own
+                                ! update schedule, which may not reproduce across restarts. Once
+                                ! DT_OBC_SEG_UPDATE_OBGC is deprecated, only the 'true' path will be needed.
 OBC_SEGMENT_001 = "J=N,I=110:100,SIMPLE" !
                                 ! Documentation needs to be dynamic?????
 OBC_REMAPPING_SCHEME = "PLM"    ! default = "PLM"
@@ -593,6 +599,9 @@ DOME_SPONGE_WIDTH = 200.0       !   [km] default = 200.0
                                 ! The width of the DOME sponges.
 !Total sponge columns = 2400    !
                                 ! The total number of columns where sponges are applied.
+OBC_TS_RESERVOIR_INIT_BUG = True !   [Boolean] default = True
+                                ! If true, set the OBC temperature and salinity reservoirs at the startup of a
+                                ! new run from initial values that are set before remapping.
 OBC_RESERVOIR_INIT_BUG = False  !   [Boolean] default = False
                                 ! If true, set the OBC tracer reservoirs at the startup of a new run from the
                                 ! interior tracer concentrations regardless of properties that may be explicitly
@@ -760,10 +769,12 @@ USE_QG_LEITH_GM = False         !   [Boolean] default = False
                                 ! If true, use the QG Leith viscosity as the GM coefficient.
 
 ! === module MOM_set_visc ===
-SET_VISC_ANSWER_DATE = 99991231 ! default = 99991231
+SET_VISC_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the set viscosity
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
+                                ! Values below 20260704 use the non-reproducible power operator in place of
+                                ! cuberoot() when finding the open distances with CHANNEL_DRAG.
 BOTTOMDRAGLAW = True            !   [Boolean] default = True
                                 ! If true, the bottom stress is calculated with a drag law of the form
                                 ! c_drag*|u|*u. The velocity magnitude may be an assumed value or it may be
